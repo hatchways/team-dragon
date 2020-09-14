@@ -5,6 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { Route, Link } from "react-router-dom";
 
 import Ping from "./Ping";
+import NewGame from "./components/NewGame";
 
 const landinPageStyle = theme => ({
   landingContainer: {
@@ -39,32 +40,35 @@ class LandingPage extends Component {
   };
 
   render() {
-    const { classes } = this.props;
     return (
-      <div className={classes.landingContainer}>
-        <Typography>{this.state.welcomeMessage}</Typography>
-        {this.state.step >= 1 && (
-          <React.Fragment>
-            <Link to="/ping">Step 2: Click here </Link>
-            <Route
-              path="/ping"
-              render={props => {
-                return (
-                  <Ping
-                    {...props}
-                    incrementStep={this.incrementStep}
-                    step={this.state.step}
-                  />
-                );
-              }}
-            />
-          </React.Fragment>
-        )}
-        {this.state.step >= 3 && (
-          <Typography>All done! Now go make a pull request!</Typography>
-        )}
-      </div>
-    );
+    <NewGame />
+    )
+  //   const { classes } = this.props;
+  //   return (
+  //     <div className={classes.landingContainer}>
+  //       <Typography>{this.state.welcomeMessage}</Typography>
+  //       {this.state.step >= 1 && (
+  //         <React.Fragment>
+  //           <Link to="/ping">Step 2: Click here </Link>
+  //           <Route
+  //             path="/ping"
+  //             render={props => {
+  //               return (
+  //                 <Ping
+  //                   {...props}
+  //                   incrementStep={this.incrementStep}
+  //                   step={this.state.step}
+  //                 />
+  //               );
+  //             }}
+  //           />
+  //         </React.Fragment>
+  //       )}
+  //       {this.state.step >= 3 && (
+  //         <Typography>All done! Now go make a pull request!</Typography>
+  //       )}
+  //     </div>
+  //   );
   }
 }
 
