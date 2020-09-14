@@ -9,7 +9,7 @@ require("dotenv").config();
 
 var app = require("../app");
 var http = require("http");
-
+const mongoose = require("mongoose");
 /**
  * Get port from environment and store in Express.
  */
@@ -27,9 +27,19 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
-server.on("error", onError);
-server.on("listening", onListening);
+// Database connection using Mongoose
+mongoose
+  .connect(
+    "mongodb+srv://teamDragon:7NU9jVwvKDx2KDws@cluster0.cgtav.mongodb.net/<dbname>?retryWrites=true&w=majority"
+  )
+  .then((result) => {
+    console.log("Connected to database");
+    console.log(result)
+    server.listen(port);
+    server.on("error", onError);
+    server.on("listening", onListening);
+  })
+  .catch((err) => console.log(err));
 
 /**
  * Normalize a port into a number, string, or false.
