@@ -79,7 +79,7 @@ module.exports = {
 
       return res.status(400).json({
         success: false,
-        errors: { password: 'Invalid email and/or password'}
+        errors: { password: 'Incorrect password'}
       });
     } catch(e) {
       return next(e);
