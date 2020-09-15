@@ -29,8 +29,8 @@ const EmailInvite = () => {
     setEmailForm("");
   };
 
-  const displayEmails = emails.map((email) => {
-    return <li>{email}</li>;
+  const displayEmails = emails.map((email, i) => {
+    return <li key={i}>{email}</li>;
   });
 
   return (
@@ -41,7 +41,7 @@ const EmailInvite = () => {
         variant="outlined"
         value={emailForm}
         onChange={(e) => setEmailForm(e.target.value)}
-      ></TextField>
+      />
 
       <Button
         variant="contained"
