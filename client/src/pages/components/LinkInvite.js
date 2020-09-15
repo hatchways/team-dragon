@@ -1,17 +1,26 @@
 import React from "react";
-import { Button } from "@material-ui/core";
-//import LinkIcon from '@material-ui/icons/LinkIcon';
- 
- 
+import { Button, Typography } from "@material-ui/core";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    copy: {
+      background: theme.white,
+    },
+  })
+);
+
 const LinkInvite = () => {
+  const classes = useStyles();
+
   return (
     <>
-      <h3>Or share link:</h3>
-      <Button variant="contained" color="default" >
+      <Typography variant="h3">Or share link:</Typography>
+      <Button variant="contained" className={classes.copy}>
         Copy
       </Button>
     </>
   );
 };
- 
+
 export default LinkInvite;
