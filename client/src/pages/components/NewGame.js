@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useNewGame } from "../../DataContext";
 import {
   Button,
   Container,
@@ -26,6 +26,19 @@ const useStyles = makeStyles((theme) =>
 const NewGame = (props) => {
   const classes = useStyles();
 
+  const newGameContext = useNewGame();
+  const [newGame, setNewGame] = newGameContext;
+
+
+  const nextStep = () => {
+    const {step} = newGame
+    setNewGame((prevState) => ({
+      ...prevState, step: step + 1
+    }))
+  }
+
+  console.log(newGame)
+
   return (
     <Container maxWidth="md">
       <Card className={classes.card}>
@@ -45,7 +58,7 @@ const NewGame = (props) => {
           </Grid>
         </Grid>
         <Grid container direction="row" justify="center" alignItems="center">
-          <Button variant="contained" color="primary">
+          <Button variant="contained" color="primary" onClick={nextStep}>
             Create Game
           </Button>
         </Grid>
