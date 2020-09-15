@@ -1,5 +1,6 @@
 import React from "react";
 import { useNewGame } from "../DataContext";
+// import { useAxios } from "../hooks/useAxios";
 import {
   Button,
   Container,
@@ -8,17 +9,15 @@ import {
   Typography,
   Card,
 } from "@material-ui/core";
-import LinkInvite from "../components/LinkInvite.js";
-import EmailInvite from "../components/EmailInvite.js";
+// import LinkInvite from "../components/LinkInvite.js";
+// import EmailInvite from "../components/EmailInvite.js";
+import StepOne from "../components/new game/step 1/StepOne.js";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
     card: {
       padding: "2rem",
-    },
-    inviteSection: {
-      margin: "2rem",
     },
   })
 );
@@ -35,6 +34,13 @@ const NewGame = (props) => {
       ...prevState,
       step: step + 1,
     }));
+
+    // if (step === 1) {
+    //   const { data, loading } = useAxios(
+    //     "https://www.hatchways.io/api/assessment/students"
+    //   );
+
+    // }
   };
 
   const newGameSteps = () => {
@@ -44,15 +50,7 @@ const NewGame = (props) => {
       case 1:
         return (
           <>
-            <Grid container spacing={2} className={classes.inviteSection}>
-              <Grid item xs={8}>
-                <EmailInvite />
-              </Grid>
-              <Divider orientation="vertical" flexItem />
-              <Grid item xs>
-                <LinkInvite />
-              </Grid>
-            </Grid>
+            <StepOne />
           </>
         );
       case 2:

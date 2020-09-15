@@ -1,8 +1,10 @@
 import React, { useContext, useState, useMemo } from "react";
 
+
 const EmailContext = React.createContext();
 
 const NewGameContext = React.createContext();
+
 
 // Custom hook for Emails to be invited to game
 export function useEmails() {
