@@ -1,5 +1,5 @@
 import React from "react";
-import { useNewGame } from "../../DataContext";
+import { useNewGame } from "../DataContext";
 import {
   Button,
   Container,
@@ -8,8 +8,8 @@ import {
   Typography,
   Card,
 } from "@material-ui/core";
-import LinkInvite from "./LinkInvite";
-import EmailInvite from "./EmailInvite";
+import LinkInvite from "../components/LinkInvite.js";
+import EmailInvite from "../components/EmailInvite.js";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) =>
