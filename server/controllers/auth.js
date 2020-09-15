@@ -19,7 +19,7 @@ module.exports = {
       if(user) {
         return res.status(400).json({
           success: false,
-          message: 'Email already exists'
+          errors: { email: 'Email already exists' },
         });
       }
 
@@ -59,7 +59,7 @@ module.exports = {
       if(!user) {
         return res.status(404).json({
           success: false,
-          message: 'Email does not exist',
+          errors: { email: 'Email does not exist' },
         });
       }
 
@@ -79,7 +79,7 @@ module.exports = {
 
       return res.status(400).json({
         success: false,
-        message: 'Invalid email and/or password'
+        errors: { password: 'Invalid email and/or password'}
       });
     } catch(e) {
       return next(e);
