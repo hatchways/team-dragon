@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-const EmailInvite = (props) => {
+const EmailInvite = () => {
   const emailsContext = useEmails();
   const [emails, setEmails] = emailsContext;
 

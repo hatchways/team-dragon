@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-export const useAxios = (url, method) => {
+export const useAxios = (url, method, data) => {
   const [state, setState] = useState({ data: [], loading: true });
 
   useEffect(() => {
@@ -17,16 +17,17 @@ export const useAxios = (url, method) => {
     }
 
     if (method === "post") {
-      axios
-        .post(url)
-        .then((response) => {
-          setState({ data: response.data, loading: false });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        console.log(url, data)
+    //   axios
+    //     .post(url, data)
+    //     .then((response) => {
+    //       setState({ data: response.data, loading: false });
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
     }
-  }, [url, method]);
+  }, [url, method, data]);
 
   return state;
 };

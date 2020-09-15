@@ -1,6 +1,7 @@
 import React from "react";
+import StepOne from "../components/new game/step 1/StepOne.js";
+import StepTwo from "../components/new game/step 2/StepTwo.js";
 import { useNewGame } from "../DataContext";
-// import { useAxios } from "../hooks/useAxios";
 import {
   Button,
   Container,
@@ -9,9 +10,7 @@ import {
   Typography,
   Card,
 } from "@material-ui/core";
-// import LinkInvite from "../components/LinkInvite.js";
-// import EmailInvite from "../components/EmailInvite.js";
-import StepOne from "../components/new game/step 1/StepOne.js";
+
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) =>
@@ -48,13 +47,9 @@ const NewGame = (props) => {
 
     switch (step) {
       case 1:
-        return (
-          <>
-            <StepOne />
-          </>
-        );
+        return <StepOne />;
       case 2:
-        return <h2>step2</h2>;
+        return <StepTwo />;
       default:
         return <h2>End of the road</h2>;
     }
@@ -72,9 +67,15 @@ const NewGame = (props) => {
         {newGameSteps()}
 
         <Grid container direction="row" justify="center" alignItems="center">
-          <Button variant="contained" color="primary" onClick={nextStep}>
-            Create Game
-          </Button>
+          {newGame.step === 1 ? (
+            <Button variant="contained" color="primary" onClick={nextStep}>
+              Next
+            </Button>
+          ) : (
+            <Button variant="contained" color="primary" onClick={nextStep}>
+              Create Game
+            </Button>
+          )}
         </Grid>
       </Card>
     </Container>
