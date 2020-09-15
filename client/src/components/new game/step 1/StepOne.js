@@ -1,9 +1,8 @@
-import React from "react";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
-
+import React, { useEffect } from "react";
 import EmailInvite from "./EmailInvite";
 import LinkInvite from "./LinkInvite";
-
+import { useNewGame } from "../../../DataContext";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
 import { Divider, Grid } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) =>
@@ -16,6 +15,17 @@ const useStyles = makeStyles((theme) =>
 
 const StepOne = () => {
   const classes = useStyles();
+
+  const newGameContext = useNewGame();
+  const [newGame, setNewGame] = newGameContext;
+
+  useEffect(() => {
+    //Needs a get request for match id from backend
+    setNewGame((prevState) => ({
+      ...prevState,
+      gameId: "gameId here",
+    }));
+  }, []);
 
   return (
     <>
