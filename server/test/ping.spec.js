@@ -10,12 +10,12 @@ describe("/POST ping", () => {
     chai
       .request(app)
       .post(`/ping/`)
-      .send({ teamName: "Shums" })
+      .send({ teamName: "Paul" })
       .end((err, res) => {
         res.should.have.status(400);
         res.body.should.have
           .property("response")
-          .eql("Shums is not part of the team. Modify your .env");
+          .eql("Paul is not part of the team. Modify your .env");
         done();
       });
   });
