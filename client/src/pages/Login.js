@@ -57,13 +57,12 @@ function Login(props) {
 
       props.history.push('/new');
     } catch(err) {
-      // TODO: manage error messages
-
       const data = err.response.data;
       if(data.errors) {
         setErrors(data.errors);
       } else {
-        setErrors({ misc: err.message })
+        // TODO manage generic errors
+        setErrors(data.error)
       }
 
       setLoading(false);

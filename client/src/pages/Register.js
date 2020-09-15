@@ -31,7 +31,6 @@ function Register(props) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [password2, setPassword2] = useState('');
   const [isLoading, setLoading] = useState(false);
   const [errors, setErrors] = useState({}); 
 
@@ -39,8 +38,7 @@ function Register(props) {
     return (
       name.length > 0 &&
       email.length > 0 &&
-      password.length > 0 &&
-      password === password2
+      password.length > 0
     )
   }
 
@@ -53,7 +51,7 @@ function Register(props) {
         name,
         email,
         password,
-        password2,
+        password2: password,
       });
 
       axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
@@ -63,12 +61,12 @@ function Register(props) {
 
       props.history.push('/new');
     } catch(err) {
-      // TODO: manage error messages
       const data = err.response.data;
       if(data.errors) {
         setErrors(data.errors);
       } else {
-        setErrors({ misc: err.message })
+        // TODO manage generic errors
+        setErrors(data.error)
       }
 
       setLoading(false);
@@ -132,22 +130,6 @@ function Register(props) {
             helperText={errors.password}
           />
 
-        <TextField 
-            className={classes.textField}
-            fullWidth
-            variant="outlined"
-            InputLabelProps={{ shrink: true }}
-            label="Confirm password:"
-            type="password"
-            id="password2"
-            name="password2"
-            placeholder="Confirm your password"
-            value={password2}
-            onChange={(e) => setPassword2(e.target.value)}
-            error={errors.password2 !== undefined}
-            helperText={errors.password2}
-          />
-
           <Button 
             className={classes.button}
             variant="contained"
@@ -164,7 +146,6 @@ function Register(props) {
           </Typography>
         </form>
       </Card>
-
     </Container>
   )
 }
