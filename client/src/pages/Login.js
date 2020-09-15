@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Card, Container, CssBaseline, TextField, Typography } from '@material-ui/core';
 
@@ -24,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Login() {
+function Login(props) {
   const classes = useStyles();
 
   const [email, setEmail] = useState('');
@@ -44,12 +45,31 @@ function Login() {
     setLoading(true);
 
     try {
-      console.log('TODO');
+      const { data }  = await axios.post('/users/login', {
+        email,
+        password,
+      });
+
+      axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+      window.localStorage.setItem('id', data.user._id);
+      window.localStorage.setItem('name', data.user.name);
+      window.localStorage.setItem('token', data.token);
+
+      props.history.push('/new');
     } catch(err) {
-      console.log(err);
+      // TODO: manage error messages
+
+      const data = err.response.data;
+      if(data.errors) {
+        setErrors(data.errors);
+      } else {
+        setErrors({ misc: err.message })
+      }
+
       setLoading(false);
     }
   }
+
 
   return (
     <Container className={classes.root} maxWidth="sm">
@@ -72,6 +92,8 @@ function Login() {
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            error={errors.email !== undefined}
+            helperText={errors.email}
           />
 
           <TextField 
@@ -86,6 +108,8 @@ function Login() {
             placeholder="Enter your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            error={errors.password !== undefined}
+            helperText={errors.password}
           />
 
           <Button 
@@ -93,9 +117,10 @@ function Login() {
             variant="contained"
             color="primary"
             size="large"
+            type="submit"
             disabled={isLoading || !validateForm()}
           >
-            Sign Up
+            Sign In
           </Button>
 
           <Typography variant="body1">

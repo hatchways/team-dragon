@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Card, Container, CssBaseline, TextField, Typography } from '@material-ui/core';
 
@@ -24,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Register() {
+function Register(props) {
   const classes = useStyles();
 
   const [name, setName] = useState('');
@@ -48,9 +49,28 @@ function Register() {
     setLoading(true);
 
     try {
-      console.log('TODO');
+      const { data } = await axios.post('/users/register', {
+        name,
+        email,
+        password,
+        password2,
+      });
+
+      axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+      window.localStorage.setItem('id', data.user._id);
+      window.localStorage.setItem('name', data.user.name);
+      window.localStorage.setItem('token', data.token);
+
+      props.history.push('/new');
     } catch(err) {
-      console.log(err);
+      // TODO: manage error messages
+      const data = err.response.data;
+      if(data.errors) {
+        setErrors(data.errors);
+      } else {
+        setErrors({ misc: err.message })
+      }
+
       setLoading(false);
     }
   }
@@ -76,6 +96,8 @@ function Register() {
             placeholder="Enter your name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            error={errors.name !== undefined}
+            helperText={errors.name}
           />
 
           <TextField 
@@ -90,6 +112,8 @@ function Register() {
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            error={errors.email !== undefined}
+            helperText={errors.email}
           />
 
           <TextField 
@@ -104,6 +128,8 @@ function Register() {
             placeholder="Enter your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            error={errors.password !== undefined}
+            helperText={errors.password}
           />
 
         <TextField 
@@ -118,6 +144,8 @@ function Register() {
             placeholder="Confirm your password"
             value={password2}
             onChange={(e) => setPassword2(e.target.value)}
+            error={errors.password2 !== undefined}
+            helperText={errors.password2}
           />
 
           <Button 
@@ -125,6 +153,7 @@ function Register() {
             variant="contained"
             color="primary"
             size="large"
+            type="submit"
             disabled={isLoading || !validateForm()}
           >
             Sign Up
