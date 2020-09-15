@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-const LinkInvite = () => {
+const LinkInvite = (props) => {
   const classes = useStyles();
 
   return (

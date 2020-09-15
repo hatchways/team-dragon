@@ -1,9 +1,7 @@
 import React from "react";
 
-import NewGame from "./components/NewGame";
-
 const LandingPage = () => {
-  return <NewGame />;
+  return <h1>This is the Landing Page</h1>;
 };
 
 export default LandingPage;
