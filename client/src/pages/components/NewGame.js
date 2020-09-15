@@ -29,34 +29,50 @@ const NewGame = (props) => {
   const newGameContext = useNewGame();
   const [newGame, setNewGame] = newGameContext;
 
-
   const nextStep = () => {
-    const {step} = newGame
+    const { step } = newGame;
     setNewGame((prevState) => ({
-      ...prevState, step: step + 1
-    }))
-  }
+      ...prevState,
+      step: step + 1,
+    }));
+  };
 
-  console.log(newGame)
+  const newGameSteps = () => {
+    const { step } = newGame;
+
+    switch (step) {
+      case 1:
+        return (
+          <>
+            <Grid container spacing={2} className={classes.inviteSection}>
+              <Grid item xs={8}>
+                <EmailInvite />
+              </Grid>
+              <Divider orientation="vertical" flexItem />
+              <Grid item xs>
+                <LinkInvite />
+              </Grid>
+            </Grid>
+          </>
+        );
+      case 2:
+        return <h2>step2</h2>;
+      default:
+        return <h2>End of the road</h2>;
+    }
+  };
 
   return (
     <Container maxWidth="md">
       <Card className={classes.card}>
         <Typography align="center" variant="h1">
-          New Game{" "}
+          New Game
         </Typography>
 
         <Divider />
 
-        <Grid container spacing={2} className={classes.inviteSection}>
-          <Grid item xs={8}>
-            <EmailInvite />
-          </Grid>
-          <Divider orientation="vertical" flexItem />
-          <Grid item xs>
-            <LinkInvite />
-          </Grid>
-        </Grid>
+        {newGameSteps()}
+
         <Grid container direction="row" justify="center" alignItems="center">
           <Button variant="contained" color="primary" onClick={nextStep}>
             Create Game

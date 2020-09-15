@@ -1,5 +1,4 @@
 import React, { useContext, useState, useMemo } from "react";
-import NewGame from "./pages/components/NewGame";
 
 const EmailContext = React.createContext();
 
