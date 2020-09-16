@@ -1,5 +1,9 @@
 import React from "react";
-import { useNewGame } from "../DataContext";
+import StepOne from "../components/new game/step 1/StepOne.js";
+import StepTwo from "../components/new game/step 2/StepTwo.js";
+import StepThree from "../components/new game/step 3/StepThree.js";
+import axios from "axios";
+import { useNewGame, useRoles } from "../DataContext";
 import {
   Button,
   Container,
@@ -8,17 +12,13 @@ import {
   Typography,
   Card,
 } from "@material-ui/core";
-import LinkInvite from "../components/LinkInvite.js";
-import EmailInvite from "../components/EmailInvite.js";
+
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
     card: {
       padding: "2rem",
-    },
-    inviteSection: {
-      margin: "2rem",
     },
   })
 );
@@ -29,7 +29,22 @@ const NewGame = (props) => {
   const newGameContext = useNewGame();
   const [newGame, setNewGame] = newGameContext;
 
+  // const newRoleContext = useRoles();
+  // const [roles] = newRoleContext;
+
   const nextStep = () => {
+    const { step } = newGame;
+    setNewGame((prevState) => ({
+      ...prevState,
+      step: step + 1,
+    }));
+  };
+
+  const startGame = (url, data) => {
+    console.log("startgame");
+    axios.post(url, data).catch((err) => {
+      console.log(err);
+    });
     const { step } = newGame;
     setNewGame((prevState) => ({
       ...prevState,
@@ -39,26 +54,17 @@ const NewGame = (props) => {
 
   const newGameSteps = () => {
     const { step } = newGame;
+    console.log(step);
 
     switch (step) {
       case 1:
-        return (
-          <>
-            <Grid container spacing={2} className={classes.inviteSection}>
-              <Grid item xs={8}>
-                <EmailInvite />
-              </Grid>
-              <Divider orientation="vertical" flexItem />
-              <Grid item xs>
-                <LinkInvite />
-              </Grid>
-            </Grid>
-          </>
-        );
+        return <StepOne />;
       case 2:
-        return <h2>step2</h2>;
+        return <StepTwo />;
+      case 3:
+        return <StepThree />;
       default:
-        return <h2>End of the road</h2>;
+        return <h2>Game Starts?</h2>;
     }
   };
 
@@ -74,9 +80,16 @@ const NewGame = (props) => {
         {newGameSteps()}
 
         <Grid container direction="row" justify="center" alignItems="center">
-          <Button variant="contained" color="primary" onClick={nextStep}>
-            Create Game
-          </Button>
+          {newGame.step < 4 ? (
+            <Button variant="contained" color="primary" onClick={nextStep}>
+              Next
+            </Button>
+          ) : (
+            //Put logic here to start the game?
+            <Button variant="contained" color="primary" onClick={startGame}>
+              Create Game
+            </Button>
+          )}
         </Grid>
       </Card>
     </Container>
