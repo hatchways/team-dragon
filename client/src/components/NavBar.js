@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
@@ -13,6 +14,10 @@ const useStyles = makeStyles(theme => ({
   brand: {
     textTransform: "uppercase",
     letterSpacing: "0.6rem",
+    "& a": {
+      textDecoration: "none",
+      color: "black",
+    }
   }
 }));
 
@@ -21,7 +26,9 @@ function NavBar(props) {
 
   return (
     <header className={classes.root}> 
-      <h1 className={classes.brand}>Cluewords</h1>
+      <h1 className={classes.brand}>
+        <Link to="/">Cluewords</Link>
+      </h1>
     </header>
   );
 }
