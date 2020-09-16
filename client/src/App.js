@@ -16,12 +16,12 @@ function App() {
       <MuiThemeProvider theme={theme}>
         <BrowserRouter>
           <NavBar />
-            <Switch>
-              <Route exact path="/register" component={Register} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/new" component={NewGame} />
-              <Route path="/" component={Landing} />
-            </Switch>
+          <Switch>
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/new" component={NewGame} />
+            <Route path="/" component={Landing} />
+          </Switch>
         </BrowserRouter>
       </MuiThemeProvider>
     </DataProvider>
