@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { MuiThemeProvider } from "@material-ui/core";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { DataProvider } from "./DataContext";
 import { theme } from "./themes/theme";
+import socketIO from "socket.io-client";
 
 import NavBar from "./components/NavBar";
 import Landing from "./pages/Landing";
@@ -11,6 +12,13 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 
 function App() {
+  useEffect(() => {
+    const socket = socketIO("http://localhost:3001");
+    socket.on("connect", () => {
+      console.log('connected');
+    })
+  }, [])
+
   return (
     <DataProvider>
       <MuiThemeProvider theme={theme}>
