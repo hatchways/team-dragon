@@ -7,9 +7,7 @@ import {
   FormLabel,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-
- import {red, blue, grey} from '@material-ui/core/colors';
-
+import { red, blue, grey } from "@material-ui/core/colors";
 
 
 // import { makeStyles, createStyles } from "@material-ui/core/styles";
@@ -17,9 +15,9 @@ import { withStyles } from "@material-ui/core/styles";
 // const useStyles = makeStyles((theme) =>
 //   createStyles({
 //     color: {
-//       noTeam: theme.grey.medium,
-//       blueTeam: theme.blue.medium,
-//       redTeam: theme.medium,
+//       noTeamColor: theme.grey.medium,
+//       blueTeamColor: theme.blue.medium,
+//       redTeamColor: theme.red.medium,
 //     },
 //   })
 // );
@@ -27,7 +25,6 @@ import { withStyles } from "@material-ui/core/styles";
 const noTeamColor = grey[500];
 const blueTeamColor = blue[500];
 const redTeamColor = red[500];
-
 
 const NoTeamRadio = withStyles({
   root: {
@@ -60,24 +57,43 @@ const RedRadio = withStyles({
 })((props) => <Radio color="default" {...props} />);
 
 const PlayerSelect = (props) => {
-  const [value, setValue] = React.useState("No Team");
 
   const handleChange = (event) => {
-    setValue(event.target.value);
+
+    //Following conditional statements remove player a spymaster who is moved to no team
+    if (event.target.value === "noTeam" && props.player.id === props.spyMaster.teamBlue) {
+      props.setSpyMaster((prevState) => ({
+        ...prevState,
+        teamBlue: "",
+      }));
+    }
+    if (event.target.value === "noTeam" && props.player.id === props.spyMaster.teamRed) {
+      props.setSpyMaster((prevState) => ({
+        ...prevState,
+        teamRed: "",
+      }));
+    }
+
+    const {id, name} = props.player
+    let changeTeam = props.players
+    changeTeam[props.ele] = {id, name, team: event.target.value}
+    props.setPlayers([...changeTeam]);
   };
+
+
 
   return (
     <>
       <FormControl component="fieldset">
-        <FormLabel component="legend">{props.player}</FormLabel>
+        <FormLabel component="legend">{props.player.name}</FormLabel>
         <RadioGroup
           aria-label="team"
           name="team1"
-          value={value}
+          value={props.player.team}
           onChange={handleChange}
         >
           <FormControlLabel
-            value="No Team"
+            value="noTeam"
             control={<NoTeamRadio />}
             label="No Team"
           />

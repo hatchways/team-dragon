@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 import {
@@ -8,11 +8,7 @@ import {
   FormControl,
   Select,
 } from "@material-ui/core";
-import {red, blue, grey} from '@material-ui/core/colors';
 
-const noTeamColor = grey[500];
-const blueTeamColor = blue[500];
-const redTeamColor = red[500];
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
@@ -23,16 +19,39 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const RoleSelect = () => {
+const RoleSelect = (props) => {
   const classes = useStyles();
-  const [role, setRole] = React.useState("");
 
   const handleChange = (event) => {
-    setRole(event.target.value);
+    console.log(event.target.value);
+    if (props.color === "red") {
+      props.setSpyMaster((prevState) => ({
+        ...prevState,
+        teamRed: event.target.value,
+      }));
+    }
+
+    if (props.color === "blue") {
+      props.setSpyMaster((prevState) => ({
+        ...prevState,
+        teamBlue: event.target.value,
+      }));
+    }
   };
+
+  const displayTeam = useCallback(() => {
+    if (props.team.length < 1)  return <MenuItem value="empty">Empty</MenuItem>;
+    return props.team.map((ele, i) => {
+      return (
+        <MenuItem key={i} value={ele.id}>
+          {ele.name}
+        </MenuItem>
+      );
+    });
+  }, [props.team]);
+
   return (
     <>
-      {" "}
       <div>
         <FormControl className={classes.formControl}>
           <InputLabel shrink id="demo-simple-select-placeholder-label-label">
@@ -41,7 +60,11 @@ const RoleSelect = () => {
           <Select
             labelId="demo-simple-select-placeholder-label-label"
             id="demo-simple-select-placeholder-label"
-            value={role}
+            value={
+              props.color === "red"
+                ? props.spyMaster.teamRed
+                : props.spyMaster.teamBlue
+            }
             onChange={handleChange}
             displayEmpty
             className={classes.selectEmpty}
@@ -49,32 +72,13 @@ const RoleSelect = () => {
             <MenuItem value="">
               <em>Select</em>
             </MenuItem>
-            <MenuItem value={10}>player 2</MenuItem>
-            <MenuItem value={20}>player 3</MenuItem>
+            {displayTeam()}
           </Select>
-          <FormHelperText>Team Blue</FormHelperText>
-        </FormControl>
-      </div>
-      <div>
-        <FormControl className={classes.formControl}>
-          <InputLabel shrink id="demo-simple-select-placeholder-label-label">
-            SpyMaster
-          </InputLabel>
-          <Select
-            labelId="demo-simple-select-placeholder-label-label"
-            id="demo-simple-select-placeholder-label"
-            value={role}
-            onChange={handleChange}
-            displayEmpty
-            className={classes.selectEmpty}
-          >
-            <MenuItem value="">
-              <em>Select</em>
-            </MenuItem>
-            <MenuItem value={30}>player 4</MenuItem>
-            <MenuItem value={40}>player 5</MenuItem>
-          </Select>
-          <FormHelperText>Team Red</FormHelperText>
+          {props.color === "red" ? (
+            <FormHelperText>Team Red</FormHelperText>
+          ) : (
+            <FormHelperText>Team Blue</FormHelperText>
+          )}
         </FormControl>
       </div>
     </>
