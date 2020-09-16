@@ -49,6 +49,7 @@ export function DataProvider({ children }) {
     "player2",
     "player3",
     "player4",
+    "player5",
     "player6",
   ]);
   const providerPlayers = useMemo(() => [players, setPlayers], [
