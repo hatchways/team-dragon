@@ -1,30 +1,24 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { MuiThemeProvider } from "@material-ui/core";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { DataProvider } from "./DataContext";
 import { theme } from "./themes/theme";
-import socketIO from "socket.io-client";
 
 import NavBar from "./components/NavBar";
 import Landing from "./pages/Landing";
 import NewGame from "./pages/NewGame";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import Chat from './pages/Chat'; // testing socket.io
 
 function App() {
-  useEffect(() => {
-    const socket = socketIO("http://localhost:3001");
-    socket.on("connect", () => {
-      console.log('connected');
-    })
-  }, [])
-
   return (
     <DataProvider>
       <MuiThemeProvider theme={theme}>
         <BrowserRouter>
           <NavBar />
-          <Switch>
+          <Switch>     
+            <Route exact path="/chat" component={Chat} /> {/* testing socket.io */}
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/new" component={NewGame} />
