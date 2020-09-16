@@ -54,8 +54,6 @@ const NewGame = (props) => {
 
   const newGameSteps = () => {
     const { step } = newGame;
-    console.log(step);
-
     switch (step) {
       case 1:
         return <StepOne />;
@@ -80,7 +78,7 @@ const NewGame = (props) => {
         {newGameSteps()}
 
         <Grid container direction="row" justify="center" alignItems="center">
-          {newGame.step < 4 ? (
+          {newGame.step < 3 ? (
             <Button variant="contained" color="primary" onClick={nextStep}>
               Next
             </Button>
