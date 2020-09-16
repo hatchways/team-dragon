@@ -14,13 +14,8 @@
     "dotenv": "^8.2.0",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
-<<<<<<< HEAD
     "lodash": "^4.17.20",
-    "mongoose": "^5.10.5",
-    "morgan": "~1.9.1",
-    "nodemon": "^1.19.1",
-    "random-words": "^1.1.1"
-=======
+    "random-words": "^1.1.1",
     "is-empty": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.5",
@@ -29,7 +24,6 @@
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "validator": "^13.1.1"
->>>>>>> e780705eb1a5b58dcca1b51a178dfaeafefb615e
   },
   "devDependencies": {
     "chai": "^4.2.0",

@@ -28,8 +28,8 @@ passport.use(passportStrategy);
 
 app.use("/", indexRouter);
 app.use("/ping", pingRouter);
-app.use(gameRouter);
 app.use("/users", authRouter);
+app.use(gameRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
