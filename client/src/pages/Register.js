@@ -84,6 +84,7 @@ function Register(props) {
 
           <TextField 
             className={classes.textField}
+            required
             fullWidth
             variant="outlined"
             InputLabelProps={{ shrink: true }}
@@ -100,6 +101,7 @@ function Register(props) {
 
           <TextField 
             className={classes.textField}
+            required
             fullWidth
             variant="outlined"
             InputLabelProps={{ shrink: true }}
@@ -116,6 +118,7 @@ function Register(props) {
 
           <TextField 
             className={classes.textField}
+            required
             fullWidth
             variant="outlined"
             InputLabelProps={{ shrink: true }}

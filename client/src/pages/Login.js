@@ -69,7 +69,6 @@ function Login(props) {
     }
   }
 
-
   return (
     <Container className={classes.root} maxWidth="sm">
       <CssBaseline />
@@ -81,6 +80,7 @@ function Login(props) {
 
           <TextField 
             className={classes.textField}
+            required
             fullWidth
             variant="outlined"
             InputLabelProps={{ shrink: true }}
@@ -97,6 +97,7 @@ function Login(props) {
 
           <TextField 
             className={classes.textField}
+            required
             fullWidth
             variant="outlined"
             InputLabelProps={{ shrink: true }}
