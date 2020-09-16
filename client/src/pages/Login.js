@@ -51,18 +51,19 @@ function Login(props) {
       });
 
       axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
-      window.localStorage.setItem('id', data.user._id);
+      window.localStorage.setItem('id', data.user.id);
+      window.localStorage.setItem('email', data.user.email);
       window.localStorage.setItem('name', data.user.name);
       window.localStorage.setItem('token', data.token);
 
       props.history.push('/new');
     } catch(err) {
-      const data = err.response.data;
-      if(data.errors) {
-        setErrors(data.errors);
+      if(err.response) {
+        const errObj = err.response.data;
+        setErrors(errObj.errors);
       } else {
-        // TODO manage generic errors
-        setErrors(data.error)
+        // TODO: handle generic errors
+        console.log(err.message);
       }
 
       setLoading(false);

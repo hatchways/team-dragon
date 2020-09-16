@@ -37,7 +37,7 @@ module.exports = {
       const token = jwt.sign(payload, config.secret);
 
       return res.status(201).json({
-        user: newUser,
+        user: payload,
         token: token,
       });
     } catch(e) {
@@ -51,7 +51,7 @@ module.exports = {
       if(!isValid) {
         return res.status(400).json({
           success: false,
-          errors
+          errors,
         });
       }
   
@@ -72,8 +72,8 @@ module.exports = {
         };
         const token = jwt.sign(payload, config.secret);
         return res.status(200).json({
-          user,
-          token,
+          user: payload,
+          token: token,
         });
       }
 
