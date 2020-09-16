@@ -1,4 +1,3 @@
-const { should } = require("chai");
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 const app = require("../app.js");
@@ -163,7 +162,7 @@ describe("Auth Routes", () => {
           expect(err).to.be.null;
           expect(res).to.have.status(400);
           expect(res.body).to.have.property("success", false);
-          expect(res.body).to.have.property("message");
+          expect(res.body).to.have.property("errors");
           done();
         });
     });
@@ -198,7 +197,7 @@ describe("Auth Routes", () => {
           expect(err).to.be.null;
           expect(res).to.have.status(400);
           expect(res.body).to.have.property("success", false);
-          expect(res.body).to.have.property("message");
+          expect(res.body).to.have.property("errors");
           done();
         })
     });
@@ -244,7 +243,7 @@ describe("Auth Routes", () => {
           expect(err).to.be.null;
           expect(res).to.have.status(404);
           expect(res.body).to.have.property("success", false);
-          expect(res.body).to.have.property("message");
+          expect(res.body).to.have.property("errors");
           done();
         })
     });

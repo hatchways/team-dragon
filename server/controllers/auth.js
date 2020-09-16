@@ -19,7 +19,7 @@ module.exports = {
       if(user) {
         return res.status(400).json({
           success: false,
-          message: 'Email already exists'
+          errors: { email: 'Email already exists' },
         });
       }
 
@@ -37,7 +37,7 @@ module.exports = {
       const token = jwt.sign(payload, config.secret);
 
       return res.status(201).json({
-        user: newUser,
+        user: payload,
         token: token,
       });
     } catch(e) {
@@ -51,7 +51,7 @@ module.exports = {
       if(!isValid) {
         return res.status(400).json({
           success: false,
-          errors
+          errors,
         });
       }
   
@@ -59,7 +59,7 @@ module.exports = {
       if(!user) {
         return res.status(404).json({
           success: false,
-          message: 'Email does not exist',
+          errors: { email: 'Email does not exist' },
         });
       }
 
@@ -72,14 +72,14 @@ module.exports = {
         };
         const token = jwt.sign(payload, config.secret);
         return res.status(200).json({
-          user,
-          token,
+          user: payload,
+          token: token,
         });
       }
 
       return res.status(400).json({
         success: false,
-        message: 'Invalid email and/or password'
+        errors: { password: 'Incorrect password'}
       });
     } catch(e) {
       return next(e);
