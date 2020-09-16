@@ -124,6 +124,7 @@ class Game {
     }
   }
 
+  // Decision whether blue or red wins
   matchDecision() {
     if (this.redTeam.points + this.blueTeam.points === 16) {
       if (this.redTeam.points > this.blueTeam.points) {
