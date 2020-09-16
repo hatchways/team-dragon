@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { makeStyles } from "@material-ui/core/styles";
-import { Button, Card, Container, CssBaseline, TextField, Typography } from '@material-ui/core';
+import { Button, Card, Container, TextField, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -76,7 +76,6 @@ function Register(props) {
 
   return (
     <Container className={classes.root} maxWidth="sm">
-      <CssBaseline />
       <Card className={classes.card}>
         <form className={classes.form} onSubmit={handleSubmit}>
           <Typography variant="h3">

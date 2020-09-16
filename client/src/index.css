@@ -1,6 +1,8 @@
+html,
 body {
   margin: 0;
   padding: 0;
+  background: #ebebeb;
   font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
