@@ -2,7 +2,6 @@ import React from "react";
 import StepOne from "../components/new game/step 1/StepOne.js";
 import StepTwo from "../components/new game/step 2/StepTwo.js";
 import StepThree from "../components/new game/step 3/StepThree.js";
-import axios from "axios";
 import { useNewGame, useRoles } from "../DataContext";
 import {
   Button,
@@ -42,9 +41,6 @@ const NewGame = (props) => {
 
   const startGame = (url, data) => {
     console.log("startgame");
-    axios.post(url, data).catch((err) => {
-      console.log(err);
-    });
     const { step } = newGame;
     setNewGame((prevState) => ({
       ...prevState,
@@ -83,7 +79,7 @@ const NewGame = (props) => {
               Next
             </Button>
           ) : (
-            //Put logic here to start the game?
+            //Needs Logic here to initiate final role allocation.
             <Button variant="contained" color="primary" onClick={startGame}>
               Create Game
             </Button>

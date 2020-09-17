@@ -45,13 +45,15 @@ export function DataProvider({ children }) {
 
   //Holds Players who have accepted game invite
   const [players, setPlayers] = useState([
-    "host",
-    "player2",
-    "player3",
-    "player4",
-    "player5",
-    "player6",
+    { id: "1", name: "host", team: "noTeam", spyMaster: false },
+    { id: "2", name: "player2", team: "noTeam", spyMaster: false },
+    { id: "3", name: "player3", team: "noTeam", spyMaster: false },
+    { id: "4", name: "player4", team: "noTeam", spyMaster: false },
+    { id: "5", name: "player5", team: "noTeam", spyMaster: false },
+    { id: "6", name: "player6", team: "noTeam", spyMaster: false },
   ]);
+
+
   const providerPlayers = useMemo(() => [players, setPlayers], [
     players,
     setPlayers,
@@ -62,12 +64,12 @@ export function DataProvider({ children }) {
   const [roles, setRoles] = useState({
     matchId: "gameId here",
     teamBlue: {
-      spyMaster: "id_spyMasterBlue",
-      agents: ["id_1AgentBlue", "id_2AgentBlue"],
+      spyMaster: "",
+      agents: [],
     },
     teamRed: {
-      spyMaster: "id_spyMasterRed",
-      agents: ["id_1AgentRed", "id_2AgentRed"],
+      spyMaster: "",
+      agents: [],
     },
   });
   const providerRoles = useMemo(() => [roles, setRoles], [roles, setRoles]);
