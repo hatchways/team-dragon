@@ -19,13 +19,6 @@ const StepOne = () => {
   const newGameContext = useNewGame();
   const [newGame, setNewGame] = newGameContext;
 
-  useEffect(() => {
-    //Needs a get request for match id from backend
-    setNewGame((prevState) => ({
-      ...prevState,
-      gameId: "gameId here",
-    }));
-  }, []);
 
   return (
     <>

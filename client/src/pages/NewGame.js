@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import StepOne from "../components/new game/step 1/StepOne.js";
 import StepTwo from "../components/new game/step 2/StepTwo.js";
 import StepThree from "../components/new game/step 3/StepThree.js";
-import {useAxios} from "../hooks/useAxios";
-import { useNewGame, useRoles } from "../DataContext";
+import Loading from "../components/new game/Loading.js";
+import { useNewGame } from "../DataContext";
 import {
   Button,
   Container,
@@ -12,6 +12,7 @@ import {
   Typography,
   Card,
 } from "@material-ui/core";
+import axios from "axios";
 
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 
@@ -29,12 +30,34 @@ const NewGame = (props) => {
   const newGameContext = useNewGame();
   const [newGame, setNewGame] = newGameContext;
 
-  let testGetRoute = useAxios("/create-match", "get")
+  const localData = localStorage.getItem("newGame");
 
-  console.log(testGetRoute);
+  // Calls API if no locally stored data, with otherwise use local data.
+  useEffect(() => {
+    if (localData) {
+      setNewGame(JSON.parse(localStorage.getItem("newGame")));
+    } else {
+      console.log("axios call");
+      axios
+        .get("/create-match")
+        .then((response) => {
+          console.log(response.data);
+          setNewGame((prevState) => ({
+            ...prevState,
+            matchId: response.data.globalState.match.id,
+          }));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, []);
 
-  // const newRoleContext = useRoles();
-  // const [roles] = newRoleContext;
+  // Stores New Game Info to Local Storage
+  useEffect(() => {
+    console.log("running");
+    localStorage.setItem("newGame", JSON.stringify(newGame));
+  }, [newGame]);
 
   const nextStep = () => {
     const { step } = newGame;
@@ -45,7 +68,6 @@ const NewGame = (props) => {
   };
 
   const startGame = (url, data) => {
-    console.log("startgame");
     const { step } = newGame;
     setNewGame((prevState) => ({
       ...prevState,
@@ -56,6 +78,8 @@ const NewGame = (props) => {
   const newGameSteps = () => {
     const { step } = newGame;
     switch (step) {
+      // case 0:
+      //   return <NewGameLoading />;
       case 1:
         return <StepOne />;
       case 2:
@@ -66,6 +90,8 @@ const NewGame = (props) => {
         return <h2>Game Starts?</h2>;
     }
   };
+
+  console.log(newGame);
 
   return (
     <Container maxWidth="md">

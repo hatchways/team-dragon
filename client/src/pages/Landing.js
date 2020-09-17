@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Card, Container, Typography } from "@material-ui/core";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     paddingTop: theme.spacing(4),
   },
@@ -16,8 +16,8 @@ const useStyles = makeStyles(theme => ({
   },
   button: {
     margin: "0 1rem",
-  }
-})); 
+  },
+}));
 
 function Landing() {
   const classes = useStyles();
@@ -30,7 +30,7 @@ function Landing() {
         </Typography>
         <Button
           className={classes.button}
-          component={Link} 
+          component={Link}
           to="/register"
           variant="contained"
           color="primary"
@@ -40,7 +40,7 @@ function Landing() {
         </Button>
         <Button
           className={classes.button}
-          component={Link} 
+          component={Link}
           to="/login"
           variant="contained"
           color="primary"
@@ -48,9 +48,19 @@ function Landing() {
         >
           Sign In
         </Button>
+        <Button
+          className={classes.button}
+          component={Link}
+          to="/new"
+          variant="contained"
+          color="primary"
+          size="large"
+        >
+          Create Game
+        </Button>
       </Card>
     </Container>
-  )
+  );
 }
 
 export default Landing;
