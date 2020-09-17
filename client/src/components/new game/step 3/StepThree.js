@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from "react";
-import { useNewGame, usePlayers, useRoles } from "../../../DataContext";
+import { useNewGame, usePlayers } from "../../../DataContext";
 //import { useAxios } from "../../../hooks/useAxios";
 import PlayerSelect from "./PlayerSelect";
 import RoleSelect from "./RoleSelect";
@@ -11,8 +11,7 @@ const StepThree = () => {
   const newPlayerContext = usePlayers();
   const [players, setPlayers] = newPlayerContext;
 
-  const newRolesContext = useRoles();
-  const [roles, setRoles] = newRolesContext;
+
 
 
   //Holds ID of spyMaster
