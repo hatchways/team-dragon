@@ -21,8 +21,8 @@ const useStyles = makeStyles((theme) => ({
 
 const RoleSelect = (props) => {
   const classes = useStyles();
-  const playerData = localStorage.getItem("players");
-  console.log(playerData);
+  // const playerData = localStorage.getItem("players");
+  // console.log(playerData);
 
   const handleChange = (event) => {
     if (props.color === "red") {

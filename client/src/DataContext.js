@@ -6,6 +6,8 @@ const NewGameContext = React.createContext();
 
 const PlayersContext = React.createContext();
 
+const SpyMasterContext = React.createContext();
+
 // Custom hook for Emails to be invited to game
 export function useEmails() {
   return useContext(EmailContext);
@@ -21,6 +23,11 @@ export function usePlayers() {
   return useContext(PlayersContext);
 }
 
+// Custom hook for holding SpyMaster
+export function useSpyMaster() {
+  return useContext(SpyMasterContext);
+}
+
 export function DataProvider({ children }) {
   //Holds emails to be invited to game
   const [emails, setEmails] = useState([]);
@@ -32,7 +39,7 @@ export function DataProvider({ children }) {
   //Holds New Game Steps + Game Data
   const [newGame, setNewGame] = useState({
     step: 1,
-    matchId: "",
+    matchId: "testID",
     teamBlue: {
       spyMaster: "",
       agents: [],
@@ -67,11 +74,21 @@ export function DataProvider({ children }) {
     localStorage.setItem("players", JSON.stringify(players));
   }, [players]);
 
+  //Holds SpyMaster
+  const [spyMaster, setSpyMaster] = useState({ teamBlue: "", teamRed: "" });
+
+  const providerSpyMaster = useMemo(() => [spyMaster, setSpyMaster], [
+    spyMaster,
+    setSpyMaster,
+  ]);
+
   return (
     <NewGameContext.Provider value={providerNewGame}>
       <EmailContext.Provider value={providerEmails}>
         <PlayersContext.Provider value={providerPlayers}>
-          {children}
+          <SpyMasterContext.Provider value={providerSpyMaster}>
+            {children}
+          </SpyMasterContext.Provider>
         </PlayersContext.Provider>
       </EmailContext.Provider>
     </NewGameContext.Provider>
