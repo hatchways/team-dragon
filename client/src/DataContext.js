@@ -63,6 +63,10 @@ export function DataProvider({ children }) {
     setPlayers,
   ]);
 
+  useEffect(() => {
+    localStorage.setItem("players", JSON.stringify(players));
+  }, [players]);
+
   return (
     <NewGameContext.Provider value={providerNewGame}>
       <EmailContext.Provider value={providerEmails}>
