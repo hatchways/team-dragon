@@ -2,11 +2,11 @@ const express = require('express');
 const router = express.Router();
 const gameController = require('../controllers/game.js');
 
-router.get('/create-match', gameController.createMatch);
+router.post('/create-match', gameController.postCreateMatch);
 
-router.get('/match/:id', gameController.getMatch);
+router.get('/create-match', gameController.getCreateMatch);
 
-router.get('/match/join/:id', gameController.joinMatch);
+router.get('/match/:id', gameController.joinMatch);
 
 router.get('/match/move/:playerId',gameController.playerMove);
 

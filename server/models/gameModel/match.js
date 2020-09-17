@@ -1,25 +1,15 @@
 const mongoose = require("mongoose");
-const teamSchema = require('./team');
+
 const Schema = mongoose.Schema;
 
-// Match skeleton
+// Game Skeleton
 const matchSchema = new Schema({
-    redTeam: {
-      type: teamSchema,
-      required: true,
-    },
-    blueTeam: {
-      type: teamSchema,
-      required: true,
-    },
-    board: {
-      type: [
-        {
-          word: { type: String, required: true },
-          type: { type: String, required: true },
-        },
-      ],
-    },
-  });
+  matchId: {
+    type: String,
+    required: true,
+  },
+  hostId: { type: Schema.Types.ObjectId, required: true},
+  
+});
 
-  module.exports = matchSchema;
+module.exports = mongoose.model("Match", matchSchema);
