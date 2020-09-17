@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import StepOne from "../components/new game/step 1/StepOne.js";
 import StepTwo from "../components/new game/step 2/StepTwo.js";
 import StepThree from "../components/new game/step 3/StepThree.js";
-import Loading from "../components/new game/Loading.js";
-import { useNewGame } from "../DataContext";
+// import Loading from "../components/new game/Loading.js";
+import { useNewGame, usePlayers, useSpyMaster } from "../DataContext";
 import {
   Button,
   Container,
@@ -12,7 +12,6 @@ import {
   Typography,
   Card,
 } from "@material-ui/core";
-import axios from "axios";
 
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 
@@ -27,30 +26,38 @@ const useStyles = makeStyles((theme) =>
 const NewGame = (props) => {
   const classes = useStyles();
 
+  //Holds Match ID + Template for Passing Roles to Server
   const newGameContext = useNewGame();
   const [newGame, setNewGame] = newGameContext;
 
-  const gameData = localStorage.getItem("newGame");
+  //Holds All Players + Roles
+  const newPlayersContext = usePlayers();
+  const [players] = newPlayersContext;
+
+  //Holds Selected SpyMaster
+  const newSpyMasterContext = useSpyMaster();
+  const [spymaster] = newSpyMasterContext;
+
+  // const gameData = localStorage.getItem("newGame");
 
   // Calls API if no locally stored data, with otherwise use local data.
-  useEffect(() => {
-    if (gameData) {
-      setNewGame(JSON.parse(localStorage.getItem("newGame")));
-    } else {
-      axios
-        .get("/create-match")
-        .then((response) => {
-          console.log(response.data);
-          setNewGame((prevState) => ({
-            ...prevState,
-            matchId: response.data.globalState.match.id,
-          }));
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (gameData) {
+  //     setNewGame(JSON.parse(localStorage.getItem("newGame")));
+  //   } else {
+  //     axios
+  //       .get("/create-match")
+  //       .then((response) => {
+  //         setNewGame((prevState) => ({
+  //           ...prevState,
+  //           matchId: response.data.globalState.match.id,
+  //         }));
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   }
+  // }, []);
 
   // Stores New Game Info to Local Storage
   useEffect(() => {
@@ -65,12 +72,50 @@ const NewGame = (props) => {
     }));
   };
 
-  const startGame = (url, data) => {
-    const { step } = newGame;
-    setNewGame((prevState) => ({
-      ...prevState,
-      step: step + 1,
-    }));
+  const startGame = async (e) => {
+    //LINK TO ROUTE
+    e.preventDefault();
+
+    const setMatch = (newGame, players, spyMaster) => {
+      let spyMasters = [spyMaster.teamBlue, spyMaster.teamRed];
+
+      let playerAssign = players.map((player) => {
+        if (spyMasters.includes(player.id)) {
+          console.log(player);
+          return {
+            id: player.id,
+            name: player.name,
+            team: player.team,
+            spyMaster: true,
+          };
+        } else {
+          return {
+            id: player.id,
+            name: player.name,
+            team: player.team,
+            spyMaster: false,
+          };
+        }
+      });
+
+      return {
+        matchId: newGame.matchId,
+        players: playerAssign,
+      };
+    };
+
+    let matchDetails = setMatch(newGame, players, spymaster);
+
+    console.log(matchDetails);
+
+    // try {
+    //   const { data } = await axios.post('/create-match', {
+    //       userName: "jorawar"
+    //   });
+    //   console.log(data)
+    // } catch(err) {
+    //     console.log(err);
+    // }
   };
 
   const newGameSteps = () => {
