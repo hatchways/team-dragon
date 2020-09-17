@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import StepOne from "../components/new game/step 1/StepOne.js";
 import StepTwo from "../components/new game/step 2/StepTwo.js";
 import StepThree from "../components/new game/step 3/StepThree.js";
+import Loading from "../components/new game/Loading.js";
 import { useNewGame } from "../DataContext";
 import {
   Button,
@@ -26,17 +27,25 @@ const useStyles = makeStyles((theme) =>
 const NewGame = (props) => {
   const classes = useStyles();
 
-  const [data, setData] = useState({ gameDetails: [], loading: true });
-
   const newGameContext = useNewGame();
   const [newGame, setNewGame] = newGameContext;
 
+  const localData = localStorage.getItem("newGame");
+
+  // Calls API if no locally stored data, with otherwise use local data.
   useEffect(() => {
-    if (!localStorage.getItem("newGame")) {
+    if (localData) {
+      setNewGame(JSON.parse(localStorage.getItem("newGame")));
+    } else {
+      console.log("axios call");
       axios
         .get("/create-match")
         .then((response) => {
-          setData({ gameDetails: response.data, loading: false });
+          console.log(response.data);
+          setNewGame((prevState) => ({
+            ...prevState,
+            matchId: response.data.globalState.match.id,
+          }));
         })
         .catch((err) => {
           console.log(err);
@@ -44,16 +53,11 @@ const NewGame = (props) => {
     }
   }, []);
 
+  // Stores New Game Info to Local Storage
   useEffect(() => {
-    if (!data.gameDetails.globalState) {
-      setNewGame(JSON.parse(localStorage.getItem("newGame")));
-    } else {
-      setNewGame((prevState) => ({
-        ...prevState,
-        matchId: data.gameDetails.globalState.match.id,
-      }));
-    }
-  }, [data, setNewGame]);
+    console.log("running");
+    localStorage.setItem("newGame", JSON.stringify(newGame));
+  }, [newGame]);
 
   const nextStep = () => {
     const { step } = newGame;
@@ -64,7 +68,6 @@ const NewGame = (props) => {
   };
 
   const startGame = (url, data) => {
-    console.log("startgame");
     const { step } = newGame;
     setNewGame((prevState) => ({
       ...prevState,
@@ -75,6 +78,8 @@ const NewGame = (props) => {
   const newGameSteps = () => {
     const { step } = newGame;
     switch (step) {
+      // case 0:
+      //   return <NewGameLoading />;
       case 1:
         return <StepOne />;
       case 2:
@@ -85,6 +90,8 @@ const NewGame = (props) => {
         return <h2>Game Starts?</h2>;
     }
   };
+
+  console.log(newGame);
 
   return (
     <Container maxWidth="md">

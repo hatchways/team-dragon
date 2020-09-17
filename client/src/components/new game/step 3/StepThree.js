@@ -30,8 +30,6 @@ const StepThree = () => {
     });
   }, [players, setPlayers, spyMaster]);
 
-  console.log("spymaster", spyMaster);
-
   const displayBlueRoles = useCallback(() => {
     const bluePlayers = players.filter((player) => player.team === "teamBlue");
     return (

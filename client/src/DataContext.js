@@ -43,12 +43,6 @@ export function DataProvider({ children }) {
     },
   });
 
-  // useeffect with empty array on new gamae component
-
-  useEffect(() => {
-    localStorage.setItem("newGame", JSON.stringify(newGame));
-  }, [newGame]);
-
   const providerNewGame = useMemo(() => [newGame, setNewGame], [
     newGame,
     setNewGame,
