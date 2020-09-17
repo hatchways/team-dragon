@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const teamSchema = require('./team');
 const Schema = mongoose.Schema;
 
 // Match skeleton
@@ -7,6 +6,7 @@ const matchSchema = new Schema({
     redTeam: {
       type: teamSchema,
       required: true,
+
     },
     blueTeam: {
       type: teamSchema,

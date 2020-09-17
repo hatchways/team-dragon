@@ -8,7 +8,8 @@ const matchSchema = new Schema({
     type: String,
     required: true,
   },
-  hostId: { type: Schema.Types.ObjectId, required: true}
+  hostId: { type: Schema.Types.ObjectId, required: true},
+  
 });
 
 module.exports = mongoose.model("Match", matchSchema);
