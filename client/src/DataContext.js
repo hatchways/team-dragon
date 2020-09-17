@@ -21,7 +21,6 @@ export function usePlayers() {
   return useContext(PlayersContext);
 }
 
-
 export function DataProvider({ children }) {
   //Holds emails to be invited to game
   const [emails, setEmails] = useState([]);
@@ -47,8 +46,8 @@ export function DataProvider({ children }) {
   // useeffect with empty array on new gamae component
 
   useEffect(() => {
-    localStorage.setItem('newGame', JSON.stringify(newGame))
-  }, [newGame])
+    localStorage.setItem("newGame", JSON.stringify(newGame));
+  }, [newGame]);
 
   const providerNewGame = useMemo(() => [newGame, setNewGame], [
     newGame,
@@ -70,13 +69,11 @@ export function DataProvider({ children }) {
     setPlayers,
   ]);
 
-
-
   return (
     <NewGameContext.Provider value={providerNewGame}>
       <EmailContext.Provider value={providerEmails}>
         <PlayersContext.Provider value={providerPlayers}>
-            {children}
+          {children}
         </PlayersContext.Provider>
       </EmailContext.Provider>
     </NewGameContext.Provider>

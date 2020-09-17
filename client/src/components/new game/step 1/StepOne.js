@@ -19,8 +19,6 @@ const StepOne = () => {
   const newGameContext = useNewGame();
   const [newGame, setNewGame] = newGameContext;
 
-
-
   return (
     <>
       <Grid container spacing={2} className={classes.inviteSection}>

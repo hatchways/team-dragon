@@ -17,9 +17,9 @@ export const useAxios = (url, method, data) => {
     }
 
     if (method === "post") {
-        axios.post(url, data).catch((err) => {
-          console.log(err);
-        });
+      axios.post(url, data).catch((err) => {
+        console.log(err);
+      });
     }
   }, [url, method, data]);
 

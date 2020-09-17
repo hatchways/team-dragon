@@ -55,8 +55,6 @@ const NewGame = (props) => {
     }
   }, [data, setNewGame]);
 
-  console.log("new game", newGame);
-
   const nextStep = () => {
     const { step } = newGame;
     setNewGame((prevState) => ({
