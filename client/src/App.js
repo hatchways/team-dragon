@@ -9,6 +9,7 @@ import Landing from "./pages/Landing";
 import NewGame from "./pages/NewGame";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import Chat from './pages/Chat'; // testing socket.io
 
 function App() {
   return (
@@ -16,7 +17,8 @@ function App() {
       <MuiThemeProvider theme={theme}>
         <BrowserRouter>
           <NavBar />
-          <Switch>
+          <Switch>     
+            <Route exact path="/chat" component={Chat} /> {/* testing socket.io */}
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/new" component={NewGame} />

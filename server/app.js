@@ -9,25 +9,34 @@ const passportStrategy = require("./config/passport");
 const config = require("./config");
 
 const indexRouter = require("./routes/index");
-const pingRouter = require("./routes/ping");
 const gameRouter = require("./routes/game");
 const authRouter = require("./routes/auth");
 
-const { json, urlencoded } = express;
-
+// app configuration
 var app = express();
 
-app.use(logger("dev"));
-app.use(json());
-app.use(urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(express.static(join(__dirname, "public")));
+app.use(cookieParser());
+app.use(logger("dev"));
 app.use(passport.initialize());
 passport.use(passportStrategy);
 
+// database connection using Mongoose
+mongoose
+  .connect(config.db, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  })
+  .then(() => {
+    console.log("Connected to database");
+  })
+  .catch((err) => console.log(err));
 
+// setup routes
 app.use("/", indexRouter);
-app.use("/ping", pingRouter);
 app.use("/users", authRouter);
 app.use(gameRouter);
 
@@ -46,17 +55,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.json({ error: err });
 });
-
-// Database connection using Mongoose
-mongoose
-  .connect(config.db, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-  })
-  .then(() => {
-    console.log("Connected to database");
-  })
-  .catch((err) => console.log(err));
 
 module.exports = app;
