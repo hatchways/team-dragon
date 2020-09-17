@@ -17,23 +17,16 @@ const useStyles = makeStyles(theme => ({
   root: {
     paddingTop: theme.spacing(4),
   },
-  
   card: {
     padding: "2rem",
   },
-
   messageForm: {
-    marginBottom: "1rem",
+    margin: "1rem 0",
+    display: "flex",
   },
-
-  messageList: {
-
+  textField: {
+    flexGrow: 1,
   },
-
-  me: {
-    border: "1px solid red",
-  }
-
 }));
 
 function Chat() {
@@ -63,18 +56,25 @@ function Chat() {
   const onSubmit = (event) => {
     event.preventDefault();
 
-    socket.emit("message", {
+    const data = {
       sender: name,
       message: messageInput,
-    });
+    }
+    socket.emit("message", data);
+
+    setMessages([ data, ...messages ]);
     setMessageInput('');
   }
 
   return (
     <Container className={classes.root} maxWidth="sm">
       <Card className={classes.card}>
+        <Typography>
+          Your name: {name}
+        </Typography>
         <form className={classes.messageForm} onSubmit={onSubmit}>
           <TextField
+            className={classes.textField}
             variant="outlined"
             type="text"
             placeholder="Write a message..."
@@ -90,12 +90,9 @@ function Chat() {
           </Button>
         </form>
         <Divider />
-        <List className={classes.messageList}>
+        <List>
           {messages.map( m => (
-            <ListItem 
-              className={m.sender == name ? classes.me : ""} 
-              key={m.sender}
-            >
+            <ListItem key={m.id}>
               <ListItemText
                 primary={m.sender}
                 secondary={m.message}

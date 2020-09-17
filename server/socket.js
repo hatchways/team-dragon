@@ -1,6 +1,7 @@
 module.exports = (server) => {
   const io = require("socket.io")(server);
 
+  let message_id = 0;
   const chatDetails = {
     history: [],
     users: [],
@@ -8,8 +9,6 @@ module.exports = (server) => {
   }
 
   io.on("connection", socket => {
-    console.log('a user connected');
-
     socket.on("join", fn => {
       // assign user a name and store user details
       const assignedName = "guest-" + socket.id.substr(0, 5);
@@ -25,12 +24,19 @@ module.exports = (server) => {
 
     socket.on("message", data => {
       // save message into history and update all clients
-      chatDetails.history.unshift(data);
-      io.emit('message', chatDetails.history);
+      chatDetails.history.unshift({ 
+        id: message_id++,
+        sender: data.sender,
+        message:  data.message,
+      });
+      socket.broadcast.emit('message', chatDetails.history);
     });
 
     socket.on('disconnect', () => {
-      console.log('a user disconnected');
+      // update users currently in the chat
+      chatDetails.users = chatDetails.users.filter( 
+        user => user.id !== socket.id
+      );
     })
   })
 }
