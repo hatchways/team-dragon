@@ -10,8 +10,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 
-const io = require('socket.io-client');
-const socket = io("http://localhost:3001"); // connects to socket setup on proxy
+import io from 'socket.io-client';
+const socket = io();
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -29,40 +29,43 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function Chat() {
+function Chat(props) {
   const classes = useStyles();
 
   const [name, setName] = useState([]);
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState('');
 
+  const room = "room-" + props.match.params.room_id;
+
   useEffect(() => {
     socket.on("connect", () => {
-      socket.emit("join", res => {
-        const { name, history } = res;
+      socket.emit("join", room, ({ name, history }) => {
         setName(name);
         setMessages(history); 
       });
     });
 
-    socket.on("message", data => {
-      setMessages(data);
+    socket.on("message", history => {
+      setMessages(history);
+    });
+
+    socket.on("disconnect", () => {
+      socket.emit("leave", room);
     });
 
     // close the socket when page is left
     return () => socket.disconnect();
-  }, []);
+  }, [room]);
 
   const onSubmit = (event) => {
     event.preventDefault();
 
-    const data = {
+    socket.emit("message", room, {
       sender: name,
       message: messageInput,
-    }
-    socket.emit("message", data);
+    });
 
-    setMessages([ data, ...messages ]);
     setMessageInput('');
   }
 

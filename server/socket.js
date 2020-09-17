@@ -2,41 +2,52 @@ module.exports = (server) => {
   const io = require("socket.io")(server);
 
   let message_id = 0;
-  const chatDetails = {
-    history: [],
-    users: [],
-    typing: [],
-  }
+  const roomDetails = {};
 
-  io.on("connection", socket => {
-    socket.on("join", fn => {
+io.on("connection", socket => {
+    socket.on("join", (room, fn) => {
+      // join a room
+      socket.join(room);
+      if(roomDetails[room] == undefined) {
+        // create room details if does not exist
+        roomDetails[room] = {
+          history: [],
+          users: [],
+        }
+      }
+
       // assign user a name and store user details
       const assignedName = "guest-" + socket.id.substr(0, 5);
       const user = { id: socket.id, name: assignedName };
-      chatDetails.users.push(user);
+      roomDetails[room].users.push(user);
 
       // return assigned name and chat history
       fn({ 
         name: assignedName,
-        history: chatDetails.history,  
+        history: roomDetails[room].history,
       });
     });
 
-    socket.on("message", data => {
+    socket.on("message", (room, { sender, message }) => {
       // save message into history and update all clients
-      chatDetails.history.unshift({ 
+      roomDetails[room].history.unshift({ 
         id: message_id++,
-        sender: data.sender,
-        message:  data.message,
+        sender,
+        message,
       });
-      socket.broadcast.emit('message', chatDetails.history);
+
+      io.to(room).emit('message', roomDetails[room].history);
     });
 
-    socket.on('disconnect', () => {
+    socket.on("leave", (room) => {
       // update users currently in the chat
-      chatDetails.users = chatDetails.users.filter( 
+      roomDetails[room].users = roomDetails[room].users.filter( 
         user => user.id !== socket.id
       );
+    })
+
+    socket.on('disconnect', () => {
+      console.log('user disconnected');
     })
   })
 }
