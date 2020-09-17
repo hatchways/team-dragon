@@ -37,7 +37,6 @@ const NewGame = (props) => {
     if (localData) {
       setNewGame(JSON.parse(localStorage.getItem("newGame")));
     } else {
-      console.log("axios call");
       axios
         .get("/create-match")
         .then((response) => {
@@ -55,7 +54,6 @@ const NewGame = (props) => {
 
   // Stores New Game Info to Local Storage
   useEffect(() => {
-    console.log("running");
     localStorage.setItem("newGame", JSON.stringify(newGame));
   }, [newGame]);
 
@@ -90,8 +88,6 @@ const NewGame = (props) => {
         return <h2>Game Starts?</h2>;
     }
   };
-
-  console.log(newGame);
 
   return (
     <Container maxWidth="md">
