@@ -11,6 +11,7 @@ class Game {
     this.board = getData();
     this.turn = "blue";
     this.cardsFlipped = 0;
+    this.players = [];
     console.log("Match ID:", this.id);
   }
 
@@ -138,6 +139,10 @@ class Game {
     else{
       console.log("Next Move Please!");
     }
+  }
+
+  joinMatch(user){
+    this.players.push(user);
   }
 }
 

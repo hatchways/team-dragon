@@ -1,25 +1,25 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-const validateRegister = require('../validations/register');
-const validateLogin = require('../validations/login');
-const config = require('../config');
+const jwt = require("jsonwebtoken");
+const User = require("../models/User");
+const validateRegister = require("../validations/register");
+const validateLogin = require("../validations/login");
+const config = require("../config");
 
 module.exports = {
   async register(req, res, next) {
     try {
       const { errors, isValid } = validateRegister(req.body);
-      if(!isValid) {
+      if (!isValid) {
         return res.status(400).json({
           success: false,
-          errors
+          errors,
         });
       }
 
       const user = await User.findOne({ email: req.body.email });
-      if(user) {
+      if (user) {
         return res.status(400).json({
           success: false,
-          errors: { email: 'Email already exists' },
+          errors: { email: "Email already exists" },
         });
       }
 
@@ -40,7 +40,7 @@ module.exports = {
         user: payload,
         token: token,
       });
-    } catch(e) {
+    } catch (e) {
       return next(e);
     }
   },
@@ -48,29 +48,37 @@ module.exports = {
   async login(req, res, next) {
     try {
       const { errors, isValid } = validateLogin(req.body);
-      if(!isValid) {
+      if (!isValid) {
         return res.status(400).json({
           success: false,
           errors,
         });
       }
-  
+
       const user = await User.findOne({ email: req.body.email });
-      if(!user) {
+      if (!user) {
         return res.status(404).json({
           success: false,
-          errors: { email: 'Email does not exist' },
+          errors: { email: "Email does not exist" },
         });
       }
 
       const isMatch = await user.comparePassword(req.body.password);
-      if(isMatch) {
+      if (isMatch) {
         const payload = {
           id: user.id,
           email: user.email,
           name: user.name,
         };
         const token = jwt.sign(payload, config.secret);
+
+        // Creating user session
+        if (req.session) {
+          req.session.isLoggedIn = true;
+          req.session.user = user;
+          const result = await req.session.save();
+        }
+
         return res.status(200).json({
           user: payload,
           token: token,
@@ -79,10 +87,10 @@ module.exports = {
 
       return res.status(400).json({
         success: false,
-        errors: { password: 'Incorrect password'}
+        errors: { password: "Incorrect password" },
       });
-    } catch(e) {
+    } catch (e) {
       return next(e);
     }
   },
-}
+};
