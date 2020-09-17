@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import StepOne from "../components/new game/step 1/StepOne.js";
 import StepTwo from "../components/new game/step 2/StepTwo.js";
 import StepThree from "../components/new game/step 3/StepThree.js";
+import { Link } from "react-router-dom";
+
 // import Loading from "../components/new game/Loading.js";
 import { useNewGame, usePlayers, useSpyMaster } from "../DataContext";
 import {
@@ -73,8 +75,7 @@ const NewGame = (props) => {
   };
 
   const startGame = async (e) => {
-    //LINK TO ROUTE
-    e.preventDefault();
+
 
     const setMatch = (newGame, players, spyMaster) => {
       let spyMasters = [spyMaster.teamBlue, spyMaster.teamRed];
@@ -152,7 +153,13 @@ const NewGame = (props) => {
             </Button>
           ) : (
             //Needs Logic here to initiate final role allocation.
-            <Button variant="contained" color="primary" onClick={startGame}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={startGame}
+              component={Link}
+              to="/LINK-FROM-JORAWAR"
+            >
               Create Game
             </Button>
           )}
