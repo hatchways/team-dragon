@@ -10,7 +10,7 @@ const StepTwo = () => {
   const [newGame] = newGameContext;
 
   //Makes a post request to invite users, includes game ID created in step 1
- useAxios("url here", "post", { emails: emails, gameId: newGame.gameId });
+  //useAxios("url here", "post", { emails: emails, gameId: newGame.gameId });
 
   return (
     <>

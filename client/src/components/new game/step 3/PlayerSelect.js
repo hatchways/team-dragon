@@ -9,7 +9,6 @@ import {
 import { withStyles } from "@material-ui/core/styles";
 import { red, blue, grey } from "@material-ui/core/colors";
 
-
 // import { makeStyles, createStyles } from "@material-ui/core/styles";
 
 // const useStyles = makeStyles((theme) =>
@@ -57,30 +56,32 @@ const RedRadio = withStyles({
 })((props) => <Radio color="default" {...props} />);
 
 const PlayerSelect = (props) => {
-
   const handleChange = (event) => {
-
     //Following conditional statements remove player a spymaster who is moved to no team
-    if (event.target.value === "noTeam" && props.player.id === props.spyMaster.teamBlue) {
+    if (
+      event.target.value === "noTeam" &&
+      props.player.id === props.spyMaster.teamBlue
+    ) {
       props.setSpyMaster((prevState) => ({
         ...prevState,
         teamBlue: "",
       }));
     }
-    if (event.target.value === "noTeam" && props.player.id === props.spyMaster.teamRed) {
+    if (
+      event.target.value === "noTeam" &&
+      props.player.id === props.spyMaster.teamRed
+    ) {
       props.setSpyMaster((prevState) => ({
         ...prevState,
         teamRed: "",
       }));
     }
 
-    const {id, name} = props.player
-    let changeTeam = props.players
-    changeTeam[props.ele] = {id, name, team: event.target.value}
+    const { id, name } = props.player;
+    let changeTeam = props.players;
+    changeTeam[props.ele] = { id, name, team: event.target.value };
     props.setPlayers([...changeTeam]);
   };
-
-
 
   return (
     <>
