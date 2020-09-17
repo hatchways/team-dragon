@@ -4,7 +4,7 @@ const User = require("../models/User");
 const Player = require("../models/gameModel/Players");
 let globalState = {};
 
-exports.createMatch = async (req, res, next) => {
+exports.postCreateMatch = async (req, res, next) => {
   try {
     // Hard coded data to be replaced by real users
     const player1 = {
@@ -53,9 +53,11 @@ exports.createMatch = async (req, res, next) => {
   }
 };
 
-// exports.getMatch = (req, res, next) => {
-//   res.json({ globalState });
-// };
+exports.getCreateMatch = (req, res, next) => {
+  res.status(202).json({
+    match: globalState.gameEngine,
+  });
+};
 
 exports.joinMatch = async (req, res, next) => {
   const matchId = req.params.id;
