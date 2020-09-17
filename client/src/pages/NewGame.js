@@ -2,6 +2,7 @@ import React from "react";
 import StepOne from "../components/new game/step 1/StepOne.js";
 import StepTwo from "../components/new game/step 2/StepTwo.js";
 import StepThree from "../components/new game/step 3/StepThree.js";
+import {useAxios} from "../hooks/useAxios";
 import { useNewGame, useRoles } from "../DataContext";
 import {
   Button,
@@ -27,6 +28,10 @@ const NewGame = (props) => {
 
   const newGameContext = useNewGame();
   const [newGame, setNewGame] = newGameContext;
+
+  let testGetRoute = useAxios("/create-match", "get")
+
+  console.log(testGetRoute);
 
   // const newRoleContext = useRoles();
   // const [roles] = newRoleContext;
