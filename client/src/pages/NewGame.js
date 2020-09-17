@@ -30,11 +30,11 @@ const NewGame = (props) => {
   const newGameContext = useNewGame();
   const [newGame, setNewGame] = newGameContext;
 
-  const localData = localStorage.getItem("newGame");
+  const gameData = localStorage.getItem("newGame");
 
   // Calls API if no locally stored data, with otherwise use local data.
   useEffect(() => {
-    if (localData) {
+    if (gameData) {
       setNewGame(JSON.parse(localStorage.getItem("newGame")));
     } else {
       axios
