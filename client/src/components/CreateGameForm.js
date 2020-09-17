@@ -1,31 +1,31 @@
-import React from 'react';
-import axios from 'axios';
-import {Container, Card, Typography, Button} from '@material-ui/core';
+import React from "react";
+import axios from "axios";
+import { Container, Card, Typography, Button } from "@material-ui/core";
 
 // Testing post request to -> /create-match
 const CreateGameForm = () => {
+
+  // Submit Handler
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    //Post request to create match
     try {
-      const { data } = await axios.post('/create-match', {
-          userName: "jorawar"
-      });
+      const { data } = await axios.post("/create-match");
       console.log(data)
-    } catch(err) {
-        console.log(err);
+    } catch (err) {
+      console.log(err);
     }
-  }
+  };
+
+  
 
   return (
     <Container maxWidth="sm">
       <Card>
         <form onSubmit={handleSubmit}>
-          <Typography variant="h3">
-            Create Game
-          </Typography>
+          <Typography variant="h3">Create Game</Typography>
 
-          <Button 
+          <Button
             variant="contained"
             color="primary"
             size="large"
@@ -36,7 +36,7 @@ const CreateGameForm = () => {
         </form>
       </Card>
     </Container>
-  )
-}
+  );
+};
 
 export default CreateGameForm;
