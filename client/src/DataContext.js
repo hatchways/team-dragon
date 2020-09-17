@@ -1,12 +1,10 @@
-import React, { useContext, useState, useMemo } from "react";
+import React, { useContext, useState, useMemo, useEffect } from "react";
 
 const EmailContext = React.createContext();
 
 const NewGameContext = React.createContext();
 
 const PlayersContext = React.createContext();
-
-const RolesContext = React.createContext();
 
 // Custom hook for Emails to be invited to game
 export function useEmails() {
@@ -23,10 +21,6 @@ export function usePlayers() {
   return useContext(PlayersContext);
 }
 
-// Custom hook for setting roles before starting the game
-export function useRoles() {
-  return useContext(RolesContext);
-}
 
 export function DataProvider({ children }) {
   //Holds emails to be invited to game
@@ -37,7 +31,25 @@ export function DataProvider({ children }) {
   ]);
 
   //Holds New Game Steps + Game Data
-  const [newGame, setNewGame] = useState({ step: 1, gameId: "" });
+  const [newGame, setNewGame] = useState({
+    step: 1,
+    matchId: "",
+    teamBlue: {
+      spyMaster: "",
+      agents: [],
+    },
+    teamRed: {
+      spyMaster: "",
+      agents: [],
+    },
+  });
+
+  // useeffect with empty array on new gamae component
+
+  useEffect(() => {
+    localStorage.setItem('newGame', JSON.stringify(newGame))
+  }, [newGame])
+
   const providerNewGame = useMemo(() => [newGame, setNewGame], [
     newGame,
     setNewGame,
@@ -53,34 +65,18 @@ export function DataProvider({ children }) {
     { id: "6", name: "player6", team: "noTeam", spyMaster: false },
   ]);
 
-
   const providerPlayers = useMemo(() => [players, setPlayers], [
     players,
     setPlayers,
   ]);
 
-  // Roles before starting the game
 
-  const [roles, setRoles] = useState({
-    matchId: "gameId here",
-    teamBlue: {
-      spyMaster: "",
-      agents: [],
-    },
-    teamRed: {
-      spyMaster: "",
-      agents: [],
-    },
-  });
-  const providerRoles = useMemo(() => [roles, setRoles], [roles, setRoles]);
 
   return (
     <NewGameContext.Provider value={providerNewGame}>
       <EmailContext.Provider value={providerEmails}>
         <PlayersContext.Provider value={providerPlayers}>
-          <RolesContext.Provider value={providerRoles}>
             {children}
-          </RolesContext.Provider>
         </PlayersContext.Provider>
       </EmailContext.Provider>
     </NewGameContext.Provider>
