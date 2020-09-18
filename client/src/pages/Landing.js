@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Card, Container, Typography } from "@material-ui/core";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,8 +20,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Landing() {
+function Landing(props) {
   const classes = useStyles();
+
+
+  const startNewGame = async () => {
+    axios
+      .post("/create-match")
+      // .then((response) => {
+      //   console.log(response.data.match.id);
+      //   setNewGame((prevState) => ({
+      //     ...prevState,
+      //     matchId: response.data.match.id,
+      //   }));
+
+      // })
+      .then((response) => {
+        console.log(response.data.match);
+        props.history.push(`${response.data.match.id}`);
+      })
+
+      //redirect to link
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <Container className={classes.root} maxWidth="md">
@@ -50,8 +74,9 @@ function Landing() {
         </Button>
         <Button
           className={classes.button}
-          component={Link}
-          to="/new"
+          onClick={startNewGame}
+          // component={Link}
+          // to="/new"
           variant="contained"
           color="primary"
           size="large"

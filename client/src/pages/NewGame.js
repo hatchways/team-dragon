@@ -3,7 +3,6 @@ import StepOne from "../components/new game/step 1/StepOne.js";
 import StepTwo from "../components/new game/step 2/StepTwo.js";
 import StepThree from "../components/new game/step 3/StepThree.js";
 import { Link } from "react-router-dom";
-import axios from "axios";
 
 // import Loading from "../components/new game/Loading.js";
 import { useNewGame, usePlayers, useSpyMaster } from "../DataContext";
@@ -29,11 +28,9 @@ const useStyles = makeStyles((theme) =>
 const NewGame = (props) => {
   const classes = useStyles();
 
-  
   //Holds Match ID + Template for Passing Roles to Server
   const newGameContext = useNewGame();
   const [newGame, setNewGame] = newGameContext;
-  console.log(newGame)
 
   //Holds All Players + Roles
   const newPlayersContext = usePlayers();
@@ -50,19 +47,22 @@ const NewGame = (props) => {
     if (gameData) {
       setNewGame(JSON.parse(localStorage.getItem("newGame")));
     } else {
-      axios
-        .get("/create-match")
-        .then((response) => {
-          // setNewGame((prevState) => ({
-          //   ...prevState,
-          //   matchId: response.data.globalState.match.id,
-          // }));
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      setNewGame((prevState) => ({
+        ...prevState,
+        matchId: props.match.params.id,
+      }));
+    }
+
+    if (newGame.matchId !== props.match.params.id) {
+      setNewGame((prevState) => ({
+        ...prevState,
+        step: 1,
+        matchId: props.match.params.id,
+      }));
     }
   }, []);
+
+  console.log(newGame);
 
   // Stores New Game Info to Local Storage
   useEffect(() => {
@@ -78,8 +78,6 @@ const NewGame = (props) => {
   };
 
   const startGame = async (e) => {
-
-
     const setMatch = (newGame, players, spyMaster) => {
       let spyMasters = [spyMaster.teamBlue, spyMaster.teamRed];
 

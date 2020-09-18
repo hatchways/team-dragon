@@ -21,25 +21,18 @@ const LinkInvite = (props) => {
 
   const [copy, setCopy] = useState({ value: newGame.matchId, copied: false });
 
-  console.log(copy);
-
   return (
     <>
-
-    
       <Typography variant="h3">Or share link:</Typography>
       <CopyToClipboard
         text={copy.value}
-        onCopy={() =>
-          setCopy({ value: newGame.matchId, copied: true })
-        }
+        onCopy={() => setCopy({ value: newGame.matchId, copied: true })}
       >
         <Button variant="contained" className={classes.copy}>
           Copy
         </Button>
       </CopyToClipboard>
-      {copy.copied ? <span style={{color: 'red'}}>Copied.</span> : null}
-
+      {copy.copied ? <span style={{ color: "red" }}>Copied.</span> : null}
     </>
   );
 };

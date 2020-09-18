@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { useNewGame, usePlayers, useSpyMaster } from "../../../DataContext";
+import { /* useNewGame,  */usePlayers, useSpyMaster } from "../../../DataContext";
 
 //import { useAxios } from "../../../hooks/useAxios";
 import PlayerSelect from "./PlayerSelect";
@@ -14,7 +14,7 @@ const StepThree = () => {
 
   //Holds ID of spyMaster
   const newSpyMasterContext = useSpyMaster();
-  const [spyMaster, setSpyMaster] = newSpyMasterContext
+  const [spyMaster, setSpyMaster] = newSpyMasterContext;
 
   const displayPlayers = useCallback(() => {
     return players.map((player, i) => {
@@ -55,8 +55,6 @@ const StepThree = () => {
       />
     );
   }, [players, spyMaster, setSpyMaster]);
-
-  
 
   return (
     <>
