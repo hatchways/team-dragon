@@ -8,6 +8,7 @@ const PlayersContext = React.createContext();
 
 const SpyMasterContext = React.createContext();
 
+
 // Custom hook for Emails to be invited to game
 export function useEmails() {
   return useContext(EmailContext);
@@ -70,6 +71,7 @@ export function DataProvider({ children }) {
     setPlayers,
   ]);
 
+
   useEffect(() => {
     localStorage.setItem("players", JSON.stringify(players));
   }, [players]);
@@ -82,6 +84,7 @@ export function DataProvider({ children }) {
     setSpyMaster,
   ]);
 
+
   return (
     <NewGameContext.Provider value={providerNewGame}>
       <EmailContext.Provider value={providerEmails}>
@@ -89,6 +92,7 @@ export function DataProvider({ children }) {
           <SpyMasterContext.Provider value={providerSpyMaster}>
             {children}
           </SpyMasterContext.Provider>
+          {children}
         </PlayersContext.Provider>
       </EmailContext.Provider>
     </NewGameContext.Provider>

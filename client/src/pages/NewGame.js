@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 
 // import Loading from "../components/new game/Loading.js";
 import { useNewGame, usePlayers, useSpyMaster } from "../DataContext";
+
 import {
   Button,
   Container,
@@ -14,6 +15,7 @@ import {
   Typography,
   Card,
 } from "@material-ui/core";
+import axios from "axios";
 
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 
@@ -117,6 +119,7 @@ const NewGame = (props) => {
     // } catch(err) {
     //     console.log(err);
     // }
+
   };
 
   const newGameSteps = () => {
@@ -134,6 +137,8 @@ const NewGame = (props) => {
         return <h2>Game Starts?</h2>;
     }
   };
+
+  console.log(newGame);
 
   return (
     <Container maxWidth="md">

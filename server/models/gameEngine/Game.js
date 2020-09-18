@@ -1,7 +1,7 @@
 const Team = require("./Team");
 const Player = require("./Player");
 const { getData } = require("./gameData");
-const getRandomNumber = require("./util");
+const getRandomNumber = require("./util/randomNumber");
 
 class Game {
   constructor() {

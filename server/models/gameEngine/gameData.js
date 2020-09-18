@@ -1,11 +1,11 @@
-const randomWords = require("random-words");
+const getRandomWords = require("../gameEngine/util/randomWords");
 const Card = require("./Card");
-const getRandomNumber = require("./util");
+const getRandomNumber = require("./util/randomNumber");
 
 
 exports.getData = () => {
   // Data to be used for the cards
-  let words = randomWords(25);
+  let words = getRandomWords(25);
 
   // Card Types
   let cardType = ["red", "blue", "innocent"];
