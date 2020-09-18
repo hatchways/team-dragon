@@ -13,6 +13,7 @@ import {
   Card,
 } from "@material-ui/core";
 import axios from "axios";
+import openSocket from "socket.io-client";
 
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 
@@ -31,6 +32,17 @@ const NewGame = (props) => {
   const [newGame, setNewGame] = newGameContext;
 
   const localData = localStorage.getItem("newGame");
+
+  //Users joining the match
+  useEffect(() => {
+    console.log("User joins the match");
+    const socket = openSocket("http://localhost:3001");
+    socket.on("connect", () => {
+      socket.on("join-match", data => {
+        console.log(data)
+      });
+    });
+  });
 
   // Calls API if no locally stored data, with otherwise use local data.
   useEffect(() => {

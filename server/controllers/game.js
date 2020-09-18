@@ -1,3 +1,4 @@
+const { getSocket } = require("../socket");
 const Game = require("../models/gameEngine/Game");
 const Match = require("../models/gameModel/Match");
 const User = require("../models/User");
@@ -27,11 +28,22 @@ exports.postCreateMatch = async (req, res, next) => {
 
     // Initializing the match
     const gameEngine = new Game();
+
+    const players = [
+      {
+        userId: user._id,
+        name: user.name,
+        matchId: gameEngine.id,
+      },
+    ];
+
     const match = new Match({
       matchId: gameEngine.id,
       hostId: user._id,
+      players: players,
     });
-    const result = await match.save((err) => console.log(err));
+    const result = await match.save();
+
     // Assign Team to player
     gameEngine.assignTeam(player1, "red");
     gameEngine.assignTeam(player2, "blue");
@@ -40,6 +52,11 @@ exports.postCreateMatch = async (req, res, next) => {
     gameEngine.assignRole(13255, "guesser");
 
     globalState = { gameEngine };
+
+    // getSocket().emit("matchState", {
+    //   action: "create-match",
+    //   match: globalState.gameEngine,
+    // });
 
     res.status(202).json({
       match: globalState.gameEngine,
@@ -53,12 +70,14 @@ exports.postCreateMatch = async (req, res, next) => {
   }
 };
 
+// Get route controller for create-match
 exports.getCreateMatch = (req, res, next) => {
   res.status(202).json({
     match: globalState.gameEngine,
   });
 };
 
+// Get route when a user joins the match
 exports.joinMatch = async (req, res, next) => {
   const matchId = req.params.id;
   const userId = req.user._id;
@@ -74,29 +93,58 @@ exports.joinMatch = async (req, res, next) => {
     }
 
     // User id coming from request
-    let user = await User.findOne({ _id: userId});
+    let user = await User.findOne({ _id: userId });
     if (!user) {
       return res
         .status(404)
         .json({ success: false, errors: { email: "User does not exist" } });
     }
 
-    let docPlayer = await Player.findOne({matchId:matchId});
-    
+    let playerDoc = await Match.find({
+      "players.userId": userId,
+      matchId: matchId,
+    });
+
     // If user was already in match
-    if(docPlayer){
-      console.log("Welcome back to match")
+    if (playerDoc) {
+      console.log("Welcome back to match", playerDoc);
+
+      const socket = getSocket();
+      socket.emit("join-match", {
+        match: globalState.gameEngine,
+      });
+      
       return res.status(200).json({ match: globalState.gameEngine });
     }
 
-    let player = new Player({ userId: user._id, name: user.name, matchId:matchId});
-    const result = await player.save();
-    console.log("Let's start the match")
+    // Fetch players array from current match
+    const currentPlayers = match.players;
+    let newPlayer = {
+      userId: user._id,
+      name: user.name,
+      matchId: matchId,
+    };
+    match.players.push(newPlayer);
+    const result = await match.save();
+    console.log("Player joined:", user.name);
+
     player = {
-      name: player.name,
-      matchId: player.matchId
+      name: user.name,
+      matchId: user.matchId,
     };
     globalState.gameEngine.joinMatch(player);
+
+    // Join match room
+    const socket = getSocket();
+    socket.emit("join-match", {
+      match: globalState.gameEngine,
+    });
+    // // Emit to all users
+    // getSocket().in("match1").emit(
+    //   "join-match-msg",
+    //   `You are in match - ${matchId}`
+    // );
+
     res.status(200).json({ match: globalState.gameEngine });
   } catch (err) {
     if (err) {

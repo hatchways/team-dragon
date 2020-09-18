@@ -8,8 +8,20 @@ const matchSchema = new Schema({
     type: String,
     required: true,
   },
-  hostId: { type: Schema.Types.ObjectId, required: true},
-  
+  hostId: { type: Schema.Types.ObjectId, required: true },
+  players: [
+    {
+      userId: {
+        type: String,
+      },
+      name: {
+        type: String,
+      },
+      matchId: {
+        type: Number,
+      },
+    },
+  ],
 });
 
 module.exports = mongoose.model("Match", matchSchema);

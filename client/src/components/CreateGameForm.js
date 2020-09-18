@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import { Container, Card, Typography, Button } from "@material-ui/core";
+import openSocket from "socket.io-client";
 
 // Testing post request to -> /create-match
-const CreateGameForm = () => {
-
+const CreateGameForm = (props) => {
   // Submit Handler
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -12,12 +12,11 @@ const CreateGameForm = () => {
     try {
       const { data } = await axios.post("/create-match");
       console.log(data)
+      props.history.push('/new')
     } catch (err) {
       console.log(err);
     }
   };
-
-  
 
   return (
     <Container maxWidth="sm">

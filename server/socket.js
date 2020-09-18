@@ -1,9 +1,13 @@
-module.exports = (server) => {
+let socketExp;
+exports.socket = (server) => {
   const io = require("socket.io")(server);
+
+  // // Allow CORS 
+  // io.origins('*:*');
 
   io.on("connection", socket => {
     console.log('client connected');
-
+    socketExp = socket;
     socket.on("message", msg => {
       console.log('recieved message', msg);
       socket.emit('message', msg);
@@ -13,5 +17,10 @@ module.exports = (server) => {
     socket.on('disconnect', () => {
       console.log('client disconnected');
     })
-  })
+  });
 }
+
+exports.getSocket = () => {
+  return socketExp;
+} 
+
