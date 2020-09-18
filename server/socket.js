@@ -7,11 +7,15 @@ exports.socket = (server) => {
   const roomDetails = {};
 
   io.on("connection", socket => {
+    console.log('a user connected');
+
     socket.on("join", (room, fn) => {
       // join a room
       socket.join(room);
+      
       if(roomDetails[room] == undefined) {
         // create room details if does not exist
+        console.log('creating room:', room);
         roomDetails[room] = {
           history: [],
           users: [],
@@ -31,6 +35,8 @@ exports.socket = (server) => {
     });
 
     socket.on("message", (room, { sender, message }) => {
+      console.log("message recieved:", message);
+
       // save message into history and update all clients
       roomDetails[room].history.unshift({ 
         id: message_id++,
