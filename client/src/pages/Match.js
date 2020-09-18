@@ -14,20 +14,28 @@ const useStyles = makeStyles(theme => ({
     height: "88vh",
     display: "grid",
     gridTemplateAreas: `"messenger board"`,
-    gridTemplateColumns: "400px 1fr",
+    gridTemplateColumns: "420px 1fr",
     gridTemplateRows: "auto",
   },
   messenger: {
     gridArea: "messenger",
     background: theme.grey.superLight,
-    display: "flex",
-    flexDirection: "column",
+    maxHeight: "100%",
+    overflow: "hidden",
   },
   messengerList: {
-    flexGrow: 1
+    padding: "1rem",
+    minHeight: "80%",
+    maxHeight: "80%",
+    overflow: "auto",
   },
-  messengerInput: {
-
+  messengerForm: {
+    height: "20%",
+    padding: "2rem",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   board: {
     gridArea: "board",
@@ -58,7 +66,7 @@ const Match = (props) => {
     socket.on("disconnect", () => {
       socket.emit("leave", room);
     });
-  }, []);
+  }, [room]);
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -85,24 +93,26 @@ const Match = (props) => {
           ))}
         </List>
         <Divider /> 
-        <div className={classes.messengerInput}>
-          <form onSubmit={onSubmit}>
-            <TextField
-              variant="outlined"
-              type="text"
-              placeholder="Write a message..."
-              value={messageInput}
-              onChange={(e) => setMessageInput(e.target.value)}
-            />
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-            >
-              Done
-            </Button>
-          </form>
-        </div>
+        <form 
+          className={classes.messengerForm}
+          onSubmit={onSubmit}
+        >
+          <TextField
+            type="text"
+            placeholder="Type here..."
+            value={messageInput}
+            onChange={(e) => setMessageInput(e.target.value)}
+          />
+          <Button
+            className={classes.messengerFormButton}
+            type="submit"
+            variant="contained"
+            color="primary"
+            size="large"
+          >
+            Done
+          </Button>
+        </form>
       </div>
       <div className={classes.board}>
         Board
