@@ -3,6 +3,7 @@ import StepOne from "../components/new game/step 1/StepOne.js";
 import StepTwo from "../components/new game/step 2/StepTwo.js";
 import StepThree from "../components/new game/step 3/StepThree.js";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 // import Loading from "../components/new game/Loading.js";
 import { useNewGame, usePlayers, useSpyMaster } from "../DataContext";
@@ -28,9 +29,11 @@ const useStyles = makeStyles((theme) =>
 const NewGame = (props) => {
   const classes = useStyles();
 
+  
   //Holds Match ID + Template for Passing Roles to Server
   const newGameContext = useNewGame();
   const [newGame, setNewGame] = newGameContext;
+  console.log(newGame)
 
   //Holds All Players + Roles
   const newPlayersContext = usePlayers();
@@ -40,26 +43,27 @@ const NewGame = (props) => {
   const newSpyMasterContext = useSpyMaster();
   const [spymaster] = newSpyMasterContext;
 
-  // const gameData = localStorage.getItem("newGame");
+  const gameData = localStorage.getItem("newGame");
 
   // Calls API if no locally stored data, with otherwise use local data.
-  // useEffect(() => {
-  //   if (gameData) {
-  //     setNewGame(JSON.parse(localStorage.getItem("newGame")));
-  //   } else {
-  //     axios
-  //       .get("/create-match")
-  //       .then((response) => {
-  //         setNewGame((prevState) => ({
-  //           ...prevState,
-  //           matchId: response.data.globalState.match.id,
-  //         }));
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (gameData) {
+      setNewGame(JSON.parse(localStorage.getItem("newGame")));
+    } else {
+      axios
+        .get("/create-match")
+        .then((response) => {
+          console.log(response.data)
+          // setNewGame((prevState) => ({
+          //   ...prevState,
+          //   matchId: response.data.globalState.match.id,
+          // }));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, []);
 
   // Stores New Game Info to Local Storage
   useEffect(() => {
