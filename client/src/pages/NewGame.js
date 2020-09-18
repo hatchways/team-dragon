@@ -53,7 +53,6 @@ const NewGame = (props) => {
       axios
         .get("/create-match")
         .then((response) => {
-          console.log(response.data)
           // setNewGame((prevState) => ({
           //   ...prevState,
           //   matchId: response.data.globalState.match.id,
