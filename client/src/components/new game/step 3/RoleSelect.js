@@ -21,9 +21,10 @@ const useStyles = makeStyles((theme) => ({
 
 const RoleSelect = (props) => {
   const classes = useStyles();
+  // const playerData = localStorage.getItem("players");
+  // console.log(playerData);
 
   const handleChange = (event) => {
-    console.log(event.target.value);
     if (props.color === "red") {
       props.setSpyMaster((prevState) => ({
         ...prevState,
@@ -40,7 +41,7 @@ const RoleSelect = (props) => {
   };
 
   const displayTeam = useCallback(() => {
-    if (props.team.length < 1)  return <MenuItem value="empty">Empty</MenuItem>;
+    if (props.team.length < 1) return <MenuItem value="empty">Empty</MenuItem>;
     return props.team.map((ele, i) => {
       return (
         <MenuItem key={i} value={ele.id}>

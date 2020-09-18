@@ -1,16 +1,36 @@
-import React from "react";
-import { useAxios } from "../../../hooks/useAxios";
-import { useEmails, useNewGame } from "../../../DataContext";
+import React, { useEffect } from "react";
+// import { useEmails, useNewGame } from "../../../DataContext";
+import openSocket from "socket.io-client";
 
 const StepTwo = () => {
-  const emailsContext = useEmails();
-  const [emails] = emailsContext;
+  // const emailsContext = useEmails();
+  // const [emails] = emailsContext;
 
-  const newGameContext = useNewGame();
-  const [newGame] = newGameContext;
+  // const newGameContext = useNewGame();
+  // const [newGame, setNewGame] = newGameContext;
 
-  //Makes a post request to invite users, includes game ID created in step 1
-  //useAxios("url here", "post", { emails: emails, gameId: newGame.gameId });
+  useEffect(() => {
+    console.log("User joins the match");
+    const socket = openSocket("http://localhost:3001");
+    socket.on("connect", () => {
+      socket.on("join-match", (data) => {
+        alert("New user joined Match");
+      });
+    });
+  }, []);
+
+  //  // Calls API if no locally stored data, with otherwise use local data.
+  //  const getNewMatch = async () => {
+  //   const res = await axios.get("http://localhost:3001/create-match");
+  //   if (!res.data) {
+  //     setNewGame(JSON.parse(localStorage.getItem("newGame")));
+  // }
+  //   console.log(res.data.match);
+
+  // useEffect(() => {
+  //   console.log("axios call");
+  //   getNewMatch();
+  // }, []);
 
   return (
     <>
