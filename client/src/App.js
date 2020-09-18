@@ -9,8 +9,8 @@ import Landing from "./pages/Landing";
 import NewGame from "./pages/NewGame";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import Chat from "./pages/Chat"; // testing socket.io
-import CreateGameForm from "./components/CreateGameForm"; //testing request /create-match
+import Match from "./pages/Match";
+import CreateGameForm from './components/CreateGameForm'; //testing request /create-match
 
 function App() {
   return (
@@ -20,8 +20,7 @@ function App() {
           <NavBar />
           <Switch>
             <Route exact path="/create-match" component={CreateGameForm} />
-            {/* <Route exact path="/chat/:room_id" component={Chat} />{" "} */}
-            {/* testing socket.io */}
+            <Route exact path="/match/:id" component={Match} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/:id" component={NewGame} />
