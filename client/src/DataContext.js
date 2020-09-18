@@ -39,7 +39,7 @@ export function DataProvider({ children }) {
   //Holds New Game Steps + Game Data
   const [newGame, setNewGame] = useState({
     step: 1,
-    matchId: "testID",
+    matchId: "testIRD",
     teamBlue: {
       spyMaster: "",
       agents: [],

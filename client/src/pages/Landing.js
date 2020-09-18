@@ -23,28 +23,19 @@ const useStyles = makeStyles((theme) => ({
 function Landing(props) {
   const classes = useStyles();
 
-
   const startNewGame = async () => {
     axios
       .post("/create-match")
-      // .then((response) => {
-      //   console.log(response.data.match.id);
-      //   setNewGame((prevState) => ({
-      //     ...prevState,
-      //     matchId: response.data.match.id,
-      //   }));
-
-      // })
       .then((response) => {
         console.log(response.data.match);
         props.history.push(`${response.data.match.id}`);
       })
-
-      //redirect to link
       .catch((err) => {
         console.log(err);
       });
   };
+
+  console.log(localStorage.id);
 
   return (
     <Container className={classes.root} maxWidth="md">
@@ -52,37 +43,41 @@ function Landing(props) {
         <Typography className={classes.heading} variant="h2">
           Welcome to Cluewords!
         </Typography>
-        <Button
-          className={classes.button}
-          component={Link}
-          to="/register"
-          variant="contained"
-          color="primary"
-          size="large"
-        >
-          Sign Up
-        </Button>
-        <Button
-          className={classes.button}
-          component={Link}
-          to="/login"
-          variant="contained"
-          color="primary"
-          size="large"
-        >
-          Sign In
-        </Button>
-        <Button
-          className={classes.button}
-          onClick={startNewGame}
-          // component={Link}
-          // to="/new"
-          variant="contained"
-          color="primary"
-          size="large"
-        >
-          Create Game
-        </Button>
+
+        {!localStorage.id ? (
+          <>
+            <Button
+              className={classes.button}
+              component={Link}
+              to="/register"
+              variant="contained"
+              color="primary"
+              size="large"
+            >
+              Sign Up
+            </Button>
+            <Button
+              className={classes.button}
+              component={Link}
+              to="/login"
+              variant="contained"
+              color="primary"
+              size="large"
+            >
+              Sign In
+            </Button>
+          </>
+        ) : (
+          <Button
+            className={classes.button}
+            onClick={startNewGame}
+            variant="contained"
+            color="primary"
+            size="large"
+          >
+            Create Game
+          </Button>
+        )}
       </Card>
     </Container>
   );

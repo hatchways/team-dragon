@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNewGame } from "../../../DataContext";
 import { Button, Typography } from "@material-ui/core";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
@@ -19,7 +19,14 @@ const LinkInvite = (props) => {
   const newGameContext = useNewGame();
   const [newGame] = newGameContext;
 
-  const [copy, setCopy] = useState({ value: newGame.matchId, copied: false });
+  const [copy, setCopy] = useState({
+    value: newGame.matchId,
+    copied: false,
+  });
+
+  useEffect(() => {
+    setCopy({ value: newGame.matchId, copied: false });
+  }, [newGame]);
 
   return (
     <>

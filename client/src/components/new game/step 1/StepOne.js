@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-const StepOne = () => {
+const StepOne = (props) => {
   const classes = useStyles();
 
   const newGameContext = useNewGame();
