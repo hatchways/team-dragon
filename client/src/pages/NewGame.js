@@ -42,7 +42,7 @@ const NewGame = (props) => {
         alert("New user joined Match");
       });
     });
-  });
+  }, []);
 
   // Calls API if no locally stored data, with otherwise use local data.
   const getNewMatch = async () => {
@@ -52,17 +52,18 @@ const NewGame = (props) => {
     }
     console.log(res.data.match);
 
-    setNewGame((prevState) => ({
-      ...prevState,
-      matchId: res.data.match.id,
-    }));
-
+    if (res.data.match) {
+      setNewGame((prevState) => ({
+        ...prevState,
+        matchId: res.data.match.id,
+      }));
+    }
   };
 
   useEffect(() => {
     console.log("axios call");
     getNewMatch();
-  },[]);
+  }, []);
 
   // Stores New Game Info to Local Storage
   useEffect(() => {

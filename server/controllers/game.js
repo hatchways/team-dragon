@@ -113,7 +113,7 @@ exports.joinMatch = async (req, res, next) => {
       socket.emit("join-match", {
         match: globalState.gameEngine,
       });
-      
+
       return res.status(200).json({ match: globalState.gameEngine });
     }
 
