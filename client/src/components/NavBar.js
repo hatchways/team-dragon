@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function NavBar(props) {
+const NavBar = () => {
   const classes = useStyles();
 
   return (

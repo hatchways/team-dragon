@@ -29,7 +29,7 @@
 //   },
 // }));
 
-// function Chat(props) {
+// const Chat = (props) => {
 //   const classes = useStyles();
 
 //   const [name, setName] = useState([]);
