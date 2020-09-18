@@ -20,7 +20,7 @@ function App() {
           <NavBar />
           <Switch>     
             <Route exact path="/create-match" component={CreateGameForm} />
-            <Route exact path="/chat" component={Chat} /> {/* testing socket.io */}
+            <Route exact path="/chat/:room_id" component={Chat} /> {/* testing socket.io */}
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/new" component={NewGame} />
