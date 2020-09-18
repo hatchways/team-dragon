@@ -38,32 +38,31 @@ const NewGame = (props) => {
     console.log("User joins the match");
     const socket = openSocket("http://localhost:3001");
     socket.on("connect", () => {
-      socket.on("join-match", data => {
-        console.log(data)
+      socket.on("join-match", (data) => {
+        alert("New user joined Match");
       });
     });
   });
 
   // Calls API if no locally stored data, with otherwise use local data.
-  useEffect(() => {
-    if (localData) {
+  const getNewMatch = async () => {
+    const res = await axios.get("http://localhost:3001/create-match");
+    if (!res.data) {
       setNewGame(JSON.parse(localStorage.getItem("newGame")));
-    } else {
-      console.log("axios call");
-      axios
-        .get("/create-match")
-        .then((response) => {
-          console.log(response.data);
-          setNewGame((prevState) => ({
-            ...prevState,
-            matchId: response.data.globalState.match.id,
-          }));
-        })
-        .catch((err) => {
-          console.log(err);
-        });
     }
-  }, []);
+    console.log(res.data.match);
+
+    setNewGame((prevState) => ({
+      ...prevState,
+      matchId: res.data.match.id,
+    }));
+
+  };
+
+  useEffect(() => {
+    console.log("axios call");
+    getNewMatch();
+  },[]);
 
   // Stores New Game Info to Local Storage
   useEffect(() => {
