@@ -2,8 +2,10 @@ import React, { useEffect } from "react";
 import StepOne from "../components/new game/step 1/StepOne.js";
 import StepTwo from "../components/new game/step 2/StepTwo.js";
 import StepThree from "../components/new game/step 3/StepThree.js";
-import Loading from "../components/new game/Loading.js";
-import { useNewGame } from "../DataContext";
+import { Link } from "react-router-dom";
+
+// import Loading from "../components/new game/Loading.js";
+import { useNewGame, usePlayers, useSpyMaster } from "../DataContext";
 import {
   Button,
   Container,
@@ -12,8 +14,6 @@ import {
   Typography,
   Card,
 } from "@material-ui/core";
-import axios from "axios";
-import openSocket from "socket.io-client";
 
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 
@@ -28,27 +28,37 @@ const useStyles = makeStyles((theme) =>
 const NewGame = (props) => {
   const classes = useStyles();
 
+  //Holds Match ID + Template for Passing Roles to Server
   const newGameContext = useNewGame();
   const [newGame, setNewGame] = newGameContext;
 
-  const localData = localStorage.getItem("newGame");
+  //Holds All Players + Roles
+  const newPlayersContext = usePlayers();
+  const [players] = newPlayersContext;
+
+  //Holds Selected SpyMaster
+  const newSpyMasterContext = useSpyMaster();
+  const [spymaster] = newSpyMasterContext;
+
+  const gameData = localStorage.getItem("newGame");
 
   //Users joining the match
   useEffect(() => {
-    console.log("User joins the match");
-    const socket = openSocket("http://localhost:3001");
-    socket.on("connect", () => {
-      socket.on("join-match", (data) => {
-        alert("New user joined Match");
-      });
-    });
-  }, []);
-
-  // Calls API if no locally stored data, with otherwise use local data.
-  const getNewMatch = async () => {
-    const res = await axios.get("http://localhost:3001/create-match");
-    if (!res.data) {
+    if (gameData) {
       setNewGame(JSON.parse(localStorage.getItem("newGame")));
+    } else {
+      setNewGame((prevState) => ({
+        ...prevState,
+        matchId: props.match.params.id,
+      }));
+    }
+
+    if (newGame.matchId !== props.match.params.id) {
+      setNewGame((prevState) => ({
+        ...prevState,
+        step: 1,
+        matchId: props.match.params.id,
+      }));
     }
     console.log(res.data.match);
 
@@ -65,9 +75,10 @@ const NewGame = (props) => {
     getNewMatch();
   }, []);
 
+  console.log(newGame);
+
   // Stores New Game Info to Local Storage
   useEffect(() => {
-    console.log("running");
     localStorage.setItem("newGame", JSON.stringify(newGame));
   }, [newGame]);
 
@@ -79,12 +90,47 @@ const NewGame = (props) => {
     }));
   };
 
-  const startGame = (url, data) => {
-    const { step } = newGame;
-    setNewGame((prevState) => ({
-      ...prevState,
-      step: step + 1,
-    }));
+  const startGame = async (e) => {
+    const setMatch = (newGame, players, spyMaster) => {
+      let spyMasters = [spyMaster.teamBlue, spyMaster.teamRed];
+
+      let playerAssign = players.map((player) => {
+        if (spyMasters.includes(player.id)) {
+          console.log(player);
+          return {
+            id: player.id,
+            name: player.name,
+            team: player.team,
+            spyMaster: true,
+          };
+        } else {
+          return {
+            id: player.id,
+            name: player.name,
+            team: player.team,
+            spyMaster: false,
+          };
+        }
+      });
+
+      return {
+        matchId: newGame.matchId,
+        players: playerAssign,
+      };
+    };
+
+    let matchDetails = setMatch(newGame, players, spymaster);
+
+    console.log(matchDetails);
+
+    // try {
+    //   const { data } = await axios.post('/create-match', {
+    //       userName: "jorawar"
+    //   });
+    //   console.log(data)
+    // } catch(err) {
+    //     console.log(err);
+    // }
   };
 
   const newGameSteps = () => {
@@ -102,8 +148,6 @@ const NewGame = (props) => {
         return <h2>Game Starts?</h2>;
     }
   };
-
-  console.log(newGame);
 
   return (
     <Container maxWidth="md">
@@ -123,7 +167,13 @@ const NewGame = (props) => {
             </Button>
           ) : (
             //Needs Logic here to initiate final role allocation.
-            <Button variant="contained" color="primary" onClick={startGame}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={startGame}
+              component={Link}
+              to="/LINK-FROM-JORAWAR"
+            >
               Create Game
             </Button>
           )}

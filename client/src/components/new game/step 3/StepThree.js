@@ -1,18 +1,20 @@
-import React, { useCallback, useState, useEffect } from "react";
-import { useNewGame, usePlayers } from "../../../DataContext";
+import React, { useCallback } from "react";
+import { /* useNewGame,  */usePlayers, useSpyMaster } from "../../../DataContext";
+
 //import { useAxios } from "../../../hooks/useAxios";
 import PlayerSelect from "./PlayerSelect";
 import RoleSelect from "./RoleSelect";
 
 const StepThree = () => {
-  const newGameContext = useNewGame();
-  const [newGame] = newGameContext;
+  // const newGameContext = useNewGame();
+  // const [newGame] = newGameContext;
 
   const newPlayerContext = usePlayers();
   const [players, setPlayers] = newPlayerContext;
 
   //Holds ID of spyMaster
-  const [spyMaster, setSpyMaster] = useState({ teamBlue: "", teamRed: "" });
+  const newSpyMasterContext = useSpyMaster();
+  const [spyMaster, setSpyMaster] = newSpyMasterContext;
 
   const displayPlayers = useCallback(() => {
     return players.map((player, i) => {
@@ -28,7 +30,7 @@ const StepThree = () => {
         />
       );
     });
-  }, [players, setPlayers, spyMaster]);
+  }, [players, setPlayers, spyMaster, setSpyMaster]);
 
   const displayBlueRoles = useCallback(() => {
     const bluePlayers = players.filter((player) => player.team === "teamBlue");
@@ -40,7 +42,7 @@ const StepThree = () => {
         setSpyMaster={setSpyMaster}
       />
     );
-  }, [players, spyMaster]);
+  }, [players, spyMaster, setSpyMaster]);
 
   const displayRedRoles = useCallback(() => {
     const redPlayers = players.filter((player) => player.team === "teamRed");
@@ -52,7 +54,7 @@ const StepThree = () => {
         setSpyMaster={setSpyMaster}
       />
     );
-  }, [players, spyMaster]);
+  }, [players, spyMaster, setSpyMaster]);
 
   return (
     <>
