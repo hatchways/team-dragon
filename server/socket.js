@@ -2,12 +2,6 @@ let socketExp;
 exports.socket = (server) => {
   const io = require("socket.io")(server);
 
-<<<<<<< HEAD
-=======
-  // Allow CORS 
-  // io.origins('*:*');
-  
->>>>>>> 3c87f4febc2b4403a196ae813f0c5030d8dda2c1
   let message_id = 0;
   const roomDetails = {};
 
