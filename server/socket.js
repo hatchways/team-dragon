@@ -2,16 +2,19 @@ let ioExport;
 
 exports.socket = (server) => {
   const io = require("socket.io")(server);
-  ioExport = io;
-  let message_id = 0;
   const roomDetails = {};
+
+  ioExport = io;
 
   io.on("connection", socket => {
     console.log('a user connected');
 
+    let socket_roomId; // to store current room
+
     socket.on("join", (room, fn) => {
       // join a room
       socket.join(room);
+      socket_roomId = room;
       
       if(roomDetails[room] == undefined) {
         // create room details if does not exist
@@ -34,22 +37,21 @@ exports.socket = (server) => {
       });
     });
 
-    socket.on("message", (room, { sender, message }) => {
-      console.log("message recieved:", message);
+    socket.on("message", msgData => {
+      console.log("message recieved:", msgData);
 
-      // save message into history and update all clients
-      roomDetails[room].history.unshift({ 
-        id: message_id++,
-        sender,
-        message,
-      });
+      // save message into history
+      roomDetails[socket_roomId].history.push(msgData);
 
-      io.to(room).emit('message', roomDetails[room].history);
+      // update other clients with the message
+      io.to(socket_roomId).emit('message', msgData);
     });
 
-    socket.on("leave", (room) => {
+    socket.on('disconnect', () => {
+      console.log('user disconnected');
+
       // update users currently in the chat
-      roomDetails[room].users = roomDetails[room].users.filter( 
+      roomDetails[socket_roomId].users = roomDetails[socket_roomId].users.filter( 
         user => user.id !== socket.id
       );
     })

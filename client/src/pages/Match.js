@@ -6,6 +6,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from '@material-ui/core/ListItemText';
 import TextField from "@material-ui/core/TextField";
+import { v4 as uuid } from 'uuid';
 import socket from "../socket";
 
 const useStyles = makeStyles(theme => ({
@@ -50,32 +51,31 @@ const Match = (props) => {
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState('');
 
-  const room = "room-" + props.match.params.id;
-
   useEffect(() => {
-    socket.emit("join", room, ({ name, history }) => {
-      console.log('connected to', room, 'as', name);
+    socket.emit("join", props.match.params.id, ({ name, history }) => {
       setName(name);
       setMessages(history); 
     });
 
-    socket.on("message", history => {
-      setMessages(history);
+    socket.on("message", msgData => {
+      // update message list
+      setMessages(prevMessages => [...prevMessages, msgData]);
     });
+  }, [props.match.params.id]);
 
-    socket.on("disconnect", () => {
-      socket.emit("leave", room);
-    });
-  }, [room]);
-
-  const onSubmit = (event) => {
+  const sendMessage = (event) => {
     event.preventDefault();
 
-    socket.emit("message", room, {
+    const msgData = {
+      id: uuid(),
       sender: name,
       message: messageInput,
-    });
+    }
 
+    // send message to the server
+    socket.emit("message", msgData);
+
+    // clear input field
     setMessageInput('');
   }
 
@@ -95,7 +95,7 @@ const Match = (props) => {
         <Divider /> 
         <form 
           className={classes.messengerForm}
-          onSubmit={onSubmit}
+          onSubmit={sendMessage}
         >
           <TextField
             type="text"
