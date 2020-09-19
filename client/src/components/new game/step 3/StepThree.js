@@ -1,7 +1,11 @@
 import React, { useCallback } from "react";
-import { /* useNewGame,  */usePlayers, useSpyMaster } from "../../../DataContext";
+import {
+  /* useNewGame,  */ usePlayers,
+  useSpyMaster,
+} from "../../../DataContext";
 
 //import { useAxios } from "../../../hooks/useAxios";
+import { Grid, Box, Typography } from "@material-ui/core";
 import PlayerSelect from "./PlayerSelect";
 import RoleSelect from "./RoleSelect";
 
@@ -47,24 +51,57 @@ const StepThree = () => {
   const displayRedRoles = useCallback(() => {
     const redPlayers = players.filter((player) => player.team === "teamRed");
     return (
-      <RoleSelect
-        team={redPlayers}
-        color={"red"}
-        spyMaster={spyMaster}
-        setSpyMaster={setSpyMaster}
-      />
+      <Grid item>
+        <RoleSelect
+          team={redPlayers}
+          color={"red"}
+          spyMaster={spyMaster}
+          setSpyMaster={setSpyMaster}
+        />
+      </Grid>
     );
   }, [players, spyMaster, setSpyMaster]);
 
   return (
     <>
       <h2>Step 3</h2>
-
-      <p>Assign Teams</p>
-      {displayPlayers()}
-      <p>Assign Roles</p>
-      {displayBlueRoles()}
-      {displayRedRoles()}
+      <Box mb={3}>
+        <Grid
+          container
+          direction="column"
+          justify="space-evenly"
+          alignItems="center"
+        >
+          <Box mb="1.5rem">
+            <Typography variant="h3">Assign Teams</Typography>
+          </Box>
+          <Grid container direction="row" justify="center" alignItems="center">
+            {displayPlayers()}
+          </Grid>
+        </Grid>
+      </Box>
+      <Box mb={4}>
+        <Grid
+          container
+          direction="column"
+          justify="space-evenly"
+          alignItems="center"
+        >
+          <Box mb="1.5rem">
+            <Typography variant="h3">Assign SpyMaster</Typography>
+          </Box>
+          <Grid
+            container
+            direction="row"
+            justify="center"
+            alignItems="center"
+            spacing={4}
+          >
+            <Grid item>{displayBlueRoles()}</Grid>
+            <Grid item>{displayRedRoles()}</Grid>
+          </Grid>
+        </Grid>
+      </Box>
     </>
   );
 };

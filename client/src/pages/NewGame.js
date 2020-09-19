@@ -24,6 +24,8 @@ const useStyles = makeStyles((theme) =>
     },
     titleDivider: {
       borderTop: `7px solid ${theme.palette.primary.main}`,
+      width: "5rem",
+      marginTop: "1rem"
     },
   })
 );
@@ -134,9 +136,9 @@ const NewGame = (props) => {
             New game
           </Typography>
 
-          <Box mx="24rem" mt="1rem">
+          <Grid container direction="row" justify="center" alignItems="center">
             <Divider className={classes.titleDivider} />
-          </Box>
+          </Grid>
           {newGameSteps()}
           <Grid container direction="row" justify="center" alignItems="center">
             {newGame.step < 3 ? (

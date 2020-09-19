@@ -14,12 +14,24 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     minWidth: 120,
   },
-  selectEmpty: {
+  selectRedEmpty: {
+    backgroundColor: theme.red.light,
     marginTop: theme.spacing(2),
   },
+  selectBlueEmpty: {
+    backgroundColor: theme.blue.light,
+    marginTop: theme.spacing(2),
+  },
+  redHelper: {
+    color: theme.red.medium,
+  },
+  blueHelper: {
+    color: theme.blue.medium,
+  }
 }));
 
 const RoleSelect = (props) => {
+  console.log(props);
   const classes = useStyles();
   // const playerData = localStorage.getItem("players");
   // console.log(playerData);
@@ -54,13 +66,13 @@ const RoleSelect = (props) => {
   return (
     <>
       <div>
-        <FormControl className={classes.formControl}>
+        <FormControl variant="outlined" className={classes.formControl}>
           <InputLabel shrink id="demo-simple-select-placeholder-label-label">
             SpyMaster
           </InputLabel>
           <Select
-            labelId="demo-simple-select-placeholder-label-label"
-            id="demo-simple-select-placeholder-label"
+            labelId="demo-simple-select-outlined-label"
+            id="demo-simple-select-outlined"
             value={
               props.color === "red"
                 ? props.spyMaster.teamRed
@@ -68,7 +80,11 @@ const RoleSelect = (props) => {
             }
             onChange={handleChange}
             displayEmpty
-            className={classes.selectEmpty}
+            className={
+              props.color === "red"
+                ? classes.selectRedEmpty
+                : classes.selectBlueEmpty
+            }
           >
             <MenuItem value="">
               <em>Select</em>
@@ -76,9 +92,9 @@ const RoleSelect = (props) => {
             {displayTeam()}
           </Select>
           {props.color === "red" ? (
-            <FormHelperText>Team Red</FormHelperText>
+            <FormHelperText className={classes.redHelper}>Team Red</FormHelperText>
           ) : (
-            <FormHelperText>Team Blue</FormHelperText>
+            <FormHelperText className={classes.blueHelper}>Team Blue</FormHelperText>
           )}
         </FormControl>
       </div>

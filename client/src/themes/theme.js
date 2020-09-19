@@ -3,10 +3,13 @@ import { createMuiTheme } from "@material-ui/core";
 const colors = {
   red: {
     //Red Team + Logged in Users chat bubble
+    light: "#e6918a",
     medium: "#f86255",
+
   },
   blue: {
     // Blue Team
+    light: "#72b2ed",
     medium: "#3a98f1",
   },
   grey: {
@@ -23,6 +26,7 @@ const colors = {
   },
   // "Copy" Button for new game link
   white: "#ffffff",
+  black: "#000000"
 };
 
 export const theme = createMuiTheme({
@@ -50,6 +54,7 @@ export const theme = createMuiTheme({
   blue: colors.blue,
   grey: colors.grey,
   white: colors.white,
+  black: colors.black,
   palette: {
     primary: { main: "#32be72", contrastText: "#fff" }, // This is Green, for "Create Game", "New Game", "Done"
   },

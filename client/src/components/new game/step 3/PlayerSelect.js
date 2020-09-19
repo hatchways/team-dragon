@@ -7,23 +7,23 @@ import {
   FormLabel,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import { red, blue, grey } from "@material-ui/core/colors";
+import { red, blue, grey, black } from "@material-ui/core/colors";
 
-// import { makeStyles, createStyles } from "@material-ui/core/styles";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
 
-// const useStyles = makeStyles((theme) =>
-//   createStyles({
-//     color: {
-//       noTeamColor: theme.grey.medium,
-//       blueTeamColor: theme.blue.medium,
-//       redTeamColor: theme.red.medium,
-//     },
-//   })
-// );
-
-const noTeamColor = grey[500];
-const blueTeamColor = blue[500];
-const redTeamColor = red[500];
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    playerLabel: {
+      color: theme.grey.dark,
+      fontSize: "1.1rem",
+      marginBottom: ".5rem"
+    },
+  })
+  );
+  
+  const noTeamColor = grey[500];
+  const blueTeamColor = blue[500];
+  const redTeamColor = red[500];
 
 const NoTeamRadio = withStyles({
   root: {
@@ -56,6 +56,8 @@ const RedRadio = withStyles({
 })((props) => <Radio color="default" {...props} />);
 
 const PlayerSelect = (props) => {
+  const classes = useStyles();
+
   const handleChange = (event) => {
     //Following conditional statements remove player a spymaster who is moved to no team
     if (
@@ -86,7 +88,7 @@ const PlayerSelect = (props) => {
   return (
     <>
       <FormControl component="fieldset">
-        <FormLabel component="legend">{props.player.name}</FormLabel>
+        <FormLabel className={classes.playerLabel}  component="legend">{props.player.name}</FormLabel>
         <RadioGroup
           aria-label="team"
           name="team1"
