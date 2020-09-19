@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) =>
     titleDivider: {
       borderTop: `7px solid ${theme.palette.primary.main}`,
       width: "5rem",
-      marginTop: "1rem"
+      marginTop: "1rem",
     },
   })
 );

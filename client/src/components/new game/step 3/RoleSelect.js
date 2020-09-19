@@ -27,11 +27,10 @@ const useStyles = makeStyles((theme) => ({
   },
   blueHelper: {
     color: theme.blue.medium,
-  }
+  },
 }));
 
 const RoleSelect = (props) => {
-  console.log(props);
   const classes = useStyles();
   // const playerData = localStorage.getItem("players");
   // console.log(playerData);
@@ -92,9 +91,13 @@ const RoleSelect = (props) => {
             {displayTeam()}
           </Select>
           {props.color === "red" ? (
-            <FormHelperText className={classes.redHelper}>Team Red</FormHelperText>
+            <FormHelperText className={classes.redHelper}>
+              Team Red
+            </FormHelperText>
           ) : (
-            <FormHelperText className={classes.blueHelper}>Team Blue</FormHelperText>
+            <FormHelperText className={classes.blueHelper}>
+              Team Blue
+            </FormHelperText>
           )}
         </FormControl>
       </div>
