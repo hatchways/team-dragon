@@ -1,23 +1,56 @@
 import React, { useEffect } from "react";
-// import { useEmails, useNewGame } from "../../../DataContext";
-import openSocket from "socket.io-client";
+import { useEmails, useNewGame } from "../../../DataContext";
+import io from "socket.io-client";
+import axios from 'axios';
+
+const socket = io();
 
 const StepTwo = () => {
   // const emailsContext = useEmails();
   // const [emails] = emailsContext;
 
-  // const newGameContext = useNewGame();
-  // const [newGame, setNewGame] = newGameContext;
+  const newGameContext = useNewGame();
+  const [newGame, setNewGame] = newGameContext;
 
   useEffect(() => {
-    console.log("User joins the match");
-    const socket = openSocket("http://localhost:3001");
-    socket.on("connect", () => {
-      socket.on("join-match", (data) => {
-        alert("New user joined Match");
+    // socket.on("connect", () => {
+      // User joins the match
+      if(newGame.match){
+        socket.emit("joinMatch", { match: newGame.match });
+      }
+      // User joined the match
+      socket.on("userjoined", (msg) => {
+        console.log(msg);
       });
-    });
-  }, []);
+    // });
+
+    // close the socket when page is left
+    return () => socket.disconnect();
+  }, [newGame]);
+
+  // Join Match Request
+  const joinMatch = async () => {
+    if (!newGame.match) {
+      console.log("waiting for match...");
+    } 
+    else if(!newGame.match.id){
+      console.log("waiting for match id...");
+    }else {
+      const res = await axios.post(`/match/${newGame.match.id}`);
+      if (!res.data) {
+        console.log("Waiting for player...");
+      } else {
+        setNewGame((prevState) => ({
+          ...prevState,
+          match: res.data.match,
+        }));
+      }
+    }
+  };
+  console.log(newGame.match.players);
+  useEffect(() => {
+    joinMatch();
+  }, [newGame]);
 
   //  // Calls API if no locally stored data, with otherwise use local data.
   //  const getNewMatch = async () => {

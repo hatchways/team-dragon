@@ -40,6 +40,7 @@ function Chat(props) {
 
   useEffect(() => {
     socket.on("connect", () => {
+      console.log("connected to chat")
       socket.emit("join", room, ({ name, history }) => {
         setName(name);
         setMessages(history); 

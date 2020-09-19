@@ -16,6 +16,8 @@ const indexRouter = require("./routes/index");
 const gameRouter = require("./routes/game");
 const authRouter = require("./routes/auth");
 const User = require('./models/User');
+// All matches are stored in this variable
+const {allMatches} = require('./models/gameModel/allMatches');
 
 // app configuration
 var app = express();

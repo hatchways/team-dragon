@@ -12,6 +12,7 @@ class Game {
     this.turn = "blue";
     this.cardsFlipped = 0;
     this.players = [];
+    this.currentUser = null;
     console.log("Match ID:", this.id);
   }
 
@@ -143,6 +144,11 @@ class Game {
 
   joinMatch(user){
     this.players.push(user);
+    return this.players;
+  }
+
+  setCurrentUser(user){
+    this.currentUser = user;
   }
 }
 

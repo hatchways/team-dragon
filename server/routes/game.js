@@ -6,7 +6,7 @@ router.post('/create-match', gameController.postCreateMatch);
 
 router.get('/create-match', gameController.getCreateMatch);
 
-router.get('/match/:id', gameController.joinMatch);
+router.post('/match/:id', gameController.joinMatch);
 
 router.get('/match/move/:playerId',gameController.playerMove);
 
