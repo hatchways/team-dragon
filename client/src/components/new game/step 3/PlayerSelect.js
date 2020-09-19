@@ -16,14 +16,14 @@ const useStyles = makeStyles((theme) =>
     playerLabel: {
       color: theme.grey.dark,
       fontSize: "1.1rem",
-      marginBottom: ".5rem"
+      marginBottom: ".5rem",
     },
   })
-  );
-  
-  const noTeamColor = grey[500];
-  const blueTeamColor = blue[500];
-  const redTeamColor = red[500];
+);
+
+const noTeamColor = grey[500];
+const blueTeamColor = blue[500];
+const redTeamColor = red[500];
 
 const NoTeamRadio = withStyles({
   root: {
@@ -88,7 +88,9 @@ const PlayerSelect = (props) => {
   return (
     <>
       <FormControl component="fieldset">
-        <FormLabel className={classes.playerLabel}  component="legend">{props.player.name}</FormLabel>
+        <FormLabel className={classes.playerLabel} component="legend">
+          {props.player.name}
+        </FormLabel>
         <RadioGroup
           aria-label="team"
           name="team1"

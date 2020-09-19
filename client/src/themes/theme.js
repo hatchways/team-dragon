@@ -5,7 +5,6 @@ const colors = {
     //Red Team + Logged in Users chat bubble
     light: "#e6918a",
     medium: "#f86255",
-
   },
   blue: {
     // Blue Team
@@ -26,7 +25,7 @@ const colors = {
   },
   // "Copy" Button for new game link
   white: "#ffffff",
-  black: "#000000"
+  black: "#000000",
 };
 
 export const theme = createMuiTheme({
