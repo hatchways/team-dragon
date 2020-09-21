@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useEmails, useNewGame } from "../../../DataContext";
 import io from "socket.io-client";
-import axios from 'axios';
+import axios from "axios";
 
 const socket = io();
 
@@ -14,14 +14,14 @@ const StepTwo = () => {
 
   useEffect(() => {
     // socket.on("connect", () => {
-      // User joins the match
-      if(newGame.match){
-        socket.emit("joinMatch", { match: newGame.match });
-      }
-      // User joined the match
-      socket.on("userjoined", (msg) => {
-        console.log(msg);
-      });
+    // User joins the match
+    if (newGame.match) {
+      socket.emit("joinMatch", { match: newGame.match });
+    }
+    // User joined the match
+    socket.on("userjoined", (msg) => {
+      console.log(msg);
+    });
     // });
 
     // close the socket when page is left
@@ -32,10 +32,9 @@ const StepTwo = () => {
   const joinMatch = async () => {
     if (!newGame.match) {
       console.log("waiting for match...");
-    } 
-    else if(!newGame.match.id){
+    } else if (!newGame.match.id) {
       console.log("waiting for match id...");
-    }else {
+    } else {
       const res = await axios.post(`/match/${newGame.match.id}`);
       if (!res.data) {
         console.log("Waiting for player...");
@@ -47,9 +46,11 @@ const StepTwo = () => {
       }
     }
   };
+
+  console.log(newGame);
   useEffect(() => {
     joinMatch();
-  }, [newGame]);
+  }, []);
 
   //  // Calls API if no locally stored data, with otherwise use local data.
   //  const getNewMatch = async () => {

@@ -13,8 +13,6 @@ exports.socket = (server) => {
       // User joins the match
       socket.join(match.id);
       const user = match.currentUser;
-      console.log(user.name)
-      console.log(allMatches.getMatch(match.id).joinMatch(user)[0].name);
 
       // User joining notification to the all players
       socket.emit("userjoined", `${user.name} joined the match`);

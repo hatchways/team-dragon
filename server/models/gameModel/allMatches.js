@@ -8,7 +8,7 @@ module.exports = {
   getMatch: (matchId) => {
     return allMatches.get(matchId);
   },
-  getMatches: () => {
-    return allMatches.keys();
+  getAllMatches: () => {
+    return allMatches;
   }
 };

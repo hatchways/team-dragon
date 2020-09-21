@@ -50,6 +50,12 @@ exports.postCreateMatch = async (req, res, next) => {
     });
     const result = await match.save();
 
+    if(!result){
+      return res
+        .status(404)
+        .json({ success: false, error: "Match not saved"});
+    }
+    
     // Assign Team to player
     gameEngine.assignTeam(player1, "red");
     gameEngine.assignTeam(player2, "blue");
@@ -89,7 +95,7 @@ exports.joinMatch = async (req, res, next) => {
       errors: { err: "Match id not provided" },
     });
   }
-  
+
   const matchId = req.params.id;
   // If user is not signed in yet
    if(!req.user){
@@ -123,14 +129,14 @@ exports.joinMatch = async (req, res, next) => {
     // console.log("Match found:",playerDoc[0])
 
     // If user was already in match
-    if (playerDoc[0]) {
-      console.log("Welcome back to match", playerDoc);
+    // if (playerDoc[0]) {
+    //   console.log("Welcome back to match", playerDoc);
 
-      return res.status(200).json({ match: match });
-    }
+    //   return res.status(200).json({ match: match });
+    // }
 
     // Fetch players array from current match
-    const currentPlayers = match.players;
+    // const currentPlayers = match.players;
     let newPlayer = {
       userId: user._id,
       name: user.name,
@@ -140,14 +146,11 @@ exports.joinMatch = async (req, res, next) => {
     const result = await match.save();
     console.log("Player joined:", user.name);
 
-    // player = {
-    //   name: user.name,
-    //   matchId: user.matchId,
-    // };
-    
-    // globalState.gameEngine.joinMatch(player);
-
-    res.status(200).json({ match: match });
+    let currentMatch = allMatches.getAllMatches().get(parseInt(matchId));
+    currentMatch.joinMatch(newPlayer); 
+    currentMatch.setCurrentUser(user)
+    console.log(currentMatch)
+    res.status(200).json({ match: currentMatch });
   } catch (err) {
     if (err) {
       console.log(err);
