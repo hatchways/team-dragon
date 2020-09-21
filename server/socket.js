@@ -50,10 +50,12 @@ exports.socket = (server) => {
     socket.on("disconnect", () => {
       console.log("user disconnected");
 
-      // update users currently in the chat
-      roomDetails[socketRoomId].users = roomDetails[socketRoomId].users.filter(
-        (user) => user.id !== socket.id,
-      );
+      if (roomDetails[socketRoomId] !== undefined) {
+        // update users currently in the chat
+        roomDetails[socketRoomId].users = roomDetails[
+          socketRoomId
+        ].users.filter((user) => user.id !== socket.id);
+      }
     });
   });
 };
