@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, withRouter, matchPath } from 'react-router-dom';
+import { withRouter, matchPath } from 'react-router-dom';
 import { makeStyles } from "@material-ui/core";
 import BrandBar from './BrandBar';
 import MatchBar from './MatchBar';
