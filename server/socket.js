@@ -7,7 +7,6 @@ exports.socket = (server) => {
 
   io.on("connection", (socket) => {
     console.log("user connected");
-    socketExp = socket;
 
     // Waiting room for players
     socket.on("joinMatch", ({ match }) => {

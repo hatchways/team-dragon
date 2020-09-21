@@ -47,7 +47,6 @@ const StepTwo = () => {
       }
     }
   };
-  console.log(newGame.match.players);
   useEffect(() => {
     joinMatch();
   }, [newGame]);

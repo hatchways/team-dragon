@@ -2,7 +2,6 @@ const allMatches = require('../models/gameModel/allMatches');
 const Game = require("../models/gameEngine/Game");
 const Match = require("../models/gameModel/Match");
 const User = require("../models/User");
-const Player = require("../models/gameModel/Players");
 let globalState = {};
 
 exports.postCreateMatch = async (req, res, next) => {
@@ -16,7 +15,7 @@ exports.postCreateMatch = async (req, res, next) => {
       id: 13255,
       name: "Derrick",
     };
-    if(!req.user._id){
+    if(!req.user){
       return res
         .status(404)
         .json({ success: false, error:"Please Sign in !" });
@@ -82,8 +81,25 @@ exports.getCreateMatch = (req, res, next) => {
 
 // Get route when a user joins the match
 exports.joinMatch = async (req, res, next) => {
+
+  // If Match id is undefined
+  if(!req.params.id){
+    return res.status(404).json({
+      success: false,
+      errors: { err: "Match id not provided" },
+    });
+  }
+  
   const matchId = req.params.id;
+  // If user is not signed in yet
+   if(!req.user){
+    return res.status(404).json({
+      success: false,
+      errors: { err: "User not signed in" },
+    });
+   }
   const userId = req.user._id;
+
   try {
     //Find match using id
     const match = await Match.findOne({ matchId: matchId });
@@ -91,7 +107,7 @@ exports.joinMatch = async (req, res, next) => {
     if (!match) {
       return res.status(404).json({
         success: false,
-        errors: { email: "Match doesn't exist" },
+        errors: { err: "Match doesn't exist" },
       });
     }
 
@@ -100,7 +116,7 @@ exports.joinMatch = async (req, res, next) => {
     if (!user) {
       return res
         .status(404)
-        .json({ success: false, errors: { email: "User does not exist" } });
+        .json({ success: false, errors: { err: "User does not exist" } });
     }
 
     let playerDoc = await Match.find({matchId: matchId}).find({"players.userId": userId});
@@ -123,7 +139,7 @@ exports.joinMatch = async (req, res, next) => {
     match.players.push(newPlayer);
     const result = await match.save();
     console.log("Player joined:", user.name);
-    allMatches.
+
     // player = {
     //   name: user.name,
     //   matchId: user.matchId,
