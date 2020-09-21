@@ -1,12 +1,12 @@
 import React from "react";
-import { Link } from 'react-router-dom';
-import { makeStyles } from "@material-ui/core/styles";
+import { Link } from "react-router-dom";
+import { makeStyles } from "@material-ui/core";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   root: {
-    width: "100%",
-    height: "12vh",
-    background: theme.white,
+    width: "90%",
+    height: "100%",
+    margin: "0 auto",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -21,16 +21,16 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const NavBar = () => {
+const BrandBar = () => {
   const classes = useStyles();
 
   return (
-    <header className={classes.root}> 
+    <div className={classes.root}>
       <h1 className={classes.brand}>
         <Link to="/">Cluewords</Link>
       </h1>
-    </header>
+    </div>
   );
-}
+};
 
-export default NavBar;
+export default BrandBar;
