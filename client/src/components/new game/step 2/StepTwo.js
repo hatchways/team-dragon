@@ -31,13 +31,13 @@ const StepTwo = () => {
       socket.emit("joinmatch", data);
       console.log('karldata', data)
       // New user joining notification
-      socket.on("joinedmatch", (data) => {
+      socket.on("joined-match", (data) => {
         alert(data);
         console.log("Current Room: ", room);
       });
 
       // Updated players array (Data lagging one step behind and needs to be fixed)
-      socket.on("updateplayers", (players) => {
+      socket.on("update-players", (players) => {
         setPlayers(players);
         console.log("Updated Players: ", players);
       });
