@@ -50,18 +50,14 @@ const NewGame = (props) => {
   useEffect(() => {
     if (gameData) {
       setNewGame(JSON.parse(localStorage.getItem("newGame")));
-    } else {
-      setNewGame((prevState) => ({
-        ...prevState,
-        matchId: props.match.params.id,
-      }));
     }
 
-    if (newGame.matchId !== props.match.params.id) {
+    //Catching errors in local storage
+    if (newGame.matchId !== Number(props.match.params.id)) {
       setNewGame((prevState) => ({
         ...prevState,
         step: 1,
-        matchId: props.match.params.id,
+        matchId: Number(props.match.params.id),
       }));
     }
   }, []);
@@ -109,9 +105,8 @@ const NewGame = (props) => {
     };
 
     let matchDetails = setMatch(newGame, players, spymaster);
-
   };
-  console.log(newGame)
+  console.log(newGame);
 
   const newGameSteps = () => {
     const { step } = newGame;

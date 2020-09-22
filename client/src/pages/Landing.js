@@ -29,15 +29,14 @@ const Landing = (props) => {
   const [newGame, setNewGame] = newGameContext;
 
   const startNewGame = async () => {
-    console.log(localStorage.getItem("name"))
     try {
       const getData = await axios.post("/create-match");
-      console.log(getData.data)
       await setNewGame((prevState) => ({
         ...prevState,
       hostId: localStorage.getItem("id"),
       matchId: getData.data.match.id,
       }));
+      await localStorage.setItem("newGame", JSON.stringify(newGame));
       await props.history.push(String(getData.data.match.id));
     } catch (err) {
       console.log(err);
