@@ -15,6 +15,7 @@ import {
 } from "@material-ui/core";
 
 import { makeStyles, createStyles } from "@material-ui/core/styles";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -104,8 +105,16 @@ const NewGame = (props) => {
       };
     };
 
-    let matchDetails = setMatch(newGame, players, spymaster);
+    try {
+      const matchDetails = await setMatch(newGame, players, spymaster);
+      console.log("matchDetails", matchDetails);
+      //await axios.post("/start-match")
+      //Push to new link?
+    } catch (err) {
+      console.log(err);
+    }
   };
+
   console.log(newGame);
 
   const newGameSteps = () => {
@@ -143,13 +152,7 @@ const NewGame = (props) => {
               </Button>
             ) : (
               //Needs Logic here to initiate final role allocation.
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={startGame}
-                component={Link}
-                to="/LINK-FROM-JORAWAR"
-              >
+              <Button variant="contained" color="primary" onClick={startGame}>
                 Create Game
               </Button>
             )}
