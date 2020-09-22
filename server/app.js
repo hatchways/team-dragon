@@ -17,7 +17,8 @@ const gameRouter = require("./routes/game");
 const authRouter = require("./routes/auth");
 const User = require("./models/User");
 const matchSocket = require("./matchSocket");
-
+const sharedSession = require("express-socket.io-session");
+var matchIO;
 // app configuration
 var app = express();
 
@@ -36,17 +37,15 @@ app.use(logger("dev"));
 app.use(passport.initialize());
 passport.use(passportStrategy);
 
-
+var sessionMiddleware = session({
+  secret: "my secret",
+  resave: false,
+  saveUninitialized: false,
+  store: store,
+});
 
 // Session for the user
-app.use(
-  session({
-    secret: "my secret",
-    resave: false,
-    saveUninitialized: false,
-    store: store,
-  })
-);
+app.use(sessionMiddleware);
 
 app.use((req, res, next) => {
   if (!req.session.user) {
@@ -55,10 +54,15 @@ app.use((req, res, next) => {
   User.findById(req.session.user._id)
     .then((user) => {
       req.user = user;
+      
       next();
     })
     .catch((err) => console.log(err));
 });
+matchIO = matchSocket.init();
+matchIO.use(sharedSession(sessionMiddleware,{
+  autoSave:true
+}));
 
 // database connection using Mongoose
 mongoose
@@ -69,7 +73,6 @@ mongoose
   })
   .then(() => {
     console.log("Connected to database");
-    matchSocket.init();
   })
   .catch((err) => console.log(err));
 

@@ -10,9 +10,9 @@ module.exports = {
     io.on("connection", (socket) => {
       socketExport = socket;
       console.log("Match socket connected");
-
+      console.log(socket.handshake.session)
       // Socket listener for match rooms
-      socket.on("joinmatch", ({ room, matchId }) => {
+      socket.on("join-match", ({ room, matchId }) => {
         socket.join(room);
         Match.findOne({ matchId: matchId })
           .then((match) => {
@@ -22,7 +22,7 @@ module.exports = {
           })
           .catch((err) => console.log(err));
           // New user joined notification
-        io.to(room).emit("joinedmatch", "New user joined");
+        io.to(room).emit("joined-match", "New user joined");
       });
 
       // Socket listener for next move
@@ -31,6 +31,7 @@ module.exports = {
         currentMatch.pickCard(playerId,cardIndex); // Result of the move would be in console for now
       });
     });
+    return io;
   },
   getMatchIO: () => {
     return ioExport;
