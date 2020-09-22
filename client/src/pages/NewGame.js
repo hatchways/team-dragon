@@ -2,10 +2,6 @@ import React, { useEffect } from "react";
 import StepOne from "../components/new game/step 1/StepOne.js";
 import StepTwo from "../components/new game/step 2/StepTwo.js";
 import StepThree from "../components/new game/step 3/StepThree.js";
-import { Link } from "react-router-dom";
-import axios from "axios";
-
-// import Loading from "../components/new game/Loading.js";
 import { useNewGame, usePlayers, useSpyMaster } from "../DataContext";
 import {
   Button,
@@ -14,14 +10,22 @@ import {
   Grid,
   Typography,
   Card,
+  Box,
 } from "@material-ui/core";
 
 import { makeStyles, createStyles } from "@material-ui/core/styles";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
     card: {
       padding: "2rem",
+      marginTop: "2rem",
+    },
+    titleDivider: {
+      borderTop: `7px solid ${theme.palette.primary.main}`,
+      width: "5rem",
+      marginTop: "1rem",
     },
   })
 );
@@ -43,33 +47,17 @@ const NewGame = (props) => {
 
   const gameData = localStorage.getItem("newGame");
 
-  // Get Match
-  const getMatch = async () => {
-    const res = await axios.get("/create-match");
-    setNewGame((prevState) => ({
-      ...prevState,
-      match: res.data.match,
-    }));
-  };
-
-
-  //Users joining the match
   useEffect(() => {
-    getMatch();
     if (gameData) {
       setNewGame(JSON.parse(localStorage.getItem("newGame")));
-    } else {
-      setNewGame((prevState) => ({
-        ...prevState,
-        matchId: props.match.params.id,
-      }));
     }
 
-    if (newGame.matchId !== props.match.params.id) {
+    //Catching errors in local storage
+    if (newGame.matchId !== Number(props.match.params.id)) {
       setNewGame((prevState) => ({
         ...prevState,
         step: 1,
-        matchId: props.match.params.id,
+        matchId: Number(props.match.params.id),
       }));
     }
   }, []);
@@ -78,6 +66,22 @@ const NewGame = (props) => {
   useEffect(() => {
     localStorage.setItem("newGame", JSON.stringify(newGame));
   }, [newGame]);
+
+  const resetNewGame = async () => {
+    try {
+      const getData = await axios.post("/create-match");
+      await setNewGame((prevState) => ({
+        ...prevState,
+        step: 1,
+        hostId: localStorage.getItem("id"),
+        matchId: getData.data.match.id,
+      }));
+      await localStorage.setItem("newGame", JSON.stringify(newGame));
+      await props.history.push(String(getData.data.match.id));
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const nextStep = () => {
     const { step } = newGame;
@@ -93,7 +97,6 @@ const NewGame = (props) => {
 
       let playerAssign = players.map((player) => {
         if (spyMasters.includes(player.id)) {
-          console.log(player);
           return {
             id: player.id,
             name: player.name,
@@ -116,9 +119,16 @@ const NewGame = (props) => {
       };
     };
 
-    let matchDetails = setMatch(newGame, players, spymaster);
-
+    try {
+      const matchDetails = await setMatch(newGame, players, spymaster);
+      console.log("matchDetails", matchDetails);
+      //await axios.post("/start-match")
+      //Push to new link?
+    } catch (err) {
+      console.log(err);
+    }
   };
+
 
   const newGameSteps = () => {
     const { step } = newGame;
@@ -139,32 +149,45 @@ const NewGame = (props) => {
   return (
     <Container maxWidth="md">
       <Card className={classes.card}>
-        <Typography align="center" variant="h1">
-          New Game
-        </Typography>
+        <Box minHeight={400}>
+          <Typography align="center" variant="h1">
+            New game
+          </Typography>
 
-        <Divider />
-
-        {newGameSteps()}
-
-        <Grid container direction="row" justify="center" alignItems="center">
-          {newGame.step < 3 ? (
-            <Button variant="contained" color="primary" onClick={nextStep}>
-              Next
-            </Button>
-          ) : (
-            //Needs Logic here to initiate final role allocation.
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={startGame}
-              component={Link}
-              to="/LINK-FROM-JORAWAR"
-            >
-              Create Game
-            </Button>
-          )}
-        </Grid>
+          <Grid container direction="row" justify="center" alignItems="center">
+            <Divider className={classes.titleDivider} />
+          </Grid>
+          {newGameSteps()}
+          <Grid
+            container
+            direction="row"
+            justify="center"
+            spacing={2}
+            alignItems="center"
+          >
+            <Box mx={2}>
+              {newGame.step < 3 ? (
+                <Button variant="contained" color="primary" onClick={nextStep}>
+                  Next
+                </Button>
+              ) : (
+                //Needs Logic here to initiate final role allocation.
+                <Button variant="contained" color="primary" onClick={startGame}>
+                  Create Game
+                </Button>
+              )}
+            </Box>
+            <Box  mx={2}>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={resetNewGame}
+              >
+                Start Over
+              </Button>
+            </Box>
+          </Grid>
+        </Box>
       </Card>
     </Container>
   );

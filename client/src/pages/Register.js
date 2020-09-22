@@ -60,7 +60,7 @@ const Register = (props) => {
       window.localStorage.setItem('name', data.user.name);
       window.localStorage.setItem('token', data.token);
 
-      props.history.push('/new');
+      props.history.push('/');
     } catch(err) {
       if(err.response) {
         const errObj = err.response.data;
