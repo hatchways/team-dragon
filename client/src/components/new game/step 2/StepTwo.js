@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNewGame, usePlayers } from "../../../DataContext";
-import io from "socket.io-client";
-import axios from "axios";
 
-const socket = io();
+import axios from "axios";
+import socket from '../../../socket';
 
 const StepTwo = () => {
   // const emailsContext = useEmails();

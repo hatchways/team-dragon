@@ -18,6 +18,8 @@ const colors = {
     light: "#ebf1f8",
     // other users' chat bubbles
     medium: "#ebebeb",
+    // innocent color text,
+    mediumDark: "#bfbfbf",
     // "Send Invite" on new game + "Make Your Move"
     dark: "#5d5d5d",
   },

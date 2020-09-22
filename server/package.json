@@ -5,12 +5,15 @@
   "scripts": {
     "dev": "nodemon ./bin/www",
     "debug": "nodemon  --inspect ./bin/www",
-    "test": "NODE_ENV=test ./node_modules/.bin/mocha --exit --timeout 30000"
+    "test": "NODE_ENV=test ./node_modules/.bin/mocha --exit --timeout 30000",
+    "lint": "npx eslint '**/*.js' --ignore-pattern node_modules/ --ignore-pattern test/",
+    "lint:fix": "prettier --write --ignore-path node_modules/ --ignore-path test/"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "connect-mongodb-session": "^2.4.1",
     "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
     "debug": "~2.6.9",
     "dotenv": "^8.2.0",
     "express": "~4.16.1",
@@ -19,27 +22,21 @@
     "is-empty": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.20",
-    "mongoose": "^5.10.5",
+    "mongoose": "^5.10.6",
     "morgan": "~1.9.1",
     "nodemon": "^1.19.4",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "random-words": "^1.1.1",
     "socket.io": "^2.3.0",
-    "validator": "^13.1.1"
+    "validator": "^13.1.17"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
-    "cors": "^2.8.5",
     "eslint": "^7.9.0",
-    "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-react": "^7.20.6",
-    "eslint-plugin-react-hooks": "^4.1.2",
     "mocha": "^6.2.3",
     "prettier": "2.1.2"
   }
