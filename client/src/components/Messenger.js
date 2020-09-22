@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
+import List from "@material-ui/core/List";
 import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles( theme => ({
   root: {
@@ -19,7 +21,6 @@ const useStyles = makeStyles( theme => ({
     overflow: "auto",
   },
   message: {
-    margin: "0.7rem 0",
     padding: "0.8rem",
     width: "auto",
   },
@@ -35,7 +36,6 @@ const useStyles = makeStyles( theme => ({
     display: "inline-block",
   },
   messageMe: {
-    margin: "0.7rem 0",
     padding: "0.8rem",
     width: "auto",
     display: "flex",
@@ -61,8 +61,12 @@ const useStyles = makeStyles( theme => ({
 
 const Messenger = (props) => {
   const classes = useStyles();
-
+  const elRef = React.useRef(null);
   const [messageInput, setMessageInput] = useState('');
+
+  useEffect(() => {
+    elRef.current.scrollTop = elRef.current.scrollHeight;
+  }, [props.messages]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -72,22 +76,28 @@ const Messenger = (props) => {
 
   return (
     <div className={classes.root}>
-      <div className={classes.messageContainer}>
+      <List className={classes.messageContainer} ref={elRef}>
         {props.messages.map(m => (
           m.sender === props.currentUser
             ? (
               <div key={m.id} className={classes.messageMe}>
-                <div className={classes.messageMeMsg}>{m.message}</div>
+                <Typography className={classes.messageMeMsg}>
+                  {m.message}
+                </Typography>
               </div>
             )
             : (
               <div key={m.id} className={classes.message}>
-                <div className={classes.messageSender}>{m.sender}:</div>
-                <div className={classes.messageMsg}>{m.message}</div>
+                <Typography className={classes.messageSender}>
+                  {m.sender}:
+                </Typography>
+                <Typography className={classes.messageMsg}>
+                  {m.message}
+                </Typography>
               </div>
             )
         ))}
-      </div>
+      </List>
       <Divider /> 
       <form 
         className={classes.messageInput}

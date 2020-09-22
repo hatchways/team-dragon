@@ -63,6 +63,10 @@ const BoardCard = (props) => {
   )
 }
 
+BoardCard.defaultProps = {
+  spyMaster: false,
+}
+
 BoardCard.propTypes = {
   word: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,

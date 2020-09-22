@@ -23,7 +23,7 @@ const Board = (props) => {
     <div className={classes.root}>
       {props.board.map((card, idx) => (
         <BoardCard
-          spyMaster
+          spyMaster={props.spyMaster}
           key={idx} 
           word={card.word}
           type={card.type}
@@ -32,6 +32,10 @@ const Board = (props) => {
       ))}
     </div>
   );
+}
+
+Board.defaultProps = {
+  spyMaster: false,
 }
 
 Board.propTypes = {

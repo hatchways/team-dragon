@@ -45,7 +45,6 @@ const useStyles = makeStyles(theme => ({
 
 const Match = (props) => {
   const classes = useStyles();
-
   const [name, setName] = useState([]);
   const [messages, setMessages] = useState([]);
   const [board, setBoard] = useState([]);
@@ -83,7 +82,10 @@ const Match = (props) => {
         messages={messages}
         sendMessage={sendMessage}
       />
-      <Board board={board} />
+      <Board
+        spyMaster
+        board={board} 
+      />
     </div>
   );
 }
