@@ -10,7 +10,7 @@ import NewGame from "./pages/NewGame";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Match from "./pages/Match";
-import CreateGameForm from './components/CreateGameForm'; //testing request /create-match
+import CreateGameForm from "./components/CreateGameForm"; //testing request /create-match
 import GameSetup from "./components/GameSetup";
 
 function App() {

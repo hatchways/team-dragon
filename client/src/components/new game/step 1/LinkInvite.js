@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) =>
     copyConfirm: {
       color: theme.palette.primary.main,
     },
-  })
+  }),
 );
 
 const LinkInvite = (props) => {
@@ -29,7 +29,10 @@ const LinkInvite = (props) => {
   });
 
   useEffect(() => {
-    setCopy({ value: `http://localhost:3000/${newGame.matchId}`, copied: false });
+    setCopy({
+      value: `http://localhost:3000/${newGame.matchId}`,
+      copied: false,
+    });
   }, [newGame]);
 
   return (
@@ -39,7 +42,12 @@ const LinkInvite = (props) => {
         <Box my={".8rem"}>
           <CopyToClipboard
             text={copy.value}
-            onCopy={() => setCopy({ value: `http://localhost:3000/${newGame.matchId}`, copied: true })}
+            onCopy={() =>
+              setCopy({
+                value: `http://localhost:3000/${newGame.matchId}`,
+                copied: true,
+              })
+            }
           >
             <Button
               startIcon={<LinkIcon />}

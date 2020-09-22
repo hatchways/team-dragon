@@ -7,7 +7,7 @@ import List from "@material-ui/core/List";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 
-const useStyles = makeStyles( theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     height: "100%",
@@ -62,7 +62,7 @@ const useStyles = makeStyles( theme => ({
 const Messenger = (props) => {
   const classes = useStyles();
   const elRef = React.useRef(null);
-  const [messageInput, setMessageInput] = useState('');
+  const [messageInput, setMessageInput] = useState("");
 
   useEffect(() => {
     elRef.current.scrollTop = elRef.current.scrollHeight;
@@ -71,60 +71,50 @@ const Messenger = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     props.sendMessage(messageInput);
-    setMessageInput('');
-  }
+    setMessageInput("");
+  };
 
   return (
     <div className={classes.root}>
       <List className={classes.messageContainer} ref={elRef}>
-        {props.messages.map(m => (
-          m.sender === props.currentUser
-            ? (
-              <div key={m.id} className={classes.messageMe}>
-                <Typography className={classes.messageMeMsg}>
-                  {m.message}
-                </Typography>
-              </div>
-            )
-            : (
-              <div key={m.id} className={classes.message}>
-                <Typography className={classes.messageSender}>
-                  {m.sender}:
-                </Typography>
-                <Typography className={classes.messageMsg}>
-                  {m.message}
-                </Typography>
-              </div>
-            )
-        ))}
+        {props.messages.map((m) =>
+          m.sender === props.currentUser ? (
+            <div key={m.id} className={classes.messageMe}>
+              <Typography className={classes.messageMeMsg}>
+                {m.message}
+              </Typography>
+            </div>
+          ) : (
+            <div key={m.id} className={classes.message}>
+              <Typography className={classes.messageSender}>
+                {m.sender}:
+              </Typography>
+              <Typography className={classes.messageMsg}>
+                {m.message}
+              </Typography>
+            </div>
+          ),
+        )}
       </List>
-      <Divider /> 
-      <form 
-        className={classes.messageInput}
-        onSubmit={handleSubmit}
-      >
+      <Divider />
+      <form className={classes.messageInput} onSubmit={handleSubmit}>
         <TextField
           type="text"
           placeholder="Type here..."
           value={messageInput}
           onChange={(e) => setMessageInput(e.target.value)}
         />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          size="large"
-        >
+        <Button type="submit" variant="contained" color="primary" size="large">
           Done
         </Button>
       </form>
     </div>
-  )
-}
+  );
+};
 
 Messenger.propTypes = {
   messages: PropTypes.array.isRequired,
   sendMessage: PropTypes.func.isRequired,
-}
+};
 
 export default Messenger;

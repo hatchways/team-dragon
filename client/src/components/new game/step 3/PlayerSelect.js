@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) =>
       fontSize: "1.1rem",
       marginBottom: ".5rem",
     },
-  })
+  }),
 );
 
 const noTeamColor = grey[500];

@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) =>
       background: theme.grey.dark,
       color: theme.white,
     },
-  })
+  }),
 );
 
 const EmailInvite = () => {
