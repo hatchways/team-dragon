@@ -49,17 +49,15 @@ const NewGame = (props) => {
 
   useEffect(() => {
     if (gameData) {
-      console.log(gameData)
       setNewGame(JSON.parse(localStorage.getItem("newGame")));
-    } 
-    // else {
-    //   setNewGame((prevState) => ({
-    //     ...prevState,
-    //     matchId: props.match.params.id,
-    //   }));
-    // }
+    } else {
+      setNewGame((prevState) => ({
+        ...prevState,
+        matchId: props.match.params.id,
+      }));
+    }
 
-    if (newGame.matchId !== String(props.match.params.id)) {
+    if (newGame.matchId !== props.match.params.id) {
       setNewGame((prevState) => ({
         ...prevState,
         step: 1,
