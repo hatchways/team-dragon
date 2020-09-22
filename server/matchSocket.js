@@ -16,7 +16,7 @@ module.exports = {
         socket.join(room);
         Match.findOne({ matchId: matchId })
           .then((match) => {
-            console.log(match.players);
+            console.log("Players array inside socket: ",match.players);
             // Send updated players array to front
             io.to(room).emit("updateplayers",match.players)
           })

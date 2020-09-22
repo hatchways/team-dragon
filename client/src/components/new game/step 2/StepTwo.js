@@ -41,29 +41,29 @@ const StepTwo = () => {
     // return () => socket.disconnect();
   }, []);
 
-  // Join Match Request
-  const joinMatch = async () => {
-    if (!newGame.match) {
-      console.log("waiting for match...");
-    } else if (!newGame.match.id) {
-      console.log("waiting for match id...");
-    } else {
-      const res = await axios.post(`/match/${newGame.match.id}`);
-      if (!res.data) {
-        console.log("Waiting for player...");
-      } else {
-        setNewGame((prevState) => ({
-          ...prevState,
-          match: res.data.match,
-        }));
+  // // Join Match Request
+  // const joinMatch = async () => {
+  //   if (!newGame.match) {
+  //     console.log("waiting for match...");
+  //   } else if (!newGame.match.id) {
+  //     console.log("waiting for match id...");
+  //   } else {
+  //     const res = await axios.post(`/match/${newGame.match.id}`);
+  //     if (!res.data) {
+  //       console.log("Waiting for player...");
+  //     } else {
+  //       setNewGame((prevState) => ({
+  //         ...prevState,
+  //         match: res.data.match,
+  //       }));
         
-      }
-    }
-  };
+  //     }
+  //   }
+  // };
 
-  useEffect(() => {
-    joinMatch();
-  }, []);
+  // useEffect(() => {
+  //   joinMatch();
+  // }, []);
 
   //  // Calls API if no locally stored data, with otherwise use local data.
   //  const getNewMatch = async () => {
