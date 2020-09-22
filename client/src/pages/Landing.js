@@ -35,8 +35,8 @@ const Landing = (props) => {
       console.log(getData.data)
       await setNewGame((prevState) => ({
         ...prevState,
-       hostId: localStorage.getItem("id"),
-        matchId: getData.data.match.id,
+      hostId: localStorage.getItem("id"),
+      matchId: getData.data.match.id,
       }));
       await props.history.push(String(getData.data.match.id));
     } catch (err) {
