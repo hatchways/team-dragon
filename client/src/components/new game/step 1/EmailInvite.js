@@ -1,5 +1,5 @@
 import React from "react";
-import { useEmails } from "../../../DataContext";
+import { useEmails } from "../../../contexts/DataContext";
 import { useState } from "react";
 import {
   Typography,

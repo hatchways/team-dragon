@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import EmailInvite from "./EmailInvite";
 import LinkInvite from "./LinkInvite";
-import { useNewGame } from "../../../DataContext";
+import { useNewGame } from "../../../contexts/DataContext";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import { Divider, Grid, Box } from "@material-ui/core";
 
