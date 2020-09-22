@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Landing(props) {
+const Landing = (props) => {
   const classes = useStyles();
 
   const startNewGame = async () => {

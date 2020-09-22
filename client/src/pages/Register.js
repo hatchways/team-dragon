@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Register(props) {
+const Register = (props) => {
   const classes = useStyles();
 
   const [name, setName] = useState('');
