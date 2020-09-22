@@ -11,6 +11,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Chat from "./pages/Chat"; // testing socket.io
 import CreateGameForm from "./components/CreateGameForm"; //testing request /create-match
+import GameSetup from "./components/GameSetup";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             {/* testing socket.io */}
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
+            <Route exact path="/match/:id" component={GameSetup} />
             <Route exact path="/:id" component={NewGame} />
             <Route path="/" component={Landing} />
           </Switch>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useEmails, useNewGame } from "../../../DataContext";
+import { useEmails, useNewGame, usePlayers } from "../../../DataContext";
 import io from "socket.io-client";
 import axios from "axios";
 
@@ -13,12 +13,17 @@ const StepTwo = () => {
   const [newGame, setNewGame] = newGameContext;
   const [message, setMessage] = useState("");
 
+  const usePlayersContext = usePlayers();
+  const [players, setPlayers] = usePlayersContext;
+
+
+
   useEffect(() => {
     // User joins the match
     
-    if (newGame.match) {
-      let room = "match-" + newGame.match.id;
-      let matchId = newGame.match.id;
+    if (newGame.matchId) {
+      let room = "match-" + newGame.matchId;
+      let matchId = newGame.matchId;
       let data = {
         room: room,
         matchId: matchId
@@ -34,6 +39,7 @@ const StepTwo = () => {
 
       // Updated players array (Data lagging one step behind and needs to be fixed)
       socket.on("updateplayers",(players) => {
+        setPlayers(players)
         console.log("Updated Players: ", players);
       })
 
@@ -63,6 +69,17 @@ const StepTwo = () => {
     }
   };
 
+  const showPlayers = () => {
+    return players.map((player) => {
+      return (
+        <>
+        <p>Player ID {player.userId}</p>
+        <p>Player Name {player.name}</p>
+        </>
+      )
+    })
+  }
+
   useEffect(() => {
     joinMatch();
   }, []);
@@ -83,6 +100,7 @@ const StepTwo = () => {
   return (
     <>
       <h2>step2</h2>
+      {showPlayers()}
       <p>waiting room as people join. </p>
       <p>
         when players join, they will be added to a state on the host's frontend.
