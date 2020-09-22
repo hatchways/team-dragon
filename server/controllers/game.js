@@ -5,6 +5,7 @@ const User = require("../models/User");
 let globalState = {};
 
 exports.postCreateMatch = async (req, res, next) => {
+  console.log(req)
   try {
     // Hard coded data to be replaced by real users
     const player1 = {
