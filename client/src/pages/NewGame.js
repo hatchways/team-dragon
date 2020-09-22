@@ -68,6 +68,22 @@ const NewGame = (props) => {
     localStorage.setItem("newGame", JSON.stringify(newGame));
   }, [newGame]);
 
+  const resetNewGame = async () => {
+    try {
+      const getData = await axios.post("/create-match");
+      await setNewGame((prevState) => ({
+        ...prevState,
+        step: 1,
+        hostId: localStorage.getItem("id"),
+        matchId: getData.data.match.id,
+      }));
+      await localStorage.setItem("newGame", JSON.stringify(newGame));
+      await props.history.push(String(getData.data.match.id));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const nextStep = () => {
     const { step } = newGame;
     setNewGame((prevState) => ({
@@ -145,17 +161,34 @@ const NewGame = (props) => {
             <Divider className={classes.titleDivider} />
           </Grid>
           {newGameSteps()}
-          <Grid container direction="row" justify="center" alignItems="center">
-            {newGame.step < 3 ? (
-              <Button variant="contained" color="primary" onClick={nextStep}>
-                Next
+          <Grid
+            container
+            direction="row"
+            justify="center"
+            spacing={2}
+            alignItems="center"
+          >
+            <Box mx={2}>
+              {newGame.step < 3 ? (
+                <Button variant="contained" color="primary" onClick={nextStep}>
+                  Next
+                </Button>
+              ) : (
+                //Needs Logic here to initiate final role allocation.
+                <Button variant="contained" color="primary" onClick={startGame}>
+                  Create Game
+                </Button>
+              )}
+            </Box>
+            <Box  mx={2}>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={resetNewGame}
+              >
+                Start Over
               </Button>
-            ) : (
-              //Needs Logic here to initiate final role allocation.
-              <Button variant="contained" color="primary" onClick={startGame}>
-                Create Game
-              </Button>
-            )}
+            </Box>
           </Grid>
         </Box>
       </Card>
