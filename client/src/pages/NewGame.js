@@ -3,9 +3,6 @@ import StepOne from "../components/new game/step 1/StepOne.js";
 import StepTwo from "../components/new game/step 2/StepTwo.js";
 import StepThree from "../components/new game/step 3/StepThree.js";
 import { Link } from "react-router-dom";
-import axios from "axios";
-
-// import Loading from "../components/new game/Loading.js";
 import { useNewGame, usePlayers, useSpyMaster } from "../DataContext";
 import {
   Button,
@@ -14,6 +11,7 @@ import {
   Grid,
   Typography,
   Card,
+  Box,
 } from "@material-ui/core";
 
 import { makeStyles, createStyles } from "@material-ui/core/styles";
@@ -22,6 +20,10 @@ const useStyles = makeStyles((theme) =>
   createStyles({
     card: {
       padding: "2rem",
+      marginTop: "2rem",
+    },
+    titleDivider: {
+      borderTop: `7px solid ${theme.palette.primary.main}`,
     },
   })
 );
@@ -43,19 +45,7 @@ const NewGame = (props) => {
 
   const gameData = localStorage.getItem("newGame");
 
-  // Get Match
-  const getMatch = async () => {
-    const res = await axios.get("/create-match");
-    setNewGame((prevState) => ({
-      ...prevState,
-      match: res.data.match,
-    }));
-  };
-
-
-  //Users joining the match
   useEffect(() => {
-    getMatch();
     if (gameData) {
       setNewGame(JSON.parse(localStorage.getItem("newGame")));
     } else {
@@ -139,32 +129,34 @@ const NewGame = (props) => {
   return (
     <Container maxWidth="md">
       <Card className={classes.card}>
-        <Typography align="center" variant="h1">
-          New Game
-        </Typography>
+        <Box minHeight={400}>
+          <Typography align="center" variant="h1">
+            New game
+          </Typography>
 
-        <Divider />
-
-        {newGameSteps()}
-
-        <Grid container direction="row" justify="center" alignItems="center">
-          {newGame.step < 3 ? (
-            <Button variant="contained" color="primary" onClick={nextStep}>
-              Next
-            </Button>
-          ) : (
-            //Needs Logic here to initiate final role allocation.
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={startGame}
-              component={Link}
-              to="/LINK-FROM-JORAWAR"
-            >
-              Create Game
-            </Button>
-          )}
-        </Grid>
+          <Box mx="24rem" mt="1rem">
+            <Divider className={classes.titleDivider} />
+          </Box>
+          {newGameSteps()}
+          <Grid container direction="row" justify="center" alignItems="center">
+            {newGame.step < 3 ? (
+              <Button variant="contained" color="primary" onClick={nextStep}>
+                Next
+              </Button>
+            ) : (
+              //Needs Logic here to initiate final role allocation.
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={startGame}
+                component={Link}
+                to="/LINK-FROM-JORAWAR"
+              >
+                Create Game
+              </Button>
+            )}
+          </Grid>
+        </Box>
       </Card>
     </Container>
   );
