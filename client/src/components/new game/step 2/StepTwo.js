@@ -12,7 +12,6 @@ const StepTwo = () => {
   const newGameContext = useNewGame();
   const [newGame, setNewGame] = newGameContext;
   const [message, setMessage] = useState("");
-  // const [room, setRoom] = useState("");
 
   useEffect(() => {
     // User joins the match
@@ -29,7 +28,6 @@ const StepTwo = () => {
       socket.emit("joinmatch", data);
       // New user joining notification
       socket.on("joinedmatch", (data) => {
-        // setMessage(data);
         alert(data)
         console.log("Current Room: ",room)
       });
