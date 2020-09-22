@@ -95,8 +95,6 @@ const NewGame = (props) => {
     }));
   };
   
-  console.log('newGame', newGame)
-
   //Sends Date to Start Game
   const startGame = async (e) => {
     const setMatch = (newGame, players, spyMaster) => {

@@ -14,16 +14,15 @@ module.exports = {
       // Socket listener for match rooms
       socket.on("joinmatch", ({ room, matchId, email }) => {
         socket.join(room);
-        console.log('karl-email', email)
         Match.findOne({ matchId: matchId })
           .then((match) => {
             console.log(match.players);
             // Send updated players array to front
-            io.to(room).emit("updateplayers", match.players);
+            io.to(room).emit("update-players", match.players);
           })
           .catch((err) => console.log(err));
         // New user joined notification
-        io.to(room).emit("joinedmatch", "New user joined");
+        io.to(room).emit("joined-match", "New user joined");
       });
 
       // Socket listener for next move
