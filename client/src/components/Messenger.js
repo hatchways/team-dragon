@@ -30,7 +30,7 @@ const useStyles = makeStyles( theme => ({
   messageMsg: {
     margin: 0,
     padding: "1rem",
-    background: theme.grey.light,
+    background: theme.grey.medium,
     borderRadius: "0px 15px 15px 15px",
     display: "inline-block",
   },

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Typography } from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -26,9 +26,12 @@ const BrandBar = () => {
 
   return (
     <div className={classes.root}>
-      <h1 className={classes.brand}>
+      <Typography 
+        className={classes.brand}
+        variant="h3"
+      >
         <Link to="/">Cluewords</Link>
-      </h1>
+      </Typography>
     </div>
   );
 };

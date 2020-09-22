@@ -24,7 +24,8 @@ const Board = (props) => {
       {props.board.map((card, idx) => (
         <BoardCard 
           key={idx} 
-          text={card} 
+          word={card.word}
+          type={card.type}
         />
       ))}
     </div>
