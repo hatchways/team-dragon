@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import StepOne from "../components/new game/step 1/StepOne.js";
 import StepTwo from "../components/new game/step 2/StepTwo.js";
 import StepThree from "../components/new game/step 3/StepThree.js";
-import { Link } from "react-router-dom";
 import { useNewGame, usePlayers, useSpyMaster } from "../DataContext";
 import {
   Button,
@@ -98,7 +97,6 @@ const NewGame = (props) => {
 
       let playerAssign = players.map((player) => {
         if (spyMasters.includes(player.id)) {
-          console.log(player);
           return {
             id: player.id,
             name: player.name,
@@ -131,7 +129,6 @@ const NewGame = (props) => {
     }
   };
 
-  console.log(newGame);
 
   const newGameSteps = () => {
     const { step } = newGame;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useEmails, useNewGame, usePlayers } from "../../../DataContext";
+import { useNewGame, usePlayers } from "../../../DataContext";
 import io from "socket.io-client";
 import axios from "axios";
 

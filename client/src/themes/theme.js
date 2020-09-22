@@ -28,7 +28,7 @@ const colors = {
 
 export const theme = createMuiTheme({
   typography: {
-    fontFamily: "Arial",
+    fontFamily: "Roboto",
     fontSize: 12,
     button: {
       textTransform: "none",
