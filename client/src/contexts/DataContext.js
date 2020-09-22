@@ -40,6 +40,7 @@ export function DataProvider({ children }) {
   const [newGame, setNewGame] = useState({
     step: 1,
     matchId: "",
+    hostId: null,
     teamBlue: {
       spyMaster: "",
       agents: [],

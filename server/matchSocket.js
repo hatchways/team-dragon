@@ -12,7 +12,7 @@ module.exports = {
       console.log("Match socket connected");
 
       // Socket listener for match rooms
-      socket.on("joinmatch", ({ room, matchId, email }) => {
+      socket.on("join-match", ({ room, matchId, email }) => {
         socket.join(room);
         Match.findOne({ matchId: matchId })
           .then((match) => {

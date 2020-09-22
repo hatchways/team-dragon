@@ -49,27 +49,7 @@ const NewGame = (props) => {
   const newSpyMasterContext = useSpyMaster();
   const [spymaster] = newSpyMasterContext;
 
-  const gameData = localStorage.getItem("newGame");
 
-  useEffect(() => {
-    if (gameData) {
-      setNewGame(JSON.parse(localStorage.getItem("newGame")));
-    }
-
-    // Catching errors in local storage
-    if (newGame.matchId !== Number(props.value.match.params.id)) {
-      setNewGame((prevState) => ({
-        ...prevState,
-        step: 1,
-        matchId: Number(props.value.match.params.id),
-      }));
-    }
-  }, []);
-
-  // Stores New Game Info to Local Storage
-  useEffect(() => {
-    localStorage.setItem("newGame", JSON.stringify(newGame));
-  }, [newGame]);
 
   const resetNewGame = async () => {
     try {
@@ -94,7 +74,7 @@ const NewGame = (props) => {
       step: step + 1,
     }));
   };
-  
+
   //Sends Date to Start Game
   const startGame = async (e) => {
     const setMatch = (newGame, players, spyMaster) => {

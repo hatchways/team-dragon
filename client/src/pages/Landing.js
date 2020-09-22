@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useNewGame } from "../contexts/DataContext";
+import { useHost } from "../contexts/GameContext"
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Card, Container, Typography } from "@material-ui/core";
 import axios from "axios";
@@ -25,8 +26,11 @@ const Landing = (props) => {
   const classes = useStyles();
 
   //Holds Match ID + Template for Passing Roles to Server
-  const newGameContext = useNewGame();
-  const [newGame, setNewGame] = newGameContext;
+  const NewGameContext = useNewGame();
+  const [newGame, setNewGame] = NewGameContext;
+
+  const HostContext = useHost();
+  const [setIsHost] = HostContext
 
   const createNewGame = async () => {
     try {
@@ -36,6 +40,7 @@ const Landing = (props) => {
         hostId: localStorage.getItem("id"),
         matchId: getData.data.match.id,
       }));
+      // await setIsHost(() => true)
       await localStorage.setItem("newGame", JSON.stringify(newGame));
       await props.history.push(String(getData.data.match.id));
     } catch (err) {

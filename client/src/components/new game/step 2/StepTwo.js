@@ -29,7 +29,6 @@ const StepTwo = () => {
 
       // User joins the room
       socket.emit("join-match", data);
-      console.log('karldata', data)
       // New user joining notification
       socket.on("joined-match", (data) => {
         alert(data);
@@ -49,6 +48,7 @@ const StepTwo = () => {
 
   // Join Match Request
   const joinMatch = async () => {
+    console.log("running")
     if (!newGame.match) {
       console.log("waiting for match...");
     } else if (!newGame.match.id) {
@@ -78,18 +78,6 @@ const StepTwo = () => {
     joinMatch();
   }, []);
 
-  //  // Calls API if no locally stored data, with otherwise use local data.
-  //  const getNewMatch = async () => {
-  //   const res = await axios.get("http://localhost:3001/create-match");
-  //   if (!res.data) {
-  //     setNewGame(JSON.parse(localStorage.getItem("newGame")));
-  // }
-  //   console.log(res.data.match);
-
-  // useEffect(() => {
-  //   console.log("axios call");
-  //   getNewMatch();
-  // }, []);
 
   return (
     <>
