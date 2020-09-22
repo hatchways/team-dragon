@@ -16,7 +16,7 @@ class Game {
     console.log("Match ID:", this.id);
   }
 
-  // Get Board
+  // Get Board with all cards in an array
   getBoard() {
     return this.board;
   }
@@ -142,17 +142,24 @@ class Game {
     }
   }
 
+  // New user joins the match and gets added to players array of the match
   joinMatch(user){
     this.players.push(user);
     return this.players;
   }
 
+  // Sets the current user
   setCurrentUser(user){
     this.currentUser = user;
   }
 
+  // Updated players in the array for this match
   getCurrentPlayers(){
     return this.players;
+  }
+
+  toJson(){
+    return JSON.stringify(this)
   }
 }
 
