@@ -1,20 +1,29 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from "react";
+import NewGame from "../pages/NewGame";
+import WaitingRoom from "../components/new game/WaitingRoom"
 
 const GameSetup = () => {
-    const [isHost, setisHost] = useState(false)
+  const [isHost, setisHost] = useState(false);
+  const [gameStart, setgGameStart] = useState(false);
 
-    useEffect(() => {
-        //Request
-   
+  const gameJourney = () => {
+    if (isHost) {
+      return <NewGame />;
+    } else {
+      return <WaitingRoom />;
+    }
+  };
 
-    }, [])
+  useEffect(() => {
+    //Request isHost and gameStart
+  }, []);
 
+  return (
+    <div>
+      {gameStart ? <p>Match Component Here</p> : gameJourney()}
+      <div>Chat Component Here </div>
+    </div>
+  );
+};
 
-    return (
-        <div>
-            
-        </div>
-    )
-}
-
-export default GameSetup
+export default GameSetup;
