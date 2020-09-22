@@ -1,22 +1,70 @@
-import React, { useEffect } from "react";
-// import { useEmails, useNewGame } from "../../../DataContext";
-import openSocket from "socket.io-client";
+import React, { useEffect, useState } from "react";
+import { useEmails, useNewGame } from "../../../DataContext";
+import io from "socket.io-client";
+import axios from "axios";
+
+const socket = io();
 
 const StepTwo = () => {
   // const emailsContext = useEmails();
   // const [emails] = emailsContext;
 
-  // const newGameContext = useNewGame();
-  // const [newGame, setNewGame] = newGameContext;
+  const newGameContext = useNewGame();
+  const [newGame, setNewGame] = newGameContext;
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
-    console.log("User joins the match");
-    const socket = openSocket("http://localhost:3001");
-    socket.on("connect", () => {
-      socket.on("join-match", (data) => {
-        alert("New user joined Match");
+    // User joins the match
+    
+    if (newGame.match) {
+      let room = "match-" + newGame.match.id;
+      let matchId = newGame.match.id;
+      let data = {
+        room: room,
+        matchId: matchId
+      }
+      
+      // User joins the room
+      socket.emit("joinmatch", data);
+      // New user joining notification
+      socket.on("joinedmatch", (data) => {
+        alert(data)
+        console.log("Current Room: ",room)
       });
-    });
+
+      // Updated players array (Data lagging one step behind and needs to be fixed)
+      socket.on("updateplayers",(players) => {
+        console.log("Updated Players: ", players);
+      })
+
+    }
+
+    // // close the socket when page is left
+    // return () => socket.disconnect();
+  }, []);
+
+  // Join Match Request
+  const joinMatch = async () => {
+    if (!newGame.match) {
+      console.log("waiting for match...");
+    } else if (!newGame.match.id) {
+      console.log("waiting for match id...");
+    } else {
+      const res = await axios.post(`/match/${newGame.match.id}`);
+      if (!res.data) {
+        console.log("Waiting for player...");
+      } else {
+        setNewGame((prevState) => ({
+          ...prevState,
+          match: res.data.match,
+        }));
+        
+      }
+    }
+  };
+
+  useEffect(() => {
+    joinMatch();
   }, []);
 
   //  // Calls API if no locally stored data, with otherwise use local data.

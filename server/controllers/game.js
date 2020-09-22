@@ -1,7 +1,7 @@
+const allMatches = require("../models/gameModel/allMatches");
 const Game = require("../models/gameEngine/Game");
 const Match = require("../models/gameModel/Match");
 const User = require("../models/User");
-const Player = require("../models/gameModel/Players");
 let globalState = {};
 
 exports.postCreateMatch = async (req, res, next) => {
@@ -15,23 +15,51 @@ exports.postCreateMatch = async (req, res, next) => {
       id: 13255,
       name: "Derrick",
     };
-
+    if (!req.user) {
+      return res
+        .status(404)
+        .json({ success: false, error: "Please Sign in !" });
+    }
     const hostId = req.user._id;
     // User id coming from request
     const user = await User.findOne({ _id: hostId });
     if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, errors: { email: "Email does not exist" } });
+      return res.status(404).json({ success: false, error: "User not found" });
     }
 
     // Initializing the match
     const gameEngine = new Game();
+
+    // Add userId to gameEngine for current user
+    gameEngine.setCurrentUser(user);
+
+    const players = [
+      {
+        userId: user._id,
+        name: user.name,
+        matchId: gameEngine.id,
+      },
+    ];
+
     const match = new Match({
       matchId: gameEngine.id,
       hostId: user._id,
+      players: players,
     });
-    const result = await match.save((err) => console.log(err));
+    const result = await match.save();
+
+    if (!result) {
+      return res.status(404).json({ success: false, error: "Match not saved" });
+    }
+
+    // let newPlayer = {
+    //   userId: user._id,
+    //   name: user.name,
+    //   matchId: gameEngine.id,
+    // };
+
+    // gameEngine.joinMatch(newPlayer);
+
     // Assign Team to player
     gameEngine.assignTeam(player1, "red");
     gameEngine.assignTeam(player2, "blue");
@@ -39,13 +67,16 @@ exports.postCreateMatch = async (req, res, next) => {
     // Assign Roles
     gameEngine.assignRole(13255, "guesser");
 
+    // Test JSON method
+    console.log("JSON",gameEngine.toJson());
+
     globalState = { gameEngine };
 
-    res.status(202).json({
+    allMatches.addMatch(gameEngine.id, gameEngine);
+
+    res.status(202).send({
       match: globalState.gameEngine,
     });
-
-    // res.redirect(`/match/${globalState.gameEngine.id}`);
   } catch (err) {
     if (err) {
       console.log(err);
@@ -53,15 +84,33 @@ exports.postCreateMatch = async (req, res, next) => {
   }
 };
 
+// Get route controller for create-match
 exports.getCreateMatch = (req, res, next) => {
   res.status(202).json({
     match: globalState.gameEngine,
   });
 };
 
+// Get route when a user joins the match
 exports.joinMatch = async (req, res, next) => {
+  // If Match id is undefined
+  if (!req.params.id) {
+    return res.status(404).json({
+      success: false,
+      errors: { err: "Match id not provided" },
+    });
+  }
+
   const matchId = req.params.id;
+  // If user is not signed in yet
+  if (!req.user) {
+    return res.status(404).json({
+      success: false,
+      errors: { err: "User not signed in" },
+    });
+  }
   const userId = req.user._id;
+
   try {
     //Find match using id
     const match = await Match.findOne({ matchId: matchId });
@@ -69,35 +118,46 @@ exports.joinMatch = async (req, res, next) => {
     if (!match) {
       return res.status(404).json({
         success: false,
-        errors: { email: "Match doesn't exist" },
+        errors: { err: "Match doesn't exist" },
       });
     }
 
     // User id coming from request
-    let user = await User.findOne({ _id: userId});
+    let user = await User.findOne({ _id: userId });
     if (!user) {
       return res
         .status(404)
-        .json({ success: false, errors: { email: "User does not exist" } });
+        .json({ success: false, errors: { err: "User does not exist" } });
     }
 
-    let docPlayer = await Player.findOne({matchId:matchId});
-    
+    let playerDoc = await Match.find({ matchId: matchId }).find({
+      "players.userId": userId,
+    });
+    // console.log("Match found:",playerDoc[0])
+
     // If user was already in match
-    if(docPlayer){
-      console.log("Welcome back to match")
-      return res.status(200).json({ match: globalState.gameEngine });
+    if (playerDoc[0]) {
+      console.log("Welcome back to match", playerDoc);
+
+      return res.status(200).json({ match: match });
     }
 
-    let player = new Player({ userId: user._id, name: user.name, matchId:matchId});
-    const result = await player.save();
-    console.log("Let's start the match")
-    player = {
-      name: player.name,
-      matchId: player.matchId
+    // Fetch players array from current match
+    // const currentPlayers = match.players;
+    let newPlayer = {
+      userId: user._id,
+      name: user.name,
+      matchId: matchId,
     };
-    globalState.gameEngine.joinMatch(player);
-    res.status(200).json({ match: globalState.gameEngine });
+    match.players.push(newPlayer);
+    const result = await match.save();
+    console.log("Player joined:", user);
+
+    let currentMatch = allMatches.getAllMatches().get(parseInt(matchId));
+    currentMatch.joinMatch(newPlayer);
+    currentMatch.setCurrentUser(user);
+
+    res.status(200).json({ match: currentMatch });
   } catch (err) {
     if (err) {
       console.log(err);

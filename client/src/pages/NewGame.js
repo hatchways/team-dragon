@@ -3,6 +3,7 @@ import StepOne from "../components/new game/step 1/StepOne.js";
 import StepTwo from "../components/new game/step 2/StepTwo.js";
 import StepThree from "../components/new game/step 3/StepThree.js";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 // import Loading from "../components/new game/Loading.js";
 import { useNewGame, usePlayers, useSpyMaster } from "../DataContext";
@@ -42,8 +43,19 @@ const NewGame = (props) => {
 
   const gameData = localStorage.getItem("newGame");
 
-  // Calls API if no locally stored data, with otherwise use local data.
+  // Get Match
+  const getMatch = async () => {
+    const res = await axios.get("/create-match");
+    setNewGame((prevState) => ({
+      ...prevState,
+      match: res.data.match,
+    }));
+  };
+
+
+  //Users joining the match
   useEffect(() => {
+    getMatch();
     if (gameData) {
       setNewGame(JSON.parse(localStorage.getItem("newGame")));
     } else {
@@ -61,8 +73,6 @@ const NewGame = (props) => {
       }));
     }
   }, []);
-
-  console.log(newGame);
 
   // Stores New Game Info to Local Storage
   useEffect(() => {
@@ -108,16 +118,6 @@ const NewGame = (props) => {
 
     let matchDetails = setMatch(newGame, players, spymaster);
 
-    console.log(matchDetails);
-
-    // try {
-    //   const { data } = await axios.post('/create-match', {
-    //       userName: "jorawar"
-    //   });
-    //   console.log(data)
-    // } catch(err) {
-    //     console.log(err);
-    // }
   };
 
   const newGameSteps = () => {
