@@ -4,32 +4,32 @@ import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import Typography from "@material-ui/core/Typography";
 
-const useStyles = makeStyles( theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     background: theme.white,
   },
-  red: props => ({
+  red: (props) => ({
     color: props.spyMaster ? theme.red.medium : theme.grey.dark,
-    '&.clicked': {
+    "&.clicked": {
       background: theme.red.medium,
       color: theme.white,
-    }
-  }), 
-  blue: props => ({
+    },
+  }),
+  blue: (props) => ({
     color: props.spyMaster ? theme.blue.medium : theme.grey.dark,
-    '&.clicked': {
+    "&.clicked": {
       background: theme.blue.medium,
       color: theme.white,
-    }
+    },
   }),
-  innocent: props => ({
+  innocent: (props) => ({
     color: props.spyMaster ? theme.grey.mediumDark : theme.grey.dark,
-    '&.clicked': {
+    "&.clicked": {
       background: theme.grey.medium,
-    }
+    },
   }),
   assassin: {
     color: theme.grey.dark,
@@ -40,37 +40,35 @@ const BoardCard = (props) => {
   const classes = useStyles(props);
 
   let styles = [`${classes.root}`];
-  if(props.type === "red") {
+  if (props.type === "red") {
     styles.push(`${classes.red}`);
-  } else if(props.type === "blue") {
+  } else if (props.type === "blue") {
     styles.push(`${classes.blue}`);
-  } else if(props.type === "innocent") {
+  } else if (props.type === "innocent") {
     styles.push(`${classes.innocent}`);
   } else {
     styles.push(`${classes.assassin}`);
   }
 
-  if(props.clicked) {
+  if (props.clicked) {
     styles.push("clicked");
   }
 
   return (
-    <Card className={styles.join(' ')}>
-      <Typography variant="h3">
-        {props.word}
-      </Typography>
+    <Card className={styles.join(" ")}>
+      <Typography variant="h3">{props.word}</Typography>
     </Card>
-  )
-}
+  );
+};
 
 BoardCard.defaultProps = {
   spyMaster: false,
-}
+};
 
 BoardCard.propTypes = {
   word: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   clicked: PropTypes.bool.isRequired,
-}
+};
 
 export default BoardCard;

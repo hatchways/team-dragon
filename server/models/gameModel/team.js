@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const playerSchema = require("./player");
 const Schema = mongoose.Schema;
 
-
 // Team skeleton
 const teamSchema = new Schema({
   name: {

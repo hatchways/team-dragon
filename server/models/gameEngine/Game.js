@@ -136,30 +136,29 @@ class Game {
       } else {
         console.log(`${this.blueTeam.name} wins the match`);
       }
-    }
-    else{
+    } else {
       console.log("Next Move Please!");
     }
   }
 
   // New user joins the match and gets added to players array of the match
-  joinMatch(user){
+  joinMatch(user) {
     this.players.push(user);
     return this.players;
   }
 
   // Sets the current user
-  setCurrentUser(user){
+  setCurrentUser(user) {
     this.currentUser = user;
   }
 
   // Updated players in the array for this match
-  getCurrentPlayers(){
+  getCurrentPlayers() {
     return this.players;
   }
 
-  toJson(){
-    return JSON.stringify(this)
+  toJson() {
+    return JSON.stringify(this);
   }
 }
 

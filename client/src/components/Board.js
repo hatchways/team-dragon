@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import BoardCard from "./BoardCard";
 
-const useStyles = makeStyles( theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     height: "100%",
@@ -13,7 +13,7 @@ const useStyles = makeStyles( theme => ({
     gap: "1rem",
     background: theme.grey.medium,
     padding: "3rem",
-  }
+  },
 }));
 
 const Board = (props) => {
@@ -24,7 +24,7 @@ const Board = (props) => {
       {props.board.map((card, idx) => (
         <BoardCard
           spyMaster={props.spyMaster}
-          key={idx} 
+          key={idx}
           word={card.word}
           type={card.type}
           clicked={card.clicked}
@@ -32,14 +32,14 @@ const Board = (props) => {
       ))}
     </div>
   );
-}
+};
 
 Board.defaultProps = {
   spyMaster: false,
-}
+};
 
 Board.propTypes = {
   board: PropTypes.array.isRequired,
-}
+};
 
 export default Board;

@@ -1,16 +1,16 @@
-class Card{
-    constructor(word,type){
-        this.word = word;
-        this.type = type;
-    }
-    
-    getType(){
-        return this.type;
-    }
+class Card {
+  constructor(word, type) {
+    this.word = word;
+    this.type = type;
+  }
 
-    getWord(){
-        return this.word;
-    }
+  getType() {
+    return this.type;
+  }
+
+  getWord() {
+    return this.word;
+  }
 }
 
-module.exports =Card;
+module.exports = Card;

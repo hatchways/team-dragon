@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) =>
       width: "5rem",
       marginTop: "1rem",
     },
-  })
+  }),
 );
 
 const NewGame = (props) => {
@@ -129,7 +129,6 @@ const NewGame = (props) => {
     }
   };
 
-
   const newGameSteps = () => {
     const { step } = newGame;
     switch (step) {
@@ -177,7 +176,7 @@ const NewGame = (props) => {
                 </Button>
               )}
             </Box>
-            <Box  mx={2}>
+            <Box mx={2}>
               <Button
                 variant="contained"
                 color="secondary"

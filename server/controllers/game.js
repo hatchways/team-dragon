@@ -68,7 +68,7 @@ exports.postCreateMatch = async (req, res, next) => {
     gameEngine.assignRole(13255, "guesser");
 
     // Test JSON method
-    console.log("JSON",gameEngine.toJson());
+    console.log("JSON", gameEngine.toJson());
 
     globalState = { gameEngine };
 

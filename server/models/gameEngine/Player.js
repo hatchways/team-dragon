@@ -1,26 +1,26 @@
-const Team = require('./Team');
+const Team = require("./Team");
 
 class Player {
-  constructor(id,name,team) {
+  constructor(id, name, team) {
     this.id = id;
     this.name = name;
     this.role = "";
     this.team = team;
   }
 
-  getTeam(){
+  getTeam() {
     return this.team;
   }
 
-  getId(){
+  getId() {
     return this.id;
   }
 
-  setRole(role){
+  setRole(role) {
     this.role = role;
     console.log(`${this.name} is ${this.role}`);
   }
-  getRole(){
+  getRole() {
     return this.role;
   }
 }

@@ -11,7 +11,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import GameSetup from "./components/GameSetup";
 import Match from "./pages/Match";
-import CreateGameForm from './components/CreateGameForm'; //testing request /create-match
+import CreateGameForm from "./components/CreateGameForm"; //testing request /create-match
 
 function App() {
   return (

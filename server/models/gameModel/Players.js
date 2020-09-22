@@ -4,16 +4,16 @@ const Schema = mongoose.Schema;
 
 // All Players
 const playerSchema = new Schema({
-  userId:{
-    type:String,
+  userId: {
+    type: String,
   },
   name: {
     type: String,
-    required: true
+    required: true,
   },
-  matchId:{
-    type:Number
-  }
+  matchId: {
+    type: Number,
+  },
 });
 
 module.exports = mongoose.model("Player", playerSchema);

@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) =>
     inviteSection: {
       margin: "2rem",
     },
-  })
+  }),
 );
 
 const StepOne = (props) => {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import NewGame from "../pages/NewGame";
-import WaitingRoom from "../components/new game/WaitingRoom"
+import WaitingRoom from "../components/new game/WaitingRoom";
 
 const GameSetup = () => {
   const [isHost, setisHost] = useState(false);

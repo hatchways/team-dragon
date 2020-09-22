@@ -1,15 +1,15 @@
 import React from "react";
-import { withRouter, matchPath } from 'react-router-dom';
+import { withRouter, matchPath } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
-import BrandBar from './BrandBar';
-import MatchBar from './MatchBar';
+import BrandBar from "./BrandBar";
+import MatchBar from "./MatchBar";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     height: "12vh",
     background: theme.white,
-  }
+  },
 }));
 
 const NavBar = (props) => {
@@ -20,9 +20,7 @@ const NavBar = (props) => {
   });
 
   return (
-    <nav className={classes.root}>
-      {inMatch ? <MatchBar /> : <BrandBar />}
-    </nav>
+    <nav className={classes.root}>{inMatch ? <MatchBar /> : <BrandBar />}</nav>
   );
 };
 

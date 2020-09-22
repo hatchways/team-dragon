@@ -77,7 +77,7 @@ module.exports = {
           req.session.isLoggedIn = true;
           req.session.user = user;
           const result = await req.session.save();
-          console.log(req.session.user.name," logged in");
+          console.log(req.session.user.name, " logged in");
         }
 
         return res.status(200).json({
