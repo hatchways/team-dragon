@@ -5,9 +5,6 @@ import axios from "axios";
 import socket from "../../../socket";
 
 const StepTwo = () => {
-  // const emailsContext = useEmails();
-  // const [emails] = emailsContext;
-
   const newGameContext = useNewGame();
   const [newGame, setNewGame] = newGameContext;
   const [message, setMessage] = useState("");
@@ -18,16 +15,21 @@ const StepTwo = () => {
   useEffect(() => {
     // User joins the match
 
+    //Sent Loggedin user (send email)
+
     if (newGame.matchId) {
       let room = "match-" + newGame.matchId;
       let matchId = newGame.matchId;
+      let email = localStorage.getItem("email");
       let data = {
         room: room,
         matchId: matchId,
+        email: email,
       };
 
       // User joins the room
       socket.emit("joinmatch", data);
+      console.log('karldata', data)
       // New user joining notification
       socket.on("joinedmatch", (data) => {
         alert(data);
@@ -65,12 +67,9 @@ const StepTwo = () => {
   };
 
   const showPlayers = () => {
-    return players.map((player) => {
+    return players.map((player, i) => {
       return (
-        <>
-          <p>Player ID {player.userId}</p>
-          <p>Player Name {player.name}</p>
-        </>
+          <p key={i}>player.userId: {player.userId}, player.name: Player Name {player.name}</p>
       );
     });
   };

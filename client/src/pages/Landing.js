@@ -28,7 +28,7 @@ const Landing = (props) => {
   const newGameContext = useNewGame();
   const [newGame, setNewGame] = newGameContext;
 
-  const startNewGame = async () => {
+  const createNewGame = async () => {
     try {
       const getData = await axios.post("/create-match");
       await setNewGame((prevState) => ({
@@ -76,7 +76,7 @@ const Landing = (props) => {
         ) : (
           <Button
             className={classes.button}
-            onClick={startNewGame}
+            onClick={createNewGame}
             variant="contained"
             color="primary"
             size="large"

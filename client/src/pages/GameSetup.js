@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from "react";
-import NewGame from "../pages/NewGame";
+import NewGame from "../components/new game/NewGame";
+import { useHost, useGameStart } from "../contexts/GameContext";
 import WaitingRoom from "../components/new game/WaitingRoom";
 
-const GameSetup = () => {
-  const [isHost, setisHost] = useState(false);
-  const [gameStart, setgGameStart] = useState(false);
+const GameSetup = (props) => {
+
+  const HostContext = useHost();
+  const [isHost, setisHost] = HostContext;
+
+  const GameStartContext = useGameStart();
+  const [gameStart, setGameStart] = GameStartContext;
+
 
   const gameJourney = () => {
     if (isHost) {
-      return <NewGame />;
+      return <NewGame value={props}/>;
     } else {
       return <WaitingRoom />;
     }
