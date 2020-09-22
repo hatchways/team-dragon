@@ -28,7 +28,7 @@ const StepTwo = () => {
       };
 
       // User joins the room
-      socket.emit("joinmatch", data);
+      socket.emit("join-match", data);
       console.log('karldata', data)
       // New user joining notification
       socket.on("joined-match", (data) => {
