@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useEmails, useNewGame } from "../../../DataContext";
 import io from "socket.io-client";
 import axios from "axios";
@@ -11,22 +11,39 @@ const StepTwo = () => {
 
   const newGameContext = useNewGame();
   const [newGame, setNewGame] = newGameContext;
+  const [message, setMessage] = useState("");
+  // const [room, setRoom] = useState("");
 
   useEffect(() => {
-    // socket.on("connect", () => {
     // User joins the match
+    
     if (newGame.match) {
-      socket.emit("joinMatch", { match: newGame.match });
-    }
-    // User joined the match
-    socket.on("userjoined", (msg) => {
-      console.log(msg);
-    });
-    // });
+      let room = "match-" + newGame.match.id;
+      let matchId = newGame.match.id;
+      let data = {
+        room: room,
+        matchId: matchId
+      }
+      
+      // User joins the room
+      socket.emit("joinmatch", data);
+      // New user joining notification
+      socket.on("joinedmatch", (data) => {
+        // setMessage(data);
+        alert(data)
+        console.log("Current Room: ",room)
+      });
 
-    // close the socket when page is left
-    return () => socket.disconnect();
-  }, [newGame]);
+      // Updated players array (Data lagging one step behind and needs to be fixed)
+      socket.on("updateplayers",(players) => {
+        console.log("Updated Players: ", players);
+      })
+
+    }
+
+    // // close the socket when page is left
+    // return () => socket.disconnect();
+  }, []);
 
   // Join Match Request
   const joinMatch = async () => {
@@ -43,11 +60,11 @@ const StepTwo = () => {
           ...prevState,
           match: res.data.match,
         }));
+        
       }
     }
   };
 
-  console.log(newGame);
   useEffect(() => {
     joinMatch();
   }, []);

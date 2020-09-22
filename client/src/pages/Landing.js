@@ -27,15 +27,13 @@ function Landing(props) {
     axios
       .post("/create-match")
       .then((response) => {
-        console.log(response.data.match);
+        // console.log(response.data.match);
         props.history.push(`${response.data.match.id}`);
       })
       .catch((err) => {
         console.log(err);
       });
   };
-
-  console.log(localStorage.id);
 
   return (
     <Container className={classes.root} maxWidth="md">

@@ -150,6 +150,10 @@ class Game {
   setCurrentUser(user){
     this.currentUser = user;
   }
+
+  getCurrentPlayers(){
+    return this.players;
+  }
 }
 
 module.exports = Game;

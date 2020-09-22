@@ -1,4 +1,4 @@
-const allMatches = require('../models/gameModel/allMatches');
+const allMatches = require("../models/gameModel/allMatches");
 const Game = require("../models/gameEngine/Game");
 const Match = require("../models/gameModel/Match");
 const User = require("../models/User");
@@ -15,18 +15,16 @@ exports.postCreateMatch = async (req, res, next) => {
       id: 13255,
       name: "Derrick",
     };
-    if(!req.user){
+    if (!req.user) {
       return res
         .status(404)
-        .json({ success: false, error:"Please Sign in !" });
+        .json({ success: false, error: "Please Sign in !" });
     }
     const hostId = req.user._id;
     // User id coming from request
     const user = await User.findOne({ _id: hostId });
     if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, error: "User not found"});
+      return res.status(404).json({ success: false, error: "User not found" });
     }
 
     // Initializing the match
@@ -50,12 +48,18 @@ exports.postCreateMatch = async (req, res, next) => {
     });
     const result = await match.save();
 
-    if(!result){
-      return res
-        .status(404)
-        .json({ success: false, error: "Match not saved"});
+    if (!result) {
+      return res.status(404).json({ success: false, error: "Match not saved" });
     }
-    
+
+    // let newPlayer = {
+    //   userId: user._id,
+    //   name: user.name,
+    //   matchId: gameEngine.id,
+    // };
+
+    // gameEngine.joinMatch(newPlayer);
+
     // Assign Team to player
     gameEngine.assignTeam(player1, "red");
     gameEngine.assignTeam(player2, "blue");
@@ -64,13 +68,12 @@ exports.postCreateMatch = async (req, res, next) => {
     gameEngine.assignRole(13255, "guesser");
 
     globalState = { gameEngine };
-    allMatches.addMatch(gameEngine.id,gameEngine);
-    
+
+    allMatches.addMatch(gameEngine.id, gameEngine);
+
     res.status(202).send({
       match: globalState.gameEngine,
     });
-
-
   } catch (err) {
     if (err) {
       console.log(err);
@@ -87,9 +90,8 @@ exports.getCreateMatch = (req, res, next) => {
 
 // Get route when a user joins the match
 exports.joinMatch = async (req, res, next) => {
-
   // If Match id is undefined
-  if(!req.params.id){
+  if (!req.params.id) {
     return res.status(404).json({
       success: false,
       errors: { err: "Match id not provided" },
@@ -98,12 +100,12 @@ exports.joinMatch = async (req, res, next) => {
 
   const matchId = req.params.id;
   // If user is not signed in yet
-   if(!req.user){
+  if (!req.user) {
     return res.status(404).json({
       success: false,
       errors: { err: "User not signed in" },
     });
-   }
+  }
   const userId = req.user._id;
 
   try {
@@ -125,15 +127,17 @@ exports.joinMatch = async (req, res, next) => {
         .json({ success: false, errors: { err: "User does not exist" } });
     }
 
-    let playerDoc = await Match.find({matchId: matchId}).find({"players.userId": userId});
+    let playerDoc = await Match.find({ matchId: matchId }).find({
+      "players.userId": userId,
+    });
     // console.log("Match found:",playerDoc[0])
 
     // If user was already in match
-    // if (playerDoc[0]) {
-    //   console.log("Welcome back to match", playerDoc);
+    if (playerDoc[0]) {
+      console.log("Welcome back to match", playerDoc);
 
-    //   return res.status(200).json({ match: match });
-    // }
+      return res.status(200).json({ match: match });
+    }
 
     // Fetch players array from current match
     // const currentPlayers = match.players;
@@ -144,12 +148,12 @@ exports.joinMatch = async (req, res, next) => {
     };
     match.players.push(newPlayer);
     const result = await match.save();
-    console.log("Player joined:", user.name);
+    console.log("Player joined:", user);
 
     let currentMatch = allMatches.getAllMatches().get(parseInt(matchId));
-    currentMatch.joinMatch(newPlayer); 
-    currentMatch.setCurrentUser(user)
-    console.log(currentMatch)
+    currentMatch.joinMatch(newPlayer);
+    currentMatch.setCurrentUser(user);
+
     res.status(200).json({ match: currentMatch });
   } catch (err) {
     if (err) {

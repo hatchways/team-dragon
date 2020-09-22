@@ -1,13 +1,13 @@
 const createError = require("http-errors");
 const express = require("express");
-const cors = require('cors');
+const cors = require("cors");
 const { join } = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 const passport = require("passport");
-const session = require('express-session');
-const MongoDBStore = require('connect-mongodb-session')(session);
+const session = require("express-session");
+const MongoDBStore = require("connect-mongodb-session")(session);
 
 const passportStrategy = require("./config/passport");
 const config = require("./config");
@@ -15,9 +15,8 @@ const config = require("./config");
 const indexRouter = require("./routes/index");
 const gameRouter = require("./routes/game");
 const authRouter = require("./routes/auth");
-const User = require('./models/User');
-// All matches are stored in this variable
-const {allMatches} = require('./models/gameModel/allMatches');
+const User = require("./models/User");
+const matchSocket = require("./matchSocket");
 
 // app configuration
 var app = express();
@@ -25,7 +24,7 @@ var app = express();
 // create session in database
 const store = new MongoDBStore({
   uri: config.db,
-  collection: 'sessions'
+  collection: "sessions",
 });
 
 app.use(cors());
@@ -37,13 +36,15 @@ app.use(logger("dev"));
 app.use(passport.initialize());
 passport.use(passportStrategy);
 
+
+
 // Session for the user
 app.use(
   session({
-    secret: 'my secret',
+    secret: "my secret",
     resave: false,
     saveUninitialized: false,
-    store: store
+    store: store,
   })
 );
 
@@ -52,11 +53,11 @@ app.use((req, res, next) => {
     return next();
   }
   User.findById(req.session.user._id)
-    .then(user => {
+    .then((user) => {
       req.user = user;
       next();
     })
-    .catch(err => console.log(err));
+    .catch((err) => console.log(err));
 });
 
 // database connection using Mongoose
@@ -68,6 +69,7 @@ mongoose
   })
   .then(() => {
     console.log("Connected to database");
+    matchSocket.init();
   })
   .catch((err) => console.log(err));
 
@@ -77,12 +79,12 @@ app.use("/users", authRouter);
 app.use(gameRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
