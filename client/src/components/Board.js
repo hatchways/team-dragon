@@ -22,10 +22,12 @@ const Board = (props) => {
   return (
     <div className={classes.root}>
       {props.board.map((card, idx) => (
-        <BoardCard 
+        <BoardCard
+          spyMaster
           key={idx} 
           word={card.word}
           type={card.type}
+          clicked={card.clicked}
         />
       ))}
     </div>

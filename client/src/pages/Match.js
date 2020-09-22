@@ -6,31 +6,31 @@ import Board from "../components/Board";
 import socket from "../socket";
 
 const sampleBoard = [
-  {word: '1', type: 'blue'},
-  {word: '2', type: 'blue'},
-  {word: '3', type: 'blue'},
-  {word: '4', type: 'blue'},
-  {word: '5', type: 'blue'},
-  {word: '6', type: 'blue'},
-  {word: '7', type: 'blue'},
-  {word: '8', type: 'blue'},
-  {word: '9', type: 'red'},
-  {word: '10', type: 'red'},
-  {word: '11', type: 'red'},
-  {word: '12', type: 'red'},
-  {word: '13', type: 'red'},
-  {word: '14', type: 'red'},
-  {word: '15', type: 'red'},
-  {word: '16', type: 'red'},
-  {word: '17', type: 'assassin'},
-  {word: '18', type: 'innocent'},
-  {word: '19', type: 'innocent'},
-  {word: '20', type: 'innocent'},
-  {word: '21', type: 'innocent'},
-  {word: '22', type: 'innocent'},
-  {word: '23', type: 'innocent'},
-  {word: '24', type: 'innocent'},
-  {word: '25', type: 'innocent'},
+  {word: '1', type: 'blue', clicked: true},
+  {word: '2', type: 'blue', clicked: false},
+  {word: '3', type: 'blue', clicked: false},
+  {word: '4', type: 'blue', clicked: false},
+  {word: '5', type: 'blue', clicked: false},
+  {word: '6', type: 'blue', clicked: false},
+  {word: '7', type: 'blue', clicked: false},
+  {word: '8', type: 'blue', clicked: false},
+  {word: '9', type: 'red', clicked: false},
+  {word: '10', type: 'red', clicked: false},
+  {word: '11', type: 'red', clicked: false},
+  {word: '12', type: 'red', clicked: true},
+  {word: '13', type: 'red', clicked: false},
+  {word: '14', type: 'red', clicked: false},
+  {word: '15', type: 'red', clicked: false},
+  {word: '16', type: 'red', clicked: false},
+  {word: '17', type: 'assassin', clicked: false},
+  {word: '18', type: 'innocent', clicked: false},
+  {word: '19', type: 'innocent', clicked: false},
+  {word: '20', type: 'innocent', clicked: true},
+  {word: '21', type: 'innocent', clicked: false},
+  {word: '22', type: 'innocent', clicked: false},
+  {word: '23', type: 'innocent', clicked: false},
+  {word: '24', type: 'innocent', clicked: false},
+  {word: '25', type: 'innocent', clicked: false},
 ]
 
 const useStyles = makeStyles(theme => ({
@@ -48,7 +48,7 @@ const Match = (props) => {
 
   const [name, setName] = useState([]);
   const [messages, setMessages] = useState([]);
-  const [board, setBoard] = useState(sampleBoard);
+  const [board, setBoard] = useState([]);
 
   useEffect(() => {
     socket.emit("join", props.match.params.id, ({ name, history }) => {
@@ -60,6 +60,9 @@ const Match = (props) => {
       // update message list
       setMessages(prevMessages => [...prevMessages, msgData]);
     });
+
+    // on connect retrieve the game board and set it?
+    setBoard(sampleBoard)
   }, [props.match.params.id]);
 
   const sendMessage = (msg) => {

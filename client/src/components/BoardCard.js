@@ -11,26 +11,52 @@ const useStyles = makeStyles( theme => ({
     alignItems: "center",
     background: theme.white,
   },
-  red: {
-    color: theme.red,
-  }, 
-  blue: {
-    color: theme.blue,
-  },
+  red: props => ({
+    color: props.spyMaster ? theme.red.medium : theme.grey.dark,
+    '&.clicked': {
+      background: theme.red.medium,
+      color: theme.white,
+    }
+  }), 
+  blue: props => ({
+    color: props.spyMaster ? theme.blue.medium : theme.grey.dark,
+    '&.clicked': {
+      background: theme.blue.medium,
+      color: theme.white,
+    }
+  }),
+  innocent: props => ({
+    color: props.spyMaster ? theme.grey.mediumDark : theme.grey.dark,
+    '&.clicked': {
+      background: theme.grey.medium,
+    }
+  }),
   assassin: {
     color: theme.grey.dark,
-  },
-  innocent: {
-    color: theme.grey.light,
   },
 }));
 
 const BoardCard = (props) => {
-  const classes = useStyles();
+  const classes = useStyles(props);
+
+  let styles = [`${classes.root}`];
+  if(props.type === "red") {
+    styles.push(`${classes.red}`);
+  } else if(props.type === "blue") {
+    styles.push(`${classes.blue}`);
+  } else if(props.type === "innocent") {
+    styles.push(`${classes.innocent}`);
+  } else {
+    styles.push(`${classes.assassin}`);
+  }
+
+  if(props.clicked) {
+    styles.push("clicked");
+  }
 
   return (
-    <Card className={classes.root}>
-      <Typography>
+    <Card className={styles.join(' ')}>
+      <Typography variant="h3">
         {props.word}
       </Typography>
     </Card>
@@ -40,6 +66,7 @@ const BoardCard = (props) => {
 BoardCard.propTypes = {
   word: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
+  clicked: PropTypes.bool.isRequired,
 }
 
 export default BoardCard;

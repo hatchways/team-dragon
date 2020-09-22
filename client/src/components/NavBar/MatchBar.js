@@ -40,7 +40,6 @@ const useStyles = makeStyles(() => ({
 
 const MatchBar = () => {
   const classes = useStyles();
-  const anchorRef = React.useRef(null);
 
   return (
     <div className={classes.root}>
