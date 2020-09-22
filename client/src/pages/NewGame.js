@@ -67,6 +67,7 @@ const NewGame = (props) => {
     localStorage.setItem("newGame", JSON.stringify(newGame));
   }, [newGame]);
 
+  console.log(newGame)
   const resetNewGame = async () => {
     try {
       const getData = await axios.post("/create-match");
