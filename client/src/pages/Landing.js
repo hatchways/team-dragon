@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useNewGame } from "../DataContext";
+import { useNewGame } from "../contexts/DataContext";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Card, Container, Typography } from "@material-ui/core";
 import axios from "axios";

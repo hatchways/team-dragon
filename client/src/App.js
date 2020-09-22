@@ -1,7 +1,7 @@
 import React from "react";
 import { MuiThemeProvider } from "@material-ui/core";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { DataProvider } from "./DataContext";
+import { DataProvider } from "./contexts/DataContext";
 import { theme } from "./themes/theme";
 
 import NavBar from "./components/NavBar";

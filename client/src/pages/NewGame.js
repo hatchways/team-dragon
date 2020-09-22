@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import StepOne from "../components/new game/step 1/StepOne.js";
 import StepTwo from "../components/new game/step 2/StepTwo.js";
 import StepThree from "../components/new game/step 3/StepThree.js";
-import { useNewGame, usePlayers, useSpyMaster } from "../DataContext";
+import { useNewGame, usePlayers, useSpyMaster } from "../contexts/DataContext";
 import {
   Button,
   Container,
