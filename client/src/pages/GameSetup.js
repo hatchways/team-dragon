@@ -30,18 +30,18 @@ const GameSetup = (props) => {
     }
   };
 
-  const gameData = localStorage.getItem("newGame");
+  // const gameData = localStorage.getItem("newGame");
 
-  useEffect(() => {
-    if (gameData) {
-      setNewGame(JSON.parse(localStorage.getItem("newGame")));
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (gameData) {
+  //     setNewGame(JSON.parse(localStorage.getItem("newGame")));
+  //   }
+  // }, []);
 
-  // Stores New Game Info to Local Storage
-  useEffect(() => {
-    localStorage.setItem("newGame", JSON.stringify(newGame));
-  }, [newGame]);
+  // // Stores New Game Info to Local Storage
+  // useEffect(() => {
+  //   localStorage.setItem("newGame", JSON.stringify(newGame));
+  // }, [newGame]);
 
   console.log(newGame)
   console.log(localStorage.getItem("id") === newGame.hostId)
