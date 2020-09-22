@@ -74,10 +74,6 @@ const NewGame = (props) => {
     }
   }, []);
 
-<<<<<<< HEAD
-=======
-  
->>>>>>> email fix
   // Stores New Game Info to Local Storage
   useEffect(() => {
     localStorage.setItem("newGame", JSON.stringify(newGame));
