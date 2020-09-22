@@ -17,8 +17,8 @@ const useStyles = makeStyles(() => ({
     "& a": {
       textDecoration: "none",
       color: "black",
-    }
-  }
+    },
+  },
 }));
 
 const BrandBar = () => {
@@ -26,10 +26,7 @@ const BrandBar = () => {
 
   return (
     <div className={classes.root}>
-      <Typography 
-        className={classes.brand}
-        variant="h3"
-      >
+      <Typography className={classes.brand} variant="h3">
         <Link to="/">Cluewords</Link>
       </Typography>
     </div>

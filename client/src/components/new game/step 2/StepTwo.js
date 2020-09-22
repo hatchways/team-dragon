@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNewGame, usePlayers } from "../../../DataContext";
 
 import axios from "axios";
-import socket from '../../../socket';
+import socket from "../../../socket";
 
 const StepTwo = () => {
   // const emailsContext = useEmails();
@@ -15,33 +15,30 @@ const StepTwo = () => {
   const usePlayersContext = usePlayers();
   const [players, setPlayers] = usePlayersContext;
 
-
-
   useEffect(() => {
     // User joins the match
-    
+
     if (newGame.matchId) {
       let room = "match-" + newGame.matchId;
       let matchId = newGame.matchId;
       let data = {
         room: room,
-        matchId: matchId
-      }
-      
+        matchId: matchId,
+      };
+
       // User joins the room
       socket.emit("joinmatch", data);
       // New user joining notification
       socket.on("joinedmatch", (data) => {
-        alert(data)
-        console.log("Current Room: ",room)
+        alert(data);
+        console.log("Current Room: ", room);
       });
 
       // Updated players array (Data lagging one step behind and needs to be fixed)
-      socket.on("updateplayers",(players) => {
-        setPlayers(players)
+      socket.on("updateplayers", (players) => {
+        setPlayers(players);
         console.log("Updated Players: ", players);
-      })
-
+      });
     }
 
     // // close the socket when page is left
@@ -63,7 +60,6 @@ const StepTwo = () => {
           ...prevState,
           match: res.data.match,
         }));
-        
       }
     }
   };
@@ -72,12 +68,12 @@ const StepTwo = () => {
     return players.map((player) => {
       return (
         <>
-        <p>Player ID {player.userId}</p>
-        <p>Player Name {player.name}</p>
+          <p>Player ID {player.userId}</p>
+          <p>Player Name {player.name}</p>
         </>
-      )
-    })
-  }
+      );
+    });
+  };
 
   useEffect(() => {
     joinMatch();

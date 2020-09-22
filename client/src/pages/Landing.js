@@ -33,8 +33,8 @@ const Landing = (props) => {
       const getData = await axios.post("/create-match");
       await setNewGame((prevState) => ({
         ...prevState,
-      hostId: localStorage.getItem("id"),
-      matchId: getData.data.match.id,
+        hostId: localStorage.getItem("id"),
+        matchId: getData.data.match.id,
       }));
       await localStorage.setItem("newGame", JSON.stringify(newGame));
       await props.history.push(String(getData.data.match.id));
@@ -87,6 +87,6 @@ const Landing = (props) => {
       </Card>
     </Container>
   );
-}
+};
 
 export default Landing;

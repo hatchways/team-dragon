@@ -11,8 +11,8 @@ const CreateGameForm = (props) => {
     //Post request to create match
     try {
       const { data } = await axios.post("/create-match");
-      console.log(data)
-      props.history.push('/new')
+      console.log(data);
+      props.history.push("/new");
     } catch (err) {
       console.log(err);
     }

@@ -4,7 +4,7 @@ import { makeStyles, Typography } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
-import Icon from '@material-ui/core/Icon';
+import Icon from "@material-ui/core/Icon";
 import { theme } from "../../themes/theme";
 
 const useStyles = makeStyles(() => ({
@@ -22,7 +22,7 @@ const useStyles = makeStyles(() => ({
     "& a": {
       textDecoration: "none",
       color: "black",
-    }
+    },
   },
   red: {
     color: theme.red.medium,
@@ -43,37 +43,30 @@ const MatchBar = () => {
 
   return (
     <div className={classes.root}>
-      <Typography 
-        className={classes.brand}
-        variant="h3"
-      >
+      <Typography className={classes.brand} variant="h3">
         <Link to="/">Cluewords</Link>
       </Typography>
-      <Box 
+      <Box
         display="grid"
         gridTemplateColumns="1fr 1fr 1fr"
         gridTemplateRows="auto"
         gap="1rem"
       >
-        <Box 
+        <Box
           className={classes.blue}
-          display="flex" 
+          display="flex"
           flexDirection="column"
           alignItems="center"
         >
           <Typography variant="h3">8</Typography>
           <Typography>Blue Team</Typography>
         </Box>
-        <Box 
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-        >
+        <Box display="flex" justifyContent="center" alignItems="center">
           <Typography variant="h1">-</Typography>
         </Box>
         <Box
           className={classes.red}
-          display="flex" 
+          display="flex"
           flexDirection="column"
           alignItems="center"
         >
@@ -81,11 +74,7 @@ const MatchBar = () => {
           <Typography>Red Team</Typography>
         </Box>
       </Box>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-      >
+      <Box display="flex" justifyContent="space-between" alignItems="center">
         <Button
           className={classes.button}
           variant="contained"
@@ -97,11 +86,7 @@ const MatchBar = () => {
 
         <Button>
           <Avatar>U</Avatar>
-          <Typography 
-            className={classes.profileText}
-          >
-            My Profile
-          </Typography>
+          <Typography className={classes.profileText}>My Profile</Typography>
           <Icon>arrow_drop_down</Icon>
         </Button>
       </Box>

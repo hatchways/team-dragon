@@ -36,8 +36,6 @@ app.use(logger("dev"));
 app.use(passport.initialize());
 passport.use(passportStrategy);
 
-
-
 // Session for the user
 app.use(
   session({
@@ -45,7 +43,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: store,
-  })
+  }),
 );
 
 app.use((req, res, next) => {

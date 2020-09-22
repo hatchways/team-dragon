@@ -7,7 +7,7 @@
     "debug": "nodemon  --inspect ./bin/www",
     "test": "NODE_ENV=test ./node_modules/.bin/mocha --exit --timeout 30000",
     "lint": "npx eslint '**/*.js' --ignore-pattern node_modules/ --ignore-pattern test/",
-    "lint:fix": "prettier --write --ignore-path node_modules/ --ignore-path test/"
+    "lint:fix": "prettier --write '**/*.js'"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
