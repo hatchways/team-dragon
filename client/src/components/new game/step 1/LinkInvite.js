@@ -24,12 +24,12 @@ const LinkInvite = (props) => {
   const [newGame] = newGameContext;
 
   const [copy, setCopy] = useState({
-    value: newGame.matchId,
+    value: "",
     copied: false,
   });
 
   useEffect(() => {
-    setCopy({ value: newGame.matchId, copied: false });
+    setCopy({ value: `http://localhost:3000/${newGame.matchId}`, copied: false });
   }, [newGame]);
 
   return (
@@ -39,7 +39,7 @@ const LinkInvite = (props) => {
         <Box my={".8rem"}>
           <CopyToClipboard
             text={copy.value}
-            onCopy={() => setCopy({ value: newGame.matchId, copied: true })}
+            onCopy={() => setCopy({ value: `http://localhost:3000/${newGame.matchId}`, copied: true })}
           >
             <Button
               startIcon={<LinkIcon />}
