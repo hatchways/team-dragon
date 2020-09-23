@@ -2,7 +2,7 @@ import React, { useContext, useState, useMemo } from "react";
 
 const HostContext = React.createContext();
 
-const GameStartContext = React.createContext();
+const GameStatusContext = React.createContext();
 
 const IsSpyMasterContext = React.createContext();
 
@@ -12,8 +12,8 @@ export function useHost() {
 }
 
 // Custom hook to check if game has started
-export function useGameStart() {
-  return useContext(GameStartContext);
+export function useGameStatus() {
+  return useContext(GameStatusContext);
 }
 
 // Custom hook to control is player is spymaster
@@ -37,19 +37,19 @@ export function GameProvider({ children }) {
   ]);
 
   //Holds whether game has started
-  const [gameStart, setGameStart] = useState("setup");
-  const providerGameStart = useMemo(() => [gameStart, setGameStart], [
-    gameStart,
-    setGameStart,
+  const [gameStatus, setGameStatus] = useState("setup");
+  const providerGameStatus = useMemo(() => [gameStatus, setGameStatus], [
+    gameStatus,
+    setGameStatus,
   ]);
 
   return (
     <HostContext.Provider value={providerIsHost}>
-      <GameStartContext.Provider value={providerGameStart}>
+      <GameStatusContext.Provider value={providerGameStatus}>
         <IsSpyMasterContext.Provider value={providerIsSpyMaster}>
           {children}
         </IsSpyMasterContext.Provider>
-      </GameStartContext.Provider>
+      </GameStatusContext.Provider>
     </HostContext.Provider>
   );
 }

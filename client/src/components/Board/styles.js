@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     transition: "transform .2s",
     "&:hover:not(.clicked)": {
       transform: "scale(1.2)",
-    }
+    },
   }),
   red: (props) => ({
     color: props.spyMaster ? theme.red.medium : theme.grey.dark,

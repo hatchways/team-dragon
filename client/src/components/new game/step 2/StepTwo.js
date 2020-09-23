@@ -21,7 +21,6 @@ const StepTwo = () => {
     socket.emit("join-match", data);
   }, []);
 
-
   // const showPlayers = () => {
   //   return players.map((player) => {
   //     return (
@@ -32,7 +31,6 @@ const StepTwo = () => {
   //     );
   //   });
   // };
-
 
   return (
     <>

@@ -20,7 +20,6 @@ import {
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import socket from "../../socket";
 import axios from "axios";
-import socket from '../../socket';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -105,7 +104,7 @@ const NewGame = (props) => {
       };
 
       const matchDetails = await setMatch(newGame, players, spymaster);
-      socket.emit("start-match", matchDetails);
+      socket.emit("start-game", matchDetails);
     } catch (err) {
       console.log(err);
     }
@@ -153,7 +152,11 @@ const NewGame = (props) => {
                 </Button>
               ) : (
                 //Needs Logic here to initiate final role allocation.
-                <Button variant="contained" color="primary" onClick={startMatch}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={startMatch}
+                >
                   Create Game
                 </Button>
               )}

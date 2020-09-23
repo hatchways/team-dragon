@@ -13,20 +13,21 @@ module.exports = {
 
       // Socket listener for match rooms
       socket.on("join-match", ({ room, matchId, userEmail }) => {
-
         socket.join(room);
-        User.findOne({ email:userEmail })
+        User.findOne({ email: userEmail })
           .then((user) => {
-            if(!user){
-              throw new Error("User does not exist!")
+            if (!user) {
+              throw new Error("User does not exist!");
             }
             let newPlayer = {
-              id : user._id,
-              name :user.name
-            }
-            let currentMatch = allMatches.getAllMatches().get(parseInt(matchId));
+              id: user._id,
+              name: user.name,
+            };
+            let currentMatch = allMatches
+              .getAllMatches()
+              .get(parseInt(matchId));
             currentMatch.joinMatch(newPlayer);
-        
+
             // Send updated players array to front
             io.to(room).emit("update-match-state", currentMatch);
           })
