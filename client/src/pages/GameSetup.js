@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import NewGame from "../components/new game/NewGame";
 import {
-  useHost,
   useGameStatus,
   useGameSpyMaster,
 } from "../contexts/GameContext";
@@ -11,8 +10,6 @@ import WaitingRoom from "../components/new game/WaitingRoom";
 import socket from "../socket";
 
 const GameSetup = (props) => {
-  const HostContext = useHost();
-  const [isHost, setIsHost] = HostContext;
 
   const SpyMasterContext = useGameSpyMaster();
   const [isSpyMaster, setIsSpyMaster] = SpyMasterContext;
