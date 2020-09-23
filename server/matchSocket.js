@@ -11,8 +11,11 @@ module.exports = {
       socketExport = socket;
       console.log("new user connected to match socket");
 
+      let matchRoom;
+
       // Socket listener for match rooms
       socket.on("join-match", ({ room, matchId,userEmail }) => {
+        matchRoom = room;
         socket.join(room);
         User.findOne({ email:userEmail })
           .then((user) => {
@@ -32,11 +35,32 @@ module.exports = {
           .catch((err) => console.log(err));
       });
 
+      // Receive assigned roles emitted from FE
+      socket.on('assign-roles',(matchId, players)=>{
+        let currentMatch = allMatches.getAllMatches().get(parseInt(matchId));
+        players.forEach(({id,name,team,spyMaster}) => {
+          // Assign team to each player
+          currentMatch.assignTeam({id,name},team);
+
+          // Assign role to each player
+          if(!spyMaster){
+            currentMatch.assignRole(id,"guesser");
+          }
+          else{
+            currentMatch.assignRole(id,"spy-master");
+          }
+        });
+        console.log("Updated match after assigned roles: ", currentMatch );
+        io.to(matchRoom).emit('update-roles',currentMatch);
+      });
+
       // Socket listener for next move
       socket.on("move", ({ matchId, playerId, cardIndex }) => {
-        let currentMatch = allMatches.getAllMatches().get(matchId); //make sure matchId is not a string
+        let currentMatch = allMatches.getAllMatches().get(parseInt(matchId)); 
         currentMatch.pickCard(playerId, cardIndex); // Result of the move would be in console for now
       });
+
+
     });
   },
   getMatchIO: () => {
