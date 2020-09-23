@@ -20,6 +20,7 @@ import {
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import socket from "../../socket";
 import axios from "axios";
+import socket from '../../socket';
 
 const useStyles = makeStyles((theme) =>
   createStyles({

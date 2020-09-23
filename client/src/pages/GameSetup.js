@@ -4,10 +4,11 @@ import { useHost, useGameStart, useGameSpyMaster } from "../contexts/GameContext
 import {
   useNewGame,
 } from "../contexts/DataContext"; 
+
 import WaitingRoom from "../components/new game/WaitingRoom";
+import socket from '../socket';
 
 const GameSetup = (props) => {
-
   const HostContext = useHost();
   const [isHost, setIsHost] = HostContext;
 
@@ -24,6 +25,7 @@ const GameSetup = (props) => {
   const gameJourney = () => {
     if (localStorage.getItem("id") === newGame.hostId) {
       return <NewGame value={props}/>;
+
     } else {
       return <WaitingRoom />;
     }
@@ -35,6 +37,11 @@ const GameSetup = (props) => {
     if (gameData) {
       setNewGame(JSON.parse(localStorage.getItem("newGame")));
     }
+    //Request isHost and gameStart
+    // Updates match state
+    socket.on("update-match-state", (match) => {
+      console.log("Updated Match State: ", match.players);
+    });
   }, []);
 
   // Stores New Game Info to Local Storage

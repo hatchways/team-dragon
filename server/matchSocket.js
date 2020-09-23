@@ -1,6 +1,6 @@
 const { getIO } = require("./socket");
 const allMatches = require("./models/gameModel/allMatches");
-const Match = require("./models/gameModel/Match");
+const User = require("./models/User");
 let ioExport;
 let socketExport;
 module.exports = {
@@ -9,20 +9,28 @@ module.exports = {
     ioExport = io;
     io.on("connection", (socket) => {
       socketExport = socket;
-      console.log("Match socket connected");
+      console.log("new user connected to match socket");
 
       // Socket listener for match rooms
-      socket.on("join-match", ({ room, matchId, email }) => {
+      socket.on("join-match", ({ room, matchId, userEmail }) => {
+
         socket.join(room);
-        Match.findOne({ matchId: matchId })
-          .then((match) => {
-            console.log(match.players);
+        User.findOne({ email:userEmail })
+          .then((user) => {
+            if(!user){
+              throw new Error("User does not exist!")
+            }
+            let newPlayer = {
+              id : user._id,
+              name :user.name
+            }
+            let currentMatch = allMatches.getAllMatches().get(parseInt(matchId));
+            currentMatch.joinMatch(newPlayer);
+        
             // Send updated players array to front
-            io.to(room).emit("update-players", match.players);
+            io.to(room).emit("update-match-state", currentMatch);
           })
           .catch((err) => console.log(err));
-        // New user joined notification
-        io.to(room).emit("joined-match", "New user joined");
       });
 
       // Socket listener for next move
