@@ -31,21 +31,19 @@ const useStyles = makeStyles((theme) => ({
 
 const RoleSelect = (props) => {
   const classes = useStyles();
-  // const playerData = localStorage.getItem("players");
-  // console.log(playerData);
 
   const handleChange = (event) => {
     if (props.color === "red") {
       props.setSpyMaster((prevState) => ({
         ...prevState,
-        teamRed: event.target.value,
+        red: event.target.value,
       }));
     }
 
     if (props.color === "blue") {
       props.setSpyMaster((prevState) => ({
         ...prevState,
-        teamBlue: event.target.value,
+        blue: event.target.value,
       }));
     }
   };
@@ -72,9 +70,7 @@ const RoleSelect = (props) => {
             labelId="demo-simple-select-outlined-label"
             id="demo-simple-select-outlined"
             value={
-              props.color === "red"
-                ? props.spyMaster.teamRed
-                : props.spyMaster.teamBlue
+              props.color === "red" ? props.spyMaster.red : props.spyMaster.blue
             }
             onChange={handleChange}
             displayEmpty

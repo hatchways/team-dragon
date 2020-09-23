@@ -8,14 +8,12 @@ const WaitingRoom = (props) => {
 
 
   useEffect(() => {
-    console.log(props.value.match.params.id)
     setNewGame((prevState) => ({
       ...prevState,
       matchId: props.value.match.params.id,
     }));
   }, [])
 
-console.log(newGame)
   return (
     <div>
       <h2>Welcome, please wait for assignment</h2>

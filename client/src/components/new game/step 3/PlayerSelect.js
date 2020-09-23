@@ -62,20 +62,20 @@ const PlayerSelect = (props) => {
     //Following conditional statements remove player a spymaster who is moved to no team
     if (
       event.target.value === "noTeam" &&
-      props.player.id === props.spyMaster.teamBlue
+      props.player.id === props.spyMaster.blue
     ) {
       props.setSpyMaster((prevState) => ({
         ...prevState,
-        teamBlue: "",
+        blue: "",
       }));
     }
     if (
       event.target.value === "noTeam" &&
-      props.player.id === props.spyMaster.teamRed
+      props.player.id === props.spyMaster.red
     ) {
       props.setSpyMaster((prevState) => ({
         ...prevState,
-        teamRed: "",
+        red: "",
       }));
     }
 
@@ -97,18 +97,18 @@ const PlayerSelect = (props) => {
           value={props.player.team || ""}
           onChange={handleChange}
         >
-          <FormControlLabel
+          {/* <FormControlLabel
             value="noTeam"
             control={<NoTeamRadio />}
             label="No Team"
-          />
+          /> */}
           <FormControlLabel
-            value="teamBlue"
+            value="blue"
             control={<BlueRadio />}
             label="Blue Team"
           />
           <FormControlLabel
-            value="teamRed"
+            value="red"
             control={<RedRadio />}
             label="Red Team"
           />

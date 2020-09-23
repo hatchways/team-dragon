@@ -48,7 +48,7 @@ const NewGame = (props) => {
 
   //Holds Selected SpyMaster
   const newSpyMasterContext = useSpyMaster();
-  const [spymaster] = newSpyMasterContext;
+  const [spyMaster] = newSpyMasterContext;
 
   const resetNewGame = async () => {
     try {
@@ -77,7 +77,7 @@ const NewGame = (props) => {
   const startMatch = async (e) => {
     try {
       const setMatch = (newGame, players, spyMaster) => {
-        let spyMasters = [spyMaster.teamBlue, spyMaster.teamRed];
+        let spyMasters = [spyMaster.blue, spyMaster.red];
 
         let playerAssign = players.map((player) => {
           if (spyMasters.includes(player.id)) {
@@ -102,9 +102,7 @@ const NewGame = (props) => {
           players: playerAssign,
         };
       };
-
-      const matchDetails = await setMatch(newGame, players, spymaster);
-      console.log('matchDetails', matchDetails)
+      const matchDetails = await setMatch(newGame, players, spyMaster);
       socket.emit("start-game", matchDetails);
     } catch (err) {
       console.log(err);

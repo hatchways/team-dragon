@@ -49,7 +49,7 @@ export function DataProvider({ children }) {
   ]);
 
   //Holds Players who have accepted game invite
-  const [players, setPlayers] = useState([{id: "", name: "", team: ""}]);
+  const [players, setPlayers] = useState([]);
 
   const providerPlayers = useMemo(() => [players, setPlayers], [
     players,
@@ -61,7 +61,7 @@ export function DataProvider({ children }) {
   }, [players]);
 
   //Holds SpyMaster
-  const [spyMaster, setSpyMaster] = useState({ teamBlue: "", teamRed: "" });
+  const [spyMaster, setSpyMaster] = useState({ blue: "", red: "" });
 
   const providerSpyMaster = useMemo(() => [spyMaster, setSpyMaster], [
     spyMaster,
