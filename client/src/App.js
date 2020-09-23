@@ -9,7 +9,7 @@ import Landing from "./pages/Landing";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import GameSetup from "./pages/GameSetup";
-import Match from "./pages/Match";
+import Game from "./pages/Game";
 
 function App() {
   return (
@@ -19,10 +19,10 @@ function App() {
           <BrowserRouter>
             <NavBar />
             <Switch>
-              <Route exact path="/match/:id" component={Match} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/:id" component={GameSetup} />
+              <Route exact path="/game/:id" component={Game} />
               <Route path="/" component={Landing} />
             </Switch>
           </BrowserRouter>
