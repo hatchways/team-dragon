@@ -13,7 +13,7 @@ class Game {
     this.cardsFlipped = 0;
     this.players = [];
     this.currentUser = null;
-    this.startMatch = false;
+    this.gameStatus = "setup";
     console.log("Match ID:", this.id);
   }
 
@@ -125,6 +125,7 @@ class Game {
     } else {
       console.log("Congrats! Red team won the match");
     }
+    this.matchStatus = "over";
   }
 
   // Decision whether blue or red wins
@@ -162,8 +163,8 @@ class Game {
     return JSON.stringify(this);
   }
 
-  startMatch() {
-    this.startMatch = true;
+  startGame() {
+    this.gameStatus = "running";
   }
 }
 
