@@ -37,7 +37,7 @@ export function GameProvider({ children }) {
   ]);
 
   //Holds whether game has started
-  const [gameStart, setGameStart] = useState(false);
+  const [gameStart, setGameStart] = useState("setup");
   const providerGameStart = useMemo(() => [gameStart, setGameStart], [
     gameStart,
     setGameStart,
