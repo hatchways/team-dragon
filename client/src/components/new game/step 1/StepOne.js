@@ -19,6 +19,7 @@ const StepOne = (props) => {
   const newGameContext = useNewGame();
   const [newGame, setNewGame] = newGameContext;
 
+
   return (
     <>
       <Box mt={5} minHeight={170}>
