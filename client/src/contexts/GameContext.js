@@ -1,6 +1,5 @@
 import React, { useContext, useState, useMemo } from "react";
 
-
 const GameStatusContext = React.createContext();
 
 const IsSpyMasterContext = React.createContext();
@@ -16,8 +15,6 @@ export function useGameSpyMaster() {
 }
 
 export function GameProvider({ children }) {
-
-
   //Holds if player is spymaster
   const [isSpyMaster, setIsSpyMaster] = useState(false);
   const providerIsSpyMaster = useMemo(() => [isSpyMaster, setIsSpyMaster], [
@@ -33,10 +30,10 @@ export function GameProvider({ children }) {
   ]);
 
   return (
-      <GameStatusContext.Provider value={providerGameStatus}>
-        <IsSpyMasterContext.Provider value={providerIsSpyMaster}>
-          {children}
-        </IsSpyMasterContext.Provider>
-      </GameStatusContext.Provider>
+    <GameStatusContext.Provider value={providerGameStatus}>
+      <IsSpyMasterContext.Provider value={providerIsSpyMaster}>
+        {children}
+      </IsSpyMasterContext.Provider>
+    </GameStatusContext.Provider>
   );
 }

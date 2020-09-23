@@ -45,7 +45,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Match = (props) => {
+const Game = (props) => {
   const classes = useStyles();
   const [name, setName] = useState([]);
   const [messages, setMessages] = useState([]);
@@ -78,7 +78,7 @@ const Match = (props) => {
 
     // on connect retrieve the game board and set it?
     setBoard(sampleBoard);
-  }, []);
+  }, [gameId, token]);
 
   const sendMessage = (msg) => {
     const msgData = {
@@ -120,4 +120,4 @@ const Match = (props) => {
   );
 };
 
-export default Match;
+export default Game;
