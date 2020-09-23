@@ -99,12 +99,18 @@ const Messenger = (props) => {
       <Divider />
       <form className={classes.messageInput} onSubmit={handleSubmit}>
         <TextField
+          variant="outlined"
           type="text"
           placeholder="Type here..."
           value={messageInput}
           onChange={(e) => setMessageInput(e.target.value)}
         />
-        <Button type="submit" variant="contained" color="primary" size="large">
+        <Button 
+          type="submit" 
+          variant="contained" 
+          color="primary" 
+          size="large"
+        >
           Done
         </Button>
       </form>

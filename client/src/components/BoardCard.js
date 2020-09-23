@@ -5,16 +5,18 @@ import Card from "@material-ui/core/Card";
 import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  root: (props) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     background: theme.white,
-  },
+    cursor: props.clicked ? "auto" : "pointer",
+  }),
   red: (props) => ({
     color: props.spyMaster ? theme.red.medium : theme.grey.dark,
     "&.clicked": {
       background: theme.red.medium,
+      background: `linear-gradient(45deg, ${theme.red.medium} 50%, ${theme.red.light} 85%)`,
       color: theme.white,
     },
   }),
@@ -22,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
     color: props.spyMaster ? theme.blue.medium : theme.grey.dark,
     "&.clicked": {
       background: theme.blue.medium,
+      background: `linear-gradient(45deg, ${theme.blue.medium} 50%, ${theme.blue.light} 85%)`,
       color: theme.white,
     },
   }),
