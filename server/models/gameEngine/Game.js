@@ -24,7 +24,6 @@ class Game {
 
   // Team assignment to players
   assignTeam({ id, name }, team) {
-    console.log("Assigning Teams:", id, name, team);
     switch (team) {
       case this.redTeam.name:
         this.redTeam.addPlayer(new Player(id, name, team));

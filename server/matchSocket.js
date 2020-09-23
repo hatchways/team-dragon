@@ -1,3 +1,6 @@
+const jwt = require("jsonwebtoken");
+const config = require("./config");
+
 const { getIO } = require("./socket");
 const allMatches = require("./models/gameModel/allMatches");
 const User = require("./models/User");
@@ -14,31 +17,53 @@ module.exports = {
 
       let matchRoom;
       // Socket listener for match rooms
-      socket.on("join-match", ({ room, matchId, userEmail }) => {
-        matchRoom = room;
-        socket.join(room);
-        User.findOne({ email: userEmail })
-          .then((user) => {
-            if (!user) {
-              throw new Error("User does not exist!");
-            }
-            let newPlayer = {
-              id: user._id,
-              name: user.name,
-            };
-            let currentMatch = allMatches
-              .getAllMatches()
-              .get(parseInt(matchId));
-            currentMatch.joinMatch(newPlayer);
-            // Send updated players array to front
-            io.to(room).emit("update-players", currentMatch);
-          })
-          .catch((err) => console.log(err));
+      socket.on("join-match", ({ room, matchId, token }) => {
+        // authentication
+        jwt.verify(token, config.secret, (err, { email }) => {
+          if (err) {
+            throw new Error("User not authorized!");
+          }
+
+          //Joining room
+          matchRoom = room;
+          socket.join(room);
+
+          User.findOne({ email: email })
+            .then((user) => {
+              if (!user) {
+                throw new Error("User does not exist!");
+              }
+              let newPlayer = {
+                id: user._id,
+                name: user.name,
+              };
+
+              if (!matchId) {
+                throw new Error("Match id not received!");
+              }
+              let currentMatch = allMatches
+                .getAllMatches()
+                .get(parseInt(matchId));
+
+              if (!currentMatch) {
+                throw new Error("Match does not exist!");
+              }
+              currentMatch.joinMatch(newPlayer);
+              // Send updated players array to front
+              io.to(room).emit("update-players", currentMatch);
+            })
+            .catch((err) => console.log(err));
+        });
       });
 
       // Receive assigned roles emitted from FE
       socket.on("start-game", ({ matchId, players }) => {
         let currentMatch = allMatches.getAllMatches().get(parseInt(matchId));
+
+        if (!currentMatch) {
+          throw new Error("Match does not exist!");
+        }
+        
         players.forEach(({ id, name, team, spyMaster }) => {
           // Assign team to each player
           currentMatch.assignTeam({ id, name }, team);
@@ -52,7 +77,6 @@ module.exports = {
         });
 
         currentMatch.startGame();
-        console.log("Updated game after assigned roles: ", currentMatch);
         io.to(matchRoom).emit("update-roles", currentMatch);
       });
 
