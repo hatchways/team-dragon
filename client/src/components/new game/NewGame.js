@@ -1,8 +1,12 @@
 import React, { useEffect } from "react";
-import StepOne from "../components/new game/step 1/StepOne.js";
-import StepTwo from "../components/new game/step 2/StepTwo.js";
-import StepThree from "../components/new game/step 3/StepThree.js";
-import { useNewGame, usePlayers, useSpyMaster } from "../DataContext";
+import StepOne from "../new game/step 1/StepOne";
+import StepTwo from "../new game/step 2/StepTwo.js";
+import StepThree from "../new game/step 3/StepThree.js";
+import {
+  useNewGame,
+  usePlayers,
+  useSpyMaster,
+} from "../../contexts/DataContext";
 import {
   Button,
   Container,
@@ -14,8 +18,9 @@ import {
 } from "@material-ui/core";
 
 import { makeStyles, createStyles } from "@material-ui/core/styles";
+import socket from "../../socket";
 import axios from "axios";
-import socket from '../socket';
+
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -46,35 +51,6 @@ const NewGame = (props) => {
   const newSpyMasterContext = useSpyMaster();
   const [spymaster] = newSpyMasterContext;
 
-  const gameData = localStorage.getItem("newGame");
-
-  useEffect(() => {
-
-    // if (gameData) {
-    //   setNewGame(JSON.parse(localStorage.getItem("newGame")));
-    // }
-
-    //Catching errors in local storage
-    if (newGame.matchId !== Number(props.match.params.id)) {
-      setNewGame((prevState) => ({
-        ...prevState,
-        step: 1,
-        matchId: Number(props.match.params.id),
-      }));
-    }
-
-    // Updates match state
-    socket.on("update-match-state", (match) => {
-      console.log("Updated Match State: ", match);
-    });
-
-  }, []);
-
-  // Stores New Game Info to Local Storage
-  useEffect(() => {
-    localStorage.setItem("newGame", JSON.stringify(newGame));
-  }, [newGame]);
-
   const resetNewGame = async () => {
     try {
       const getData = await axios.post("/create-match");
@@ -84,8 +60,7 @@ const NewGame = (props) => {
         hostId: localStorage.getItem("id"),
         matchId: getData.data.match.id,
       }));
-      await localStorage.setItem("newGame", JSON.stringify(newGame));
-      await props.history.push(String(getData.data.match.id));
+      await props.value.history.push(String(getData.data.match.id));
     } catch (err) {
       console.log(err);
     }
@@ -99,39 +74,38 @@ const NewGame = (props) => {
     }));
   };
 
-  const startGame = async (e) => {
-    const setMatch = (newGame, players, spyMaster) => {
-      let spyMasters = [spyMaster.teamBlue, spyMaster.teamRed];
-
-      let playerAssign = players.map((player) => {
-        if (spyMasters.includes(player.id)) {
-          return {
-            id: player.id,
-            name: player.name,
-            team: player.team,
-            spyMaster: true,
-          };
-        } else {
-          return {
-            id: player.id,
-            name: player.name,
-            team: player.team,
-            spyMaster: false,
-          };
-        }
-      });
-
-      return {
-        matchId: newGame.matchId,
-        players: playerAssign,
-      };
-    };
-
+  //Sends Date to Start Game
+  const startMatch = async (e) => {
     try {
+      const setMatch = (newGame, players, spyMaster) => {
+        let spyMasters = [spyMaster.teamBlue, spyMaster.teamRed];
+
+        let playerAssign = players.map((player) => {
+          if (spyMasters.includes(player.id)) {
+            return {
+              id: player.id,
+              name: player.name,
+              team: player.team,
+              spyMaster: true,
+            };
+          } else {
+            return {
+              id: player.id,
+              name: player.name,
+              team: player.team,
+              spyMaster: false,
+            };
+          }
+        });
+
+        return {
+          matchId: newGame.matchId,
+          players: playerAssign,
+        };
+      };
+
       const matchDetails = await setMatch(newGame, players, spymaster);
-      console.log("matchDetails", matchDetails);
-      //await axios.post("/start-match")
-      //Push to new link?
+      socket.emit("start-game", matchDetails);
     } catch (err) {
       console.log(err);
     }
@@ -179,7 +153,7 @@ const NewGame = (props) => {
                 </Button>
               ) : (
                 //Needs Logic here to initiate final role allocation.
-                <Button variant="contained" color="primary" onClick={startGame}>
+                <Button variant="contained" color="primary" onClick={startMatch}>
                   Create Game
                 </Button>
               )}

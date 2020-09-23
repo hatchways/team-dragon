@@ -36,7 +36,7 @@ module.exports = {
       });
 
       // Receive assigned roles emitted from FE
-      socket.on('assign-roles',(matchId, players)=>{
+      socket.on('start-game',(matchId, players)=>{
         let currentMatch = allMatches.getAllMatches().get(parseInt(matchId));
         players.forEach(({id,name,team,spyMaster}) => {
           // Assign team to each player
@@ -50,7 +50,9 @@ module.exports = {
             currentMatch.assignRole(id,"spy-master");
           }
         });
-        console.log("Updated match after assigned roles: ", currentMatch );
+
+        currentMatch.startGame();
+        console.log("Updated game after assigned roles: ", currentMatch );
         io.to(matchRoom).emit('update-roles',currentMatch);
       });
 

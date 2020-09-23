@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import {
   /* useNewGame,  */ usePlayers,
   useSpyMaster,
-} from "../../../DataContext";
+} from "../../../contexts/DataContext";
 
 //import { useAxios } from "../../../hooks/useAxios";
 import { Grid, Box, Typography } from "@material-ui/core";

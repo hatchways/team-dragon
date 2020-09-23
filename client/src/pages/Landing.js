@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useNewGame } from "../DataContext";
+import { useNewGame } from "../contexts/DataContext";
+import { useHost } from "../contexts/GameContext"
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Card, Container, Typography } from "@material-ui/core";
 import axios from "axios";
@@ -25,23 +26,28 @@ const Landing = (props) => {
   const classes = useStyles();
 
   //Holds Match ID + Template for Passing Roles to Server
-  const newGameContext = useNewGame();
-  const [newGame, setNewGame] = newGameContext;
+  const NewGameContext = useNewGame();
+  const [newGame, setNewGame] = NewGameContext;
 
-  const startNewGame = async () => {
+  const HostContext = useHost();
+  const [setIsHost] = HostContext
+
+  const createNewGame = async () => {
     try {
       const getData = await axios.post("/create-match");
+      console.log(getData.data.match.id)
       await setNewGame((prevState) => ({
         ...prevState,
         hostId: localStorage.getItem("id"),
         matchId: getData.data.match.id,
       }));
-      await localStorage.setItem("newGame", JSON.stringify(newGame));
       await props.history.push(String(getData.data.match.id));
     } catch (err) {
       console.log(err);
     }
+
   };
+
 
   return (
     <Container className={classes.root} maxWidth="md">
@@ -76,7 +82,7 @@ const Landing = (props) => {
         ) : (
           <Button
             className={classes.button}
-            onClick={startNewGame}
+            onClick={createNewGame}
             variant="contained"
             color="primary"
             size="large"
