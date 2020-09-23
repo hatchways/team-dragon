@@ -50,6 +50,10 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     alignItems: "center",
   },
+  alert: {
+    fontStyle: "italic",
+    color: theme.grey.dark,
+  },
 }));
 
 export default useStyles;

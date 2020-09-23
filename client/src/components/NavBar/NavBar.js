@@ -9,8 +9,10 @@ import useStyles from "./styles";
 
 const NavBar = (props) => {
   const classes = useStyles();
+
+  // in the future utilize gameContext to see if game started
   const inMatch = matchPath(props.location.pathname, {
-    path: "/match/:id",
+    path: "/game/:id",
   });
 
   return (
