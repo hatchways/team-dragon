@@ -72,7 +72,8 @@ const Match = (props) => {
     });
 
     socket.on("redirect", () => {
-      props.history.push("/login");
+      console.log("user not valid");
+      // props.history.push("/login");
     });
 
     // on connect retrieve the game board and set it?

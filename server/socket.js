@@ -19,6 +19,8 @@ exports.socket = (server) => {
           return;
         }
 
+        // check db to find user?
+
         // join a game
         socket.join(recv.gameId);
 
