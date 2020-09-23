@@ -65,7 +65,7 @@ const NewGame = (props) => {
 
     // Updates match state
     socket.on("update-match-state", (match) => {
-      console.log("Updated Match State: ", match);
+      console.log("Updated Match State: ", match.players);
     });
 
   }, []);

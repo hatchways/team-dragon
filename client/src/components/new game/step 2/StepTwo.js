@@ -24,21 +24,21 @@ const StepTwo = () => {
     socket.emit("join-match", data);
   }, []);
 
-  const showPlayers = () => {
-    return players.map((player) => {
-      return (
-        <>
-          <p>Player ID {player.userId}</p>
-          <p>Player Name {player.name}</p>
-        </>
-      );
-    });
-  };
+  // const showPlayers = () => {
+  //   return players.map((player) => {
+  //     return (
+  //       <>
+  //         <p>Player ID {player.userId}</p>
+  //         <p>Player Name {player.name}</p>
+  //       </>
+  //     );
+  //   });
+  // };
 
   return (
     <>
       <h2>step2</h2>
-      {showPlayers()}
+      {/* {showPlayers()} */}
       <p>waiting room as people join. </p>
       <p>
         when players join, they will be added to a state on the host's frontend.

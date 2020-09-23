@@ -9,7 +9,7 @@ module.exports = {
     ioExport = io;
     io.on("connection", (socket) => {
       socketExport = socket;
-      console.log("Match socket connected");
+      console.log("new user connected to match socket");
 
       // Socket listener for match rooms
       socket.on("join-match", ({ room, matchId,userEmail }) => {

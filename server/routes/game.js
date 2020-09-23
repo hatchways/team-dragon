@@ -4,7 +4,7 @@ const gameController = require("../controllers/game.js");
 
 router.post("/create-match", gameController.postCreateMatch);
 
-router.get("/create-match", gameController.getCreateMatch);
+// router.get("/create-match", gameController.getCreateMatch);
 
 // router.post("/match/:id", gameController.joinMatch);
 

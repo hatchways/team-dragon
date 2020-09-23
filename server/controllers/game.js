@@ -2,7 +2,6 @@ const allMatches = require("../models/gameModel/allMatches");
 const Game = require("../models/gameEngine/Game");
 const Match = require("../models/gameModel/Match");
 const User = require("../models/User");
-let globalState = {};
 
 exports.postCreateMatch = async (req, res, next) => {
   try {
@@ -52,14 +51,6 @@ exports.postCreateMatch = async (req, res, next) => {
       return res.status(404).json({ success: false, error: "Match not saved" });
     }
 
-    // let newPlayer = {
-    //   userId: user._id,
-    //   name: user.name,
-    //   matchId: gameEngine.id,
-    // };
-
-    // gameEngine.joinMatch(newPlayer);
-
     // Assign Team to player
     gameEngine.assignTeam(player1, "red");
     gameEngine.assignTeam(player2, "blue");
@@ -70,12 +61,10 @@ exports.postCreateMatch = async (req, res, next) => {
     // // Test JSON method
     // console.log("JSON", gameEngine.toJson());
 
-    globalState = { gameEngine };
-
     allMatches.addMatch(gameEngine.id, gameEngine);
 
     res.status(202).send({
-      match: globalState.gameEngine,
+      match: gameEngine,
     });
   } catch (err) {
     if (err) {
@@ -84,12 +73,7 @@ exports.postCreateMatch = async (req, res, next) => {
   }
 };
 
-// Get route controller for create-match
-exports.getCreateMatch = (req, res, next) => {
-  res.status(202).json({
-    match: globalState.gameEngine,
-  });
-};
+// Left this to reuse the logic
 
 // // Get route when a user joins the match
 // exports.joinMatch = async (req, res, next) => {
