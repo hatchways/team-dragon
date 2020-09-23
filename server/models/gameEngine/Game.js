@@ -13,6 +13,7 @@ class Game {
     this.cardsFlipped = 0;
     this.players = [];
     this.currentUser = null;
+    this.gameStatus = "setup";
     console.log("Match ID:", this.id);
   }
 
@@ -23,6 +24,7 @@ class Game {
 
   // Team assignment to players
   assignTeam({ id, name }, team) {
+    console.log("Assigning Teams:", id, name, team);
     switch (team) {
       case this.redTeam.name:
         this.redTeam.addPlayer(new Player(id, name, team));
@@ -124,6 +126,7 @@ class Game {
     } else {
       console.log("Congrats! Red team won the match");
     }
+    this.matchStatus = "over";
   }
 
   // Decision whether blue or red wins
@@ -145,6 +148,21 @@ class Game {
   joinMatch(user) {
     this.players.push(user);
     return this.players;
+    // if (this.players.length === 0) {
+    //   this.players.push(user);
+    //   return this.players;
+    // }
+
+    //To avoid duplication
+    // this.players.forEach((player) => {
+    //   if (player.id !== user.id) {
+    //     console.log("object");
+    //     this.players.push(user);
+    //     return this.players;
+    //   } else {
+    //     console.log("User already in the game!");
+    //   }
+    // });
   }
 
   // Sets the current user
@@ -159,6 +177,10 @@ class Game {
 
   toJson() {
     return JSON.stringify(this);
+  }
+
+  startGame() {
+    this.gameStatus = "running";
   }
 }
 

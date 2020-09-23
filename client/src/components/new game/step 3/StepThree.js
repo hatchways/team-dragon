@@ -10,9 +10,6 @@ import PlayerSelect from "./PlayerSelect";
 import RoleSelect from "./RoleSelect";
 
 const StepThree = () => {
-  // const newGameContext = useNewGame();
-  // const [newGame] = newGameContext;
-
   const newPlayerContext = usePlayers();
   const [players, setPlayers] = newPlayerContext;
 
@@ -37,7 +34,7 @@ const StepThree = () => {
   }, [players, setPlayers, spyMaster, setSpyMaster]);
 
   const displayBlueRoles = useCallback(() => {
-    const bluePlayers = players.filter((player) => player.team === "teamBlue");
+    const bluePlayers = players.filter((player) => player.team === "blue");
     return (
       <RoleSelect
         team={bluePlayers}
@@ -49,7 +46,7 @@ const StepThree = () => {
   }, [players, spyMaster, setSpyMaster]);
 
   const displayRedRoles = useCallback(() => {
-    const redPlayers = players.filter((player) => player.team === "teamRed");
+    const redPlayers = players.filter((player) => player.team === "red");
     return (
       <Grid item>
         <RoleSelect

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNewGame } from "../contexts/DataContext";
-import { useHost } from "../contexts/GameContext"
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Card, Container, Typography } from "@material-ui/core";
 import axios from "axios";
@@ -29,13 +28,9 @@ const Landing = (props) => {
   const NewGameContext = useNewGame();
   const [newGame, setNewGame] = NewGameContext;
 
-  const HostContext = useHost();
-  const [setIsHost] = HostContext
-
   const createNewGame = async () => {
     try {
       const getData = await axios.post("/create-match");
-      console.log(getData.data.match.id)
       await setNewGame((prevState) => ({
         ...prevState,
         hostId: localStorage.getItem("id"),
@@ -45,9 +40,7 @@ const Landing = (props) => {
     } catch (err) {
       console.log(err);
     }
-
   };
-
 
   return (
     <Container className={classes.root} maxWidth="md">

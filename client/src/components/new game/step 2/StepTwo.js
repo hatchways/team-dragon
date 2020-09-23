@@ -7,6 +7,7 @@ const StepTwo = () => {
   const [newGame, setNewGame] = newGameContext;
 
   const usePlayersContext = usePlayers();
+  const [players, setPlayers] = usePlayersContext;
 
   useEffect(() => {
     // User joins the room
@@ -18,26 +19,32 @@ const StepTwo = () => {
       matchId: matchId,
       userEmail: userEmail,
     };
-    socket.emit("join-match", data);
-  }, []);
+    if (newGame.matchId !== "") {
+      socket.emit("join-match", data);
+    }
 
+    //Shows players that have joined so far in game setup (Will be displayed in StepTwo.js)
+    socket.on("update-players", (match) => {
+      setPlayers(match.players);
+    });
+  }, [newGame]);
 
-  // const showPlayers = () => {
-  //   return players.map((player) => {
-  //     return (
-  //       <>
-  //         <p>Player ID {player.userId}</p>
-  //         <p>Player Name {player.name}</p>
-  //       </>
-  //     );
-  //   });
-  // };
-
+  const showPlayers = () => {
+    return players.map((player, i) => {
+      return (
+        <div key={i}>
+          <p>
+            Player ID: {player.id} / Player Name: {player.name}
+          </p>
+        </div>
+      );
+    });
+  };
 
   return (
     <>
       <h2>step2</h2>
-      {/* {showPlayers()} */}
+      {showPlayers()}
       <p>waiting room as people join. </p>
       <p>
         when players join, they will be added to a state on the host's frontend.

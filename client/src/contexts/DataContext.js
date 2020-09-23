@@ -61,7 +61,7 @@ export function DataProvider({ children }) {
   }, [players]);
 
   //Holds SpyMaster
-  const [spyMaster, setSpyMaster] = useState({ teamBlue: "", teamRed: "" });
+  const [spyMaster, setSpyMaster] = useState({ blue: "", red: "" });
 
   const providerSpyMaster = useMemo(() => [spyMaster, setSpyMaster], [
     spyMaster,
