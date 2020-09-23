@@ -1,6 +1,9 @@
 const { getIO } = require("./socket");
 const allMatches = require("./models/gameModel/allMatches");
 const User = require("./models/User");
+
+
+
 let ioExport;
 let socketExport;
 module.exports = {
@@ -27,9 +30,9 @@ module.exports = {
               .getAllMatches()
               .get(parseInt(matchId));
             currentMatch.joinMatch(newPlayer);
-
+            console.log('currentMatch-LOOK HERE', currentMatch)
             // Send updated players array to front
-            io.to(room).emit("update-match-state", currentMatch);
+            io.to(room).emit("update-players", currentMatch);
           })
           .catch((err) => console.log(err));
       });
