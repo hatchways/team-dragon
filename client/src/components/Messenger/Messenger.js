@@ -23,7 +23,7 @@ const Messenger = (props) => {
   };
 
   return (
-    <div className={classes.root}>
+    <div className={classes.messenger}>
       <List className={classes.messageContainer} ref={elRef}>
         {props.messages.map((m) =>
           m.sender === props.currentUser ? (

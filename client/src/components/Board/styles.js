@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
     gridTemplateRows: "repeat(5, 1fr)",
     gap: "1rem",
     background: theme.grey.medium,
-    padding: "3rem",
+    padding: "4rem",
   },
   card: (props) => ({
     display: "flex",
@@ -17,6 +17,10 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     background: theme.white,
     cursor: props.clicked ? "auto" : "pointer",
+    transition: "transform .2s",
+    "&:hover:not(.clicked)": {
+      transform: "scale(1.2)",
+    }
   }),
   red: (props) => ({
     color: props.spyMaster ? theme.red.medium : theme.grey.dark,
@@ -36,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
     color: props.spyMaster ? theme.grey.mediumDark : theme.grey.dark,
     "&.clicked": {
       background: theme.grey.medium,
+      color: theme.grey.mediumDark,
     },
   }),
   assassin: {

@@ -9,31 +9,31 @@ import socket from "../socket";
 import Fab from "@material-ui/core/Fab"; // TEST
 
 const sampleBoard = [
-  { word: "1", type: "blue", clicked: true },
-  { word: "2", type: "blue", clicked: false },
-  { word: "3", type: "blue", clicked: false },
-  { word: "4", type: "blue", clicked: false },
-  { word: "5", type: "blue", clicked: false },
-  { word: "6", type: "blue", clicked: false },
-  { word: "7", type: "blue", clicked: false },
-  { word: "8", type: "blue", clicked: false },
-  { word: "9", type: "red", clicked: false },
-  { word: "10", type: "red", clicked: false },
-  { word: "11", type: "red", clicked: false },
-  { word: "12", type: "red", clicked: true },
-  { word: "13", type: "red", clicked: false },
-  { word: "14", type: "red", clicked: false },
-  { word: "15", type: "red", clicked: false },
-  { word: "16", type: "red", clicked: false },
-  { word: "17", type: "assassin", clicked: false },
-  { word: "18", type: "innocent", clicked: false },
-  { word: "19", type: "innocent", clicked: false },
-  { word: "20", type: "innocent", clicked: true },
-  { word: "21", type: "innocent", clicked: false },
-  { word: "22", type: "innocent", clicked: false },
-  { word: "23", type: "innocent", clicked: false },
-  { word: "24", type: "innocent", clicked: false },
-  { word: "25", type: "innocent", clicked: false },
+  { word: "switch", type: "blue", clicked: true },
+  { word: "manga", type: "blue", clicked: false },
+  { word: "moon", type: "blue", clicked: false },
+  { word: "octopus", type: "blue", clicked: false },
+  { word: "change", type: "blue", clicked: false },
+  { word: "orange", type: "blue", clicked: false },
+  { word: "point", type: "blue", clicked: false },
+  { word: "police", type: "blue", clicked: false },
+  { word: "ghost", type: "red", clicked: false },
+  { word: "wave", type: "red", clicked: false },
+  { word: "casino", type: "red", clicked: false },
+  { word: "lemur", type: "red", clicked: true },
+  { word: "mug", type: "red", clicked: false },
+  { word: "chicken", type: "red", clicked: false },
+  { word: "dog", type: "red", clicked: false },
+  { word: "apple", type: "red", clicked: false },
+  { word: "beach", type: "assassin", clicked: false },
+  { word: "tail", type: "innocent", clicked: false },
+  { word: "staff", type: "innocent", clicked: false },
+  { word: "ball", type: "innocent", clicked: true },
+  { word: "iron", type: "innocent", clicked: false },
+  { word: "car", type: "innocent", clicked: false },
+  { word: "air", type: "innocent", clicked: false },
+  { word: "cherry", type: "innocent", clicked: false },
+  { word: "ball", type: "innocent", clicked: false },
 ];
 
 const useStyles = makeStyles((theme) => ({
@@ -44,7 +44,6 @@ const useStyles = makeStyles((theme) => ({
     gridTemplateColumns: "400px 1fr",
     gridTemplateRows: "auto",
   },
-  toggle: {},
 }));
 
 const Match = (props) => {
@@ -94,7 +93,8 @@ const Match = (props) => {
       <Fab
         style={{
           position: "absolute",
-          bottom: 0,
+          left: "5px",
+          bottom: "5px",
         }}
         color="primary"
         onClick={() => setIsSpyMaster(!isSpyMaster)}
