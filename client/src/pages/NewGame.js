@@ -15,6 +15,7 @@ import {
 
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import axios from "axios";
+import socket from '../socket';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -48,9 +49,10 @@ const NewGame = (props) => {
   const gameData = localStorage.getItem("newGame");
 
   useEffect(() => {
-    if (gameData) {
-      setNewGame(JSON.parse(localStorage.getItem("newGame")));
-    }
+
+    // if (gameData) {
+    //   setNewGame(JSON.parse(localStorage.getItem("newGame")));
+    // }
 
     //Catching errors in local storage
     if (newGame.matchId !== Number(props.match.params.id)) {
@@ -60,6 +62,11 @@ const NewGame = (props) => {
         matchId: Number(props.match.params.id),
       }));
     }
+
+    // Updated players array (Data lagging one step behind and needs to be fixed)
+    socket.on("update-match-state", (match) => {
+      console.log("Updated Match State: ", match);
+    });
   }, []);
 
   // Stores New Game Info to Local Storage

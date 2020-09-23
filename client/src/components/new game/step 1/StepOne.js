@@ -4,6 +4,7 @@ import LinkInvite from "./LinkInvite";
 import { useNewGame } from "../../../DataContext";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import { Divider, Grid, Box } from "@material-ui/core";
+import socket from '../../../socket'
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -18,6 +19,7 @@ const StepOne = (props) => {
 
   const newGameContext = useNewGame();
   const [newGame, setNewGame] = newGameContext;
+
 
   return (
     <>
