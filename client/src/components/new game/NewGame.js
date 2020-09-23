@@ -74,7 +74,7 @@ const NewGame = (props) => {
   };
 
   //Sends Date to Start Game
-  const startGame = async (e) => {
+  const startMatch = async (e) => {
     try {
       const setMatch = (newGame, players, spyMaster) => {
         let spyMasters = [spyMaster.teamBlue, spyMaster.teamRed];
@@ -152,7 +152,7 @@ const NewGame = (props) => {
                 </Button>
               ) : (
                 //Needs Logic here to initiate final role allocation.
-                <Button variant="contained" color="primary" onClick={startGame}>
+                <Button variant="contained" color="primary" onClick={startMatch}>
                   Create Game
                 </Button>
               )}
