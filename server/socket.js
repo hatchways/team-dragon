@@ -1,60 +1,85 @@
+const jwt = require("jsonwebtoken");
+const config = require("./config");
+
 let ioExport;
 
 exports.socket = (server) => {
   const io = require("socket.io")(server);
+  const clientDetails = {};
   const roomDetails = {};
 
   ioExport = io;
 
   io.on("connection", (socket) => {
-    console.log("a user connected");
+    socket.on("join", (recv, fn) => {
+      // validate user token
+      jwt.verify(recv.token, config.secret, (err, decoded) => {
+        if (err) {
+          socket.emit("redirect");
+          return;
+        }
 
-    let socketRoomId; // to store current room
+        // check db to find user?
 
-    socket.on("join", (room, fn) => {
-      // join a room
-      socket.join(room);
-      socketRoomId = room;
+        // join a game
+        socket.join(recv.gameId);
 
-      if (roomDetails[room] === undefined) {
         // create room details if does not exist
-        console.log("creating room:", room);
-        roomDetails[room] = {
-          history: [],
-          users: [],
+        if (roomDetails[recv.gameId] === undefined) {
+          console.log("creating room:", recv.gameId);
+          roomDetails[recv.gameId] = {
+            history: [],
+          };
+        }
+
+        // assign user a name and store user details
+        if (clientDetails[socket.id] === undefined) {
+          clientDetails[socket.id] = {
+            name: decoded.name,
+            rooms: [recv.gameId],
+          };
+        }
+
+        // update room of joining client
+        const alert = {
+          sender: "alert",
+          message: `${decoded.name} joined the game`,
         };
-      }
 
-      // assign user a name and store user details
-      const assignedName = `guest-${socket.id.substr(0, 5)}`;
-      const user = { id: socket.id, name: assignedName };
-      roomDetails[room].users.push(user);
+        roomDetails[recv.gameId].history.push(alert);
+        socket.to(recv.gameId).broadcast.emit("alert", alert);
 
-      // return assigned name and chat history
-      fn({
-        name: assignedName,
-        history: roomDetails[room].history,
+        // return assigned name and chat history
+        fn({
+          name: decoded.name,
+          history: roomDetails[recv.gameId].history,
+        });
       });
     });
 
-    socket.on("message", (msgData) => {
-      console.log("message recieved:", msgData);
-
+    socket.on("message", (recv) => {
       // save message into history
-      roomDetails[socketRoomId].history.push(msgData);
+      roomDetails[recv.gameId].history.push(recv.msgData);
 
       // update other clients with the message
-      io.to(socketRoomId).emit("message", msgData);
+      io.to(recv.gameId).emit("message", recv.msgData);
     });
 
     socket.on("disconnect", () => {
-      console.log("user disconnected");
+      // lookup the disconnecting user and remove
+      const user = clientDetails[socket.id];
+      if (user !== undefined) {
+        user.rooms.forEach((room) => {
+          const alert = {
+            sender: "alert",
+            message: `${user.name} left the game`,
+          };
 
-      if (roomDetails[socketRoomId] !== undefined) {
-        // update users currently in the chat
-        roomDetails[socketRoomId].users = roomDetails[
-          socketRoomId
-        ].users.filter((user) => user.id !== socket.id);
+          roomDetails[room].history.push(alert);
+          io.to(room).emit("alert", alert);
+        });
+
+        delete clientDetails[socket.id];
       }
     });
   });
