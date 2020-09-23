@@ -145,8 +145,16 @@ class Game {
 
   // New user joins the match and gets added to players array of the match
   joinMatch(user) {
-    this.players.push(user);
-    return this.players;
+    //To avoid duplication
+    this.players.forEach((player) => {
+      if (player.id !== user.id) {
+        this.players.push(user);
+        return this.players;
+      }
+      else{
+        console.log("User already in the game!");
+      }
+    });
   }
 
   // Sets the current user
