@@ -53,22 +53,29 @@ const Messenger = (props) => {
           value={messageInput}
           onChange={(e) => setMessageInput(e.target.value)}
         />
-        <Button 
-          type="submit" 
-          variant="contained" 
-          color="primary" 
-          size="large"
-        >
-          Done
-        </Button>
+        {props.spyMaster && (
+          <Button 
+            type="submit" 
+            variant="contained" 
+            color="primary" 
+            size="large"
+          >
+            Done
+          </Button>
+        )}
       </form>
     </div>
   );
 };
 
+Messenger.defaultProps = {
+  spyMaster: false,
+}
+
 Messenger.propTypes = {
   messages: PropTypes.array.isRequired,
   sendMessage: PropTypes.func.isRequired,
-};
+  spyMaster: PropTypes.bool,
+}
 
 export default Messenger;

@@ -55,6 +55,7 @@ BoardCard.propTypes = {
   word: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   clicked: PropTypes.bool.isRequired,
+  spyMaster: PropTypes.bool,
 };
 
 
@@ -64,6 +65,7 @@ Board.defaultProps = {
 
 Board.propTypes = {
   board: PropTypes.array.isRequired,
+  spyMaster: PropTypes.bool,
 };
 
 export default Board;

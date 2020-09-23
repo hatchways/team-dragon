@@ -3,7 +3,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import { v4 as uuid } from "uuid";
 import Messenger from "../components/Messenger";
 import Board from "../components/Board";
+import { useGameSpyMaster } from ".././contexts/GameContext";
 import socket from "../socket";
+
+import Fab from "@material-ui/core/Fab" // TEST
 
 const sampleBoard = [
   { word: "1", type: "blue", clicked: true },
@@ -41,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
     gridTemplateColumns: "400px 1fr",
     gridTemplateRows: "auto",
   },
+  toggle: {
+
+  }
 }));
 
 const Match = (props) => {
@@ -48,6 +54,7 @@ const Match = (props) => {
   const [name, setName] = useState([]);
   const [messages, setMessages] = useState([]);
   const [board, setBoard] = useState([]);
+  const [isSpyMaster, setIsSpyMaster] = useGameSpyMaster();
 
   useEffect(() => {
     socket.emit("join", props.match.params.id, ({ name, history }) => {
@@ -78,11 +85,27 @@ const Match = (props) => {
   return (
     <div className={classes.root}>
       <Messenger
+        spyMaster={isSpyMaster}
         currentUser={name}
         messages={messages}
         sendMessage={sendMessage}
       />
-      <Board spyMaster board={board} />
+      <Board 
+        spyMaster={isSpyMaster}
+        board={board} 
+      />
+
+      {/* Test */}
+      <Fab
+        style={{
+          position: "absolute",
+          bottom: 0,
+        }}
+        color="primary"
+        onClick={() => setIsSpyMaster(!isSpyMaster) }
+      >
+        {isSpyMaster ? "SP" : "G"}
+      </Fab>
     </div>
   );
 };
