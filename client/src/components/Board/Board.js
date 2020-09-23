@@ -34,18 +34,18 @@ const Board = (props) => {
 
   return (
     <div className={classes.board}>
-    {props.board.map((card, idx) => (
-      <BoardCard
-        spyMaster={props.spyMaster}
-        key={idx}
-        word={card.word}
-        type={card.type}
-        clicked={card.clicked}
-      />
-    ))}
-  </div>
-  )
-}
+      {props.board.map((card, idx) => (
+        <BoardCard
+          spyMaster={props.spyMaster}
+          key={idx}
+          word={card.word}
+          type={card.type}
+          clicked={card.clicked}
+        />
+      ))}
+    </div>
+  );
+};
 
 BoardCard.defaultProps = {
   spyMaster: false,
@@ -57,7 +57,6 @@ BoardCard.propTypes = {
   clicked: PropTypes.bool.isRequired,
   spyMaster: PropTypes.bool,
 };
-
 
 Board.defaultProps = {
   spyMaster: false,

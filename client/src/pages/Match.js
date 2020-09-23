@@ -6,7 +6,7 @@ import Board from "../components/Board";
 import { useGameSpyMaster } from ".././contexts/GameContext";
 import socket from "../socket";
 
-import Fab from "@material-ui/core/Fab" // TEST
+import Fab from "@material-ui/core/Fab"; // TEST
 
 const sampleBoard = [
   { word: "1", type: "blue", clicked: true },
@@ -44,9 +44,7 @@ const useStyles = makeStyles((theme) => ({
     gridTemplateColumns: "400px 1fr",
     gridTemplateRows: "auto",
   },
-  toggle: {
-
-  }
+  toggle: {},
 }));
 
 const Match = (props) => {
@@ -90,10 +88,7 @@ const Match = (props) => {
         messages={messages}
         sendMessage={sendMessage}
       />
-      <Board 
-        spyMaster={isSpyMaster}
-        board={board} 
-      />
+      <Board spyMaster={isSpyMaster} board={board} />
 
       {/* Test */}
       <Fab
@@ -102,7 +97,7 @@ const Match = (props) => {
           bottom: 0,
         }}
         color="primary"
-        onClick={() => setIsSpyMaster(!isSpyMaster) }
+        onClick={() => setIsSpyMaster(!isSpyMaster)}
       >
         {isSpyMaster ? "SP" : "G"}
       </Fab>

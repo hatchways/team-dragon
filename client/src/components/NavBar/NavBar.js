@@ -16,7 +16,7 @@ const NavBar = (props) => {
   return (
     <nav className={classes.navBar}>
       {inMatch ? (
-        <Box 
+        <Box
           className={classes.navBarWrap}
           display="flex"
           justifyContent="space-between"
@@ -53,7 +53,11 @@ const NavBar = (props) => {
               <Typography>Red Team</Typography>
             </Box>
           </Box>
-          <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
             <Button
               className={classes.button}
               variant="contained"
@@ -64,14 +68,16 @@ const NavBar = (props) => {
             </Button>
             <Button>
               <Avatar>U</Avatar>
-              <Typography className={classes.profileText}>My Profile</Typography>
+              <Typography className={classes.profileText}>
+                My Profile
+              </Typography>
               <Icon>arrow_drop_down</Icon>
             </Button>
           </Box>
         </Box>
-      ) : ( 
-        <Box 
-          className={classes.navBarWrap}          
+      ) : (
+        <Box
+          className={classes.navBarWrap}
           display="flex"
           justifyContent="center"
           alignItems="center"
