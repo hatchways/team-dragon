@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import Fab from "@material-ui/core/Fab"; // TEST
+import GameBar from "../components/GameBar";
 import Messenger from "../components/Messenger";
 import Board from "../components/Board";
 import { useGameSpyMaster } from ".././contexts/GameContext";
 import socket from "../socket";
-
-import Fab from "@material-ui/core/Fab"; // TEST
 
 const sampleBoard = [
   { word: "switch", type: "blue", clicked: true },
@@ -37,8 +37,15 @@ const sampleBoard = [
 
 const useStyles = makeStyles(() => ({
   root: {
+    width: "100vw",
+    height: "100vh",
+    display: "grid",
+    gridTemplateColumns: "auto",
+    gridTemplateRows: "12vh 88vh",
+  },
+  gameArea: {
     width: "100%",
-    height: "88vh",
+    height: "100%",
     display: "grid",
     gridTemplateColumns: "400px 1fr",
     gridTemplateRows: "auto",
@@ -96,15 +103,17 @@ const Game = (props) => {
 
   return (
     <div className={classes.root}>
-      <Messenger
-        spyMaster={isSpyMaster}
-        currentUser={name}
-        messages={messages}
-        sendMessage={sendMessage}
-      />
-      <Board spyMaster={isSpyMaster} board={board} />
+      <GameBar />
+      <div className={classes.gameArea}>
+        <Messenger
+          spyMaster={isSpyMaster}
+          currentUser={name}
+          messages={messages}
+          sendMessage={sendMessage}
+        />
+        <Board spyMaster={isSpyMaster} board={board} />
+      </div>
 
-      {/* Test */}
       <Fab
         style={{
           position: "absolute",
