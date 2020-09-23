@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import NewGame from "../components/new game/NewGame";
+import { useHost, useGameStart, useGameSpyMaster } from "../contexts/GameContext";
 import {
-  useHost,
-  useGameStart,
-  useGameSpyMaster,
-} from "../contexts/GameContext";
+  useNewGame,
+} from "../contexts/DataContext"; 
+
 import WaitingRoom from "../components/new game/WaitingRoom";
 import socket from '../socket';
 
 const GameSetup = (props) => {
   const HostContext = useHost();
-  const [isHost, setisHost] = HostContext;
+  const [isHost, setIsHost] = HostContext;
 
   const SpyMasterContext = useGameSpyMaster();
   const [isSpyMaster, setIsSpyMaster] = SpyMasterContext;
@@ -18,15 +18,25 @@ const GameSetup = (props) => {
   const GameStartContext = useGameStart();
   const [gameStart, setGameStart] = GameStartContext;
 
+  const newGameContext = useNewGame();
+  const [newGame, setNewGame] = newGameContext;
+
+
   const gameJourney = () => {
-    if (isHost) {
-      return <NewGame value={props} />;
+    if (localStorage.getItem("id") === newGame.hostId) {
+      return <NewGame value={props}/>;
+
     } else {
       return <WaitingRoom />;
     }
   };
 
+  const gameData = localStorage.getItem("newGame");
+
   useEffect(() => {
+    if (gameData) {
+      setNewGame(JSON.parse(localStorage.getItem("newGame")));
+    }
     //Request isHost and gameStart
     // Updates match state
     socket.on("update-match-state", (match) => {
@@ -34,9 +44,16 @@ const GameSetup = (props) => {
     });
   }, []);
 
+  // Stores New Game Info to Local Storage
+  useEffect(() => {
+    localStorage.setItem("newGame", JSON.stringify(newGame));
+  }, [newGame]);
+
+
+
   return (
     <div>
-      {gameStart ? <p>Match Component Here</p> : gameJourney()}
+      {gameStart === "running" ? <p>Match Component Here</p> : gameJourney()}
       <div>Chat Component Here </div>
     </div>
   );

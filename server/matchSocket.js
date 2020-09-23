@@ -12,7 +12,8 @@ module.exports = {
       console.log("new user connected to match socket");
 
       // Socket listener for match rooms
-      socket.on("join-match", ({ room, matchId,userEmail }) => {
+      socket.on("join-match", ({ room, matchId, userEmail }) => {
+
         socket.join(room);
         User.findOne({ email:userEmail })
           .then((user) => {

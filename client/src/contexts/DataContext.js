@@ -40,14 +40,7 @@ export function DataProvider({ children }) {
   const [newGame, setNewGame] = useState({
     step: 1,
     matchId: "",
-    teamBlue: {
-      spyMaster: "",
-      agents: [],
-    },
-    teamRed: {
-      spyMaster: "",
-      agents: [],
-    },
+    hostId: null,
   });
 
   const providerNewGame = useMemo(() => [newGame, setNewGame], [

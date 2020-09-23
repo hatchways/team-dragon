@@ -23,7 +23,7 @@ export function useGameSpyMaster() {
 
 export function GameProvider({ children }) {
   //Holds whether user is host
-  const [isHost, setIsHost] = useState(true);
+  const [isHost, setIsHost] = useState(false);
   const providerIsHost = useMemo(() => [isHost, setIsHost], [
     isHost,
     setIsHost,
@@ -37,7 +37,7 @@ export function GameProvider({ children }) {
   ]);
 
   //Holds whether game has started
-  const [gameStart, setGameStart] = useState(false);
+  const [gameStart, setGameStart] = useState("setup");
   const providerGameStart = useMemo(() => [gameStart, setGameStart], [
     gameStart,
     setGameStart,
