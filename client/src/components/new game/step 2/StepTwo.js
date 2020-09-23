@@ -8,10 +8,8 @@ const StepTwo = () => {
 
   const newGameContext = useNewGame();
   const [newGame, setNewGame] = newGameContext;
-  const [message, setMessage] = useState("");
 
   const usePlayersContext = usePlayers();
-  const [players, setPlayers] = usePlayersContext;
 
   useEffect(() => {
     // User joins the room

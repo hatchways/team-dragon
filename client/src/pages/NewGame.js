@@ -63,10 +63,11 @@ const NewGame = (props) => {
       }));
     }
 
-    // Updated players array (Data lagging one step behind and needs to be fixed)
+    // Updates match state
     socket.on("update-match-state", (match) => {
       console.log("Updated Match State: ", match);
     });
+
   }, []);
 
   // Stores New Game Info to Local Storage
