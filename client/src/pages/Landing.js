@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNewGame } from "../contexts/DataContext";
-import { useHost } from "../contexts/GameContext";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Card, Container, Typography } from "@material-ui/core";
 import axios from "axios";
@@ -30,7 +29,6 @@ const Landing = (props) => {
   const [newGame, setNewGame] = NewGameContext;
 
   const HostContext = useHost();
-  const [setIsHost] = HostContext;
 
   const createNewGame = async () => {
     try {
