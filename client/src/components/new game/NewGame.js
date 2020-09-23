@@ -60,7 +60,6 @@ const NewGame = (props) => {
         hostId: localStorage.getItem("id"),
         matchId: getData.data.match.id,
       }));
-      await localStorage.setItem("newGame", JSON.stringify(newGame));
       await props.value.history.push(String(getData.data.match.id));
     } catch (err) {
       console.log(err);

@@ -41,14 +41,6 @@ export function DataProvider({ children }) {
     step: 1,
     matchId: "",
     hostId: null,
-    teamBlue: {
-      spyMaster: "",
-      agents: [],
-    },
-    teamRed: {
-      spyMaster: "",
-      agents: [],
-    },
   });
 
   const providerNewGame = useMemo(() => [newGame, setNewGame], [

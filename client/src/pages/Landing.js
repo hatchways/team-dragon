@@ -35,18 +35,19 @@ const Landing = (props) => {
   const createNewGame = async () => {
     try {
       const getData = await axios.post("/create-match");
+      console.log(getData.data.match.id)
       await setNewGame((prevState) => ({
         ...prevState,
         hostId: localStorage.getItem("id"),
         matchId: getData.data.match.id,
       }));
-      // await setIsHost(() => true)
-      await localStorage.setItem("newGame", JSON.stringify(newGame));
       await props.history.push(String(getData.data.match.id));
     } catch (err) {
       console.log(err);
     }
+
   };
+
 
   return (
     <Container className={classes.root} maxWidth="md">

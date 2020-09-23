@@ -23,28 +23,24 @@ const GameSetup = (props) => {
 
   const gameJourney = () => {
     if (localStorage.getItem("id") === newGame.hostId) {
-      console.log(localStorage.getItem("id") === newGame.hostId)
       return <NewGame value={props}/>;
     } else {
       return <WaitingRoom />;
     }
   };
 
-  // const gameData = localStorage.getItem("newGame");
+  const gameData = localStorage.getItem("newGame");
 
-  // useEffect(() => {
-  //   if (gameData) {
-  //     setNewGame(JSON.parse(localStorage.getItem("newGame")));
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (gameData) {
+      setNewGame(JSON.parse(localStorage.getItem("newGame")));
+    }
+  }, []);
 
-  // // Stores New Game Info to Local Storage
-  // useEffect(() => {
-  //   localStorage.setItem("newGame", JSON.stringify(newGame));
-  // }, [newGame]);
-
-  console.log(newGame)
-  console.log(localStorage.getItem("id") === newGame.hostId)
+  // Stores New Game Info to Local Storage
+  useEffect(() => {
+    localStorage.setItem("newGame", JSON.stringify(newGame));
+  }, [newGame]);
 
 
 
