@@ -37,12 +37,6 @@ const GameSetup = (props) => {
     if (gameData) {
       setNewGame(JSON.parse(localStorage.getItem("newGame")));
     }
-    // Updates match state
-
-    //Shows players that have joined so far in game setup (Will be displayed in StepTwo.js)
-    socket.on("update-players", (match) => {
-      console.log("Updated Players: ", match.players);
-    });
 
     //Shows players now assigned on teams and roles, ALSO - change gameStatus now === "running"
     socket.on("update-roles", (match) => {
