@@ -27,7 +27,7 @@ const GameSetup = (props) => {
     if (localStorage.getItem("id") === newGame.hostId) {
       return <NewGame value={props} />;
     } else {
-      return <WaitingRoom />;
+      return <WaitingRoom value={props}/>;
     }
   };
 

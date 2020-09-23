@@ -104,6 +104,7 @@ const NewGame = (props) => {
       };
 
       const matchDetails = await setMatch(newGame, players, spymaster);
+      console.log('matchDetails', matchDetails)
       socket.emit("start-game", matchDetails);
     } catch (err) {
       console.log(err);
