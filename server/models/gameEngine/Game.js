@@ -13,6 +13,7 @@ class Game {
     this.cardsFlipped = 0;
     this.players = [];
     this.currentUser = null;
+    this.startMatch = false;
     console.log("Match ID:", this.id);
   }
 
@@ -159,6 +160,10 @@ class Game {
 
   toJson() {
     return JSON.stringify(this);
+  }
+
+  startMatch() {
+    this.startMatch = true;
   }
 }
 
