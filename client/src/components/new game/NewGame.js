@@ -18,6 +18,7 @@ import {
 } from "@material-ui/core";
 
 import { makeStyles, createStyles } from "@material-ui/core/styles";
+import socket from "../../socket";
 import axios from "axios";
 
 const useStyles = makeStyles((theme) =>
@@ -49,8 +50,6 @@ const NewGame = (props) => {
   const newSpyMasterContext = useSpyMaster();
   const [spymaster] = newSpyMasterContext;
 
-
-
   const resetNewGame = async () => {
     try {
       const getData = await axios.post("/create-match");
@@ -76,37 +75,36 @@ const NewGame = (props) => {
 
   //Sends Date to Start Game
   const startGame = async (e) => {
-    const setMatch = (newGame, players, spyMaster) => {
-      let spyMasters = [spyMaster.teamBlue, spyMaster.teamRed];
-
-      let playerAssign = players.map((player) => {
-        if (spyMasters.includes(player.id)) {
-          return {
-            id: player.id,
-            name: player.name,
-            team: player.team,
-            spyMaster: true,
-          };
-        } else {
-          return {
-            id: player.id,
-            name: player.name,
-            team: player.team,
-            spyMaster: false,
-          };
-        }
-      });
-
-      return {
-        matchId: newGame.matchId,
-        players: playerAssign,
-      };
-    };
-
     try {
+      const setMatch = (newGame, players, spyMaster) => {
+        let spyMasters = [spyMaster.teamBlue, spyMaster.teamRed];
+
+        let playerAssign = players.map((player) => {
+          if (spyMasters.includes(player.id)) {
+            return {
+              id: player.id,
+              name: player.name,
+              team: player.team,
+              spyMaster: true,
+            };
+          } else {
+            return {
+              id: player.id,
+              name: player.name,
+              team: player.team,
+              spyMaster: false,
+            };
+          }
+        });
+
+        return {
+          matchId: newGame.matchId,
+          players: playerAssign,
+        };
+      };
+
       const matchDetails = await setMatch(newGame, players, spymaster);
-      console.log("matchDetails", matchDetails);
-      //Emit to socket
+      socket.emit("start-match", matchDetails);
     } catch (err) {
       console.log(err);
     }
