@@ -28,8 +28,6 @@ const Landing = (props) => {
   const NewGameContext = useNewGame();
   const [newGame, setNewGame] = NewGameContext;
 
-  const HostContext = useHost();
-
   const createNewGame = async () => {
     try {
       const getData = await axios.post("/create-match");
