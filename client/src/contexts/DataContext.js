@@ -56,14 +56,7 @@ export function DataProvider({ children }) {
   ]);
 
   //Holds Players who have accepted game invite
-  const [players, setPlayers] = useState([
-    { id: "1", name: "host", team: "noTeam", spyMaster: false },
-    { id: "2", name: "player2", team: "noTeam", spyMaster: false },
-    { id: "3", name: "player3", team: "noTeam", spyMaster: false },
-    { id: "4", name: "player4", team: "noTeam", spyMaster: false },
-    { id: "5", name: "player5", team: "noTeam", spyMaster: false },
-    { id: "6", name: "player6", team: "noTeam", spyMaster: false },
-  ]);
+  const [players, setPlayers] = useState([]);
 
   const providerPlayers = useMemo(() => [players, setPlayers], [
     players,

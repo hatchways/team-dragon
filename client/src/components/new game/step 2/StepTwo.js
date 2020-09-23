@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useNewGame, usePlayers } from "../../../DataContext";
+import { useNewGame, usePlayers } from "../../../contexts/DataContext";
 import socket from "../../../socket";
 
 const StepTwo = () => {
-  // const emailsContext = useEmails();
-  // const [emails] = emailsContext;
-
   const newGameContext = useNewGame();
   const [newGame, setNewGame] = newGameContext;
 

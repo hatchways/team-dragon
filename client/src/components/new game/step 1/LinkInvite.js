@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNewGame } from "../../../DataContext";
+import { useNewGame } from "../../../contexts/DataContext";
 import { Button, Typography, Box, Grid } from "@material-ui/core";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import LinkIcon from "@material-ui/icons/Link";

@@ -1,8 +1,12 @@
 import React, { useEffect } from "react";
-import StepOne from "../components/new game/step 1/StepOne.js";
-import StepTwo from "../components/new game/step 2/StepTwo.js";
-import StepThree from "../components/new game/step 3/StepThree.js";
-import { useNewGame, usePlayers, useSpyMaster } from "../DataContext";
+import StepOne from "../new game/step 1/StepOne";
+import StepTwo from "../new game/step 2/StepTwo.js";
+import StepThree from "../new game/step 3/StepThree.js";
+import {
+  useNewGame,
+  usePlayers,
+  useSpyMaster,
+} from "../../contexts/DataContext";
 import {
   Button,
   Container,
@@ -15,7 +19,7 @@ import {
 
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import axios from "axios";
-import socket from '../socket';
+import socket from '../../socket';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -54,19 +58,19 @@ const NewGame = (props) => {
     //   setNewGame(JSON.parse(localStorage.getItem("newGame")));
     // }
 
-    //Catching errors in local storage
-    if (newGame.matchId !== Number(props.match.params.id)) {
+    // Catching errors in local storage
+    if (newGame.matchId !== Number(props.value.match.params.id)) {
       setNewGame((prevState) => ({
         ...prevState,
         step: 1,
-        matchId: Number(props.match.params.id),
+        matchId: Number(props.value.match.params.id),
       }));
     }
 
-    // Updates match state
-    socket.on("update-match-state", (match) => {
-      console.log("Updated Match State: ", match.players);
-    });
+    // // Updates match state
+    // socket.on("update-match-state", (match) => {
+    //   console.log("Updated Match State: ", match.players);
+    // });
 
   }, []);
 
@@ -85,7 +89,7 @@ const NewGame = (props) => {
         matchId: getData.data.match.id,
       }));
       await localStorage.setItem("newGame", JSON.stringify(newGame));
-      await props.history.push(String(getData.data.match.id));
+      await props.value.history.push(String(getData.data.match.id));
     } catch (err) {
       console.log(err);
     }
@@ -98,7 +102,8 @@ const NewGame = (props) => {
       step: step + 1,
     }));
   };
-
+  
+  //Sends Date to Start Game
   const startGame = async (e) => {
     const setMatch = (newGame, players, spyMaster) => {
       let spyMasters = [spyMaster.teamBlue, spyMaster.teamRed];
@@ -130,8 +135,7 @@ const NewGame = (props) => {
     try {
       const matchDetails = await setMatch(newGame, players, spymaster);
       console.log("matchDetails", matchDetails);
-      //await axios.post("/start-match")
-      //Push to new link?
+      //Emit to socket
     } catch (err) {
       console.log(err);
     }
