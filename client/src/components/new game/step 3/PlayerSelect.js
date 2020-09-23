@@ -94,7 +94,7 @@ const PlayerSelect = (props) => {
         <RadioGroup
           aria-label="team"
           name="team1"
-          value={props.player.team}
+          value={props.player.team || ""}
           onChange={handleChange}
         >
           <FormControlLabel
