@@ -11,6 +11,20 @@ exports.socket = (server) => {
 
     let socketRoomId; // to store current room
 
+    socket.on("join-match", ({ room, matchId, userEmail }) => {
+      console.log("someone joined", userEmail, matchId);
+
+      const user = User.find(userEmail);
+
+      // if (!user) {
+      //   // can't authenticate user
+      //   return false;
+      // } else {
+      // socket.join(room);
+      socket.emit("update-game-state", userEmail);
+      // }
+    });
+
     socket.on("join", (room, fn) => {
       // join a room
       socket.join(room);

@@ -4,6 +4,7 @@ import StepTwo from "../components/new game/step 2/StepTwo.js";
 import StepThree from "../components/new game/step 3/StepThree.js";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import socket from "../socket";
 
 // import Loading from "../components/new game/Loading.js";
 import { useNewGame, usePlayers, useSpyMaster } from "../DataContext";
@@ -23,7 +24,7 @@ const useStyles = makeStyles((theme) =>
     card: {
       padding: "2rem",
     },
-  })
+  }),
 );
 
 const NewGame = (props) => {
@@ -52,7 +53,6 @@ const NewGame = (props) => {
     }));
   };
 
-
   //Users joining the match
   useEffect(() => {
     getMatch();
@@ -72,6 +72,10 @@ const NewGame = (props) => {
         matchId: props.match.params.id,
       }));
     }
+
+    socket.on("update-game-state", (data) => {
+      console.log("new game state", data);
+    });
   }, []);
 
   // Stores New Game Info to Local Storage
@@ -117,7 +121,6 @@ const NewGame = (props) => {
     };
 
     let matchDetails = setMatch(newGame, players, spymaster);
-
   };
 
   const newGameSteps = () => {

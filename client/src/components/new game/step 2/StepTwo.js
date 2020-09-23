@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useEmails, useNewGame } from "../../../DataContext";
 import axios from "axios";
-import socket from '../../../socket';
+import socket from "../../../socket";
 
 const StepTwo = () => {
   // const emailsContext = useEmails();
@@ -13,29 +13,35 @@ const StepTwo = () => {
 
   useEffect(() => {
     // User joins the match
-    
-    if (newGame.match) {
-      let room = "match-" + newGame.match.id;
-      let matchId = newGame.match.id;
-      let data = {
-        room: room,
-        matchId: matchId
-      }
-      
-      // User joins the room
-      socket.emit("joinmatch", data);
-      // New user joining notification
-      socket.on("joinedmatch", (data) => {
-        alert(data)
-        console.log("Current Room: ",room)
-      });
 
-      // Updated players array (Data lagging one step behind and needs to be fixed)
-      socket.on("updateplayers",(players) => {
-        console.log("Updated Players: ", players);
-      })
+    console.log(newGame.match);
 
-    }
+    // if (newGame.match) {
+    // let room = "match-" + newGame.match.id;
+    // let matchId = newGame.match.id;
+    // let data = {
+    //   room: room,
+    //   matchId: matchId,
+    // };
+
+    // // User joins the room
+    // socket.emit("joinmatch", data);
+    // // New user joining notification
+    // socket.on("joinedmatch", (data) => {
+    //   alert(data);
+    //   console.log("Current Room: ", room);
+    // });
+
+    // // Updated players array (Data lagging one step behind and needs to be fixed)
+    // socket.on("updateplayers", (players) => {
+    //   console.log("Updated Players: ", players);
+    // });
+    socket.emit("join-match", {
+      userEmail: localStorage.getItem("email"),
+      matchId: 281,
+      room: 29038493,
+    });
+    // }
 
     // // close the socket when page is left
     // return () => socket.disconnect();
@@ -56,7 +62,7 @@ const StepTwo = () => {
   //         ...prevState,
   //         match: res.data.match,
   //       }));
-        
+
   //     }
   //   }
   // };

@@ -6,6 +6,7 @@ const config = require("../config");
 
 module.exports = {
   async register(req, res, next) {
+    console.log("hi");
     try {
       const { errors, isValid } = validateRegister(req.body);
       if (!isValid) {
@@ -41,11 +42,13 @@ module.exports = {
         token: token,
       });
     } catch (e) {
+      console.log(e);
       return next(e);
     }
   },
 
   async login(req, res, next) {
+    console.log("wtf");
     try {
       const { errors, isValid } = validateLogin(req.body);
       if (!isValid) {
@@ -77,7 +80,7 @@ module.exports = {
           req.session.isLoggedIn = true;
           req.session.user = user;
           const result = await req.session.save();
-          console.log(req.session.user.name," logged in");
+          console.log(req.session.user.name, " logged in");
         }
 
         return res.status(200).json({

@@ -16,8 +16,8 @@ const indexRouter = require("./routes/index");
 const gameRouter = require("./routes/game");
 const authRouter = require("./routes/auth");
 const User = require("./models/User");
-const matchSocket = require("./matchSocket");
-const sharedSession = require("express-socket.io-session");
+// const matchSocket = require("./matchSocket");
+// const sharedSession = require("express-socket.io-session");
 var matchIO;
 // app configuration
 var app = express();
@@ -37,40 +37,43 @@ app.use(logger("dev"));
 app.use(passport.initialize());
 passport.use(passportStrategy);
 
-var sessionMiddleware = session({
-  secret: "my secret",
-  resave: false,
-  saveUninitialized: false,
-  store: store,
-});
+// var sessionMiddleware = session({
+//   secret: "my secret",
+//   resave: false,
+//   saveUninitialized: false,
+//   store: store,
+// });
 
 // Session for the user
-app.use(sessionMiddleware);
+// app.use(sessionMiddleware);
 
-app.use((req, res, next) => {
-  if (!req.session.user) {
-    return next();
-  }
-  User.findById(req.session.user._id)
-    .then((user) => {
-      req.user = user;
-      
-      next();
-    })
-    .catch((err) => console.log(err));
-});
-matchIO = matchSocket.init();
-matchIO.use(sharedSession(sessionMiddleware,{
-  autoSave:true
-}));
+// app.use((req, res, next) => {
+//   if (!req.session.user) {
+//     return next();
+//   }
+//   User.findById(req.session.user._id)
+//     .then((user) => {
+//       req.user = user;
+
+//       next();
+//     })
+//     .catch((err) => console.log(err));
+// });
+// matchIO = matchSocket.init();
+// matchIO.use(sharedSession(sessionMiddleware,{
+//   autoSave:true
+// }));
 
 // database connection using Mongoose
 mongoose
-  .connect(config.db, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-  })
+  .connect(
+    "mongodb+srv://teamDragon:7NU9jVwvKDx2KDws@cluster0.cgtav.mongodb.net/<dbname>?retryWrites=true&w=majority",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+    },
+  )
   .then(() => {
     console.log("Connected to database");
   })
