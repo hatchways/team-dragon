@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { v4 as uuid } from "uuid";
 import Messenger from "../components/Messenger";
 import Board from "../components/Board";
 import { useGameSpyMaster } from ".././contexts/GameContext";
@@ -36,7 +35,7 @@ const sampleBoard = [
   { word: "ball", type: "innocent", clicked: false },
 ];
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     width: "100%",
     height: "88vh",
@@ -53,30 +52,45 @@ const Match = (props) => {
   const [board, setBoard] = useState([]);
   const [isSpyMaster, setIsSpyMaster] = useGameSpyMaster();
 
+  const gameId = props.match.params.id;
+  const token = window.localStorage.getItem("token");
+
   useEffect(() => {
-    socket.emit("join", props.match.params.id, ({ name, history }) => {
-      setName(name);
-      setMessages(history);
+    // join the match
+    socket.emit("join", { token, gameId }, (recv) => {
+      setName(recv.name);
+      setMessages(recv.history);
     });
 
-    socket.on("message", (msgData) => {
+    socket.on("message", (recv) => {
       // update message list
-      setMessages((prevMessages) => [...prevMessages, msgData]);
+      setMessages((prevMessages) => [...prevMessages, recv]);
+    });
+
+    socket.on("alert", (recv) => {
+      setMessages((prevMessages) => [...prevMessages, recv]);
+    });
+
+    socket.on("redirect", () => {
+      props.history.push("/login");
     });
 
     // on connect retrieve the game board and set it?
     setBoard(sampleBoard);
-  }, [props.match.params.id]);
+  }, []);
 
   const sendMessage = (msg) => {
     const msgData = {
-      id: uuid(),
       sender: name,
       message: msg,
     };
 
     // send message to the server
-    socket.emit("message", msgData);
+    socket.emit("message", {
+      token,
+      gameId,
+      msgData,
+    });
   };
 
   return (
