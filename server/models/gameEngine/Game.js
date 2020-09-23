@@ -146,23 +146,21 @@ class Game {
 
   // New user joins the match and gets added to players array of the match
   joinMatch(user) {
-    this.players.push(user);
-    return this.players;
-    // if (this.players.length === 0) {
-    //   this.players.push(user);
-    //   return this.players;
-    // }
+    if (this.players.length === 0) {
+      this.players.push(user);
+      return this.players;
+    }
 
-    //To avoid duplication
-    // this.players.forEach((player) => {
-    //   if (player.id !== user.id) {
-    //     console.log("object");
-    //     this.players.push(user);
-    //     return this.players;
-    //   } else {
-    //     console.log("User already in the game!");
-    //   }
-    // });
+    // To avoid duplication
+    this.players.forEach((player) => {
+      if (player.id.toString() !== user.id.toString()) {
+        console.log("object");
+        this.players.push(user);
+        return this.players;
+      } else {
+        console.log("User already in the game!");
+      }
+    });
   }
 
   // Sets the current user

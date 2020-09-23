@@ -30,7 +30,6 @@ module.exports = {
               .getAllMatches()
               .get(parseInt(matchId));
             currentMatch.joinMatch(newPlayer);
-            console.log("currentMatch-LOOK HERE", currentMatch);
             // Send updated players array to front
             io.to(room).emit("update-players", currentMatch);
           })
@@ -40,7 +39,6 @@ module.exports = {
       // Receive assigned roles emitted from FE
       socket.on("start-game", ({ matchId, players }) => {
         let currentMatch = allMatches.getAllMatches().get(parseInt(matchId));
-        console.log("players-HELLO", players);
         players.forEach(({ id, name, team, spyMaster }) => {
           // Assign team to each player
           currentMatch.assignTeam({ id, name }, team);
