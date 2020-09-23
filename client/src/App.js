@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { DataProvider } from "./contexts/DataContext";
 import { GameProvider } from "./contexts/GameContext";
 import { theme } from "./themes/theme";
-import NavBar from "./components/NavBar";
+import withNav from "./hocs/withNav";
 import Landing from "./pages/Landing";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
@@ -17,13 +17,12 @@ function App() {
       <GameProvider>
         <MuiThemeProvider theme={theme}>
           <BrowserRouter>
-            <NavBar />
             <Switch>
-              <Route exact path="/register" component={Register} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/:id" component={GameSetup} />
+              <Route exact path="/register" component={withNav(Register)} />
+              <Route exact path="/login" component={withNav(Login)} />
+              <Route exact path="/:id" component={withNav(GameSetup)} />
               <Route exact path="/game/:id" component={Game} />
-              <Route path="/" component={Landing} />
+              <Route path="/" component={withNav(Landing)} />
             </Switch>
           </BrowserRouter>
         </MuiThemeProvider>

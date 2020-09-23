@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
   navBar: {
     width: "100%",
-    height: "12vh",
+    height: "100%",
     background: theme.white,
   },
   navBarWrap: {
@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     margin: "0 auto",
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
   },
   brand: {
