@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import StepTwo from "./step 2/StepTwo";
 import { useNewGame } from "../../contexts/DataContext";
 import {
-  Button,
   Container,
   Divider,
   Grid,
