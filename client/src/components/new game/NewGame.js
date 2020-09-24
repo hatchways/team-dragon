@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import StepOne from "../new game/step 1/StepOne";
 import StepTwo from "../new game/step 2/StepTwo.js";
 import StepThree from "../new game/step 3/StepThree.js";
@@ -46,6 +47,23 @@ const NewGame = (props) => {
 
   //Holds Selected SpyMaster
   const [spyMaster] = useSpyMaster();
+
+  let { id } = useParams();
+
+  useEffect(() => {
+    if(id !== localStorage.getItem("newGame").matchId) {
+      console.log("rannn")
+      setNewGame((prevState) => ({
+        ...prevState,
+        step: 1,
+        matchId: id,
+      }));
+      localStorage.setItem("newGame", JSON.stringify(newGame))
+    }
+  }, [])
+
+  console.log('newGame', newGame)
+
 
   const resetNewGame = async () => {
     try {

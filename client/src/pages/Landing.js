@@ -25,14 +25,14 @@ const Landing = (props) => {
   const classes = useStyles();
 
   //Holds Match ID + Template for Passing Roles to Server
-  const NewGameContext = useNewGame();
-  const [newGame, setNewGame] = NewGameContext;
+  const [newGame, setNewGame] = useNewGame();
 
   const createNewGame = async () => {
     try {
       const getData = await axios.post("/create-match");
       await setNewGame((prevState) => ({
         ...prevState,
+        step: 1,
         hostId: localStorage.getItem("id"),
         matchId: getData.data.match.id,
       }));
