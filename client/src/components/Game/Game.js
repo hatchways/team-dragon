@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Fab from "@material-ui/core/Fab"; // TEST
-import GameBar from "../components/GameBar";
-import Messenger from "../components/Messenger";
-import Board from "../components/Board";
-import { useGameSpyMaster } from ".././contexts/GameContext";
-import socket from "../socket";
+import GameBar from "../GameBar";
+import Messenger from "../Messenger";
+import Board from "../Board";
+import { useGameSpyMaster } from "../../contexts/GameContext";
+import socket from "../../socket";
 
 const sampleBoard = [
   { word: "switch", type: "blue", clicked: true },

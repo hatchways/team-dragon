@@ -8,6 +8,7 @@ import {
 import { Grid, Box, Typography } from "@material-ui/core";
 import PlayerSelect from "./PlayerSelect";
 import RoleSelect from "./RoleSelect";
+import Pulse from "react-reveal/Pulse";
 
 const StepThree = () => {
   const newPlayerContext = usePlayers();
@@ -61,44 +62,50 @@ const StepThree = () => {
 
   return (
     <>
-      <h2>Step 3</h2>
-      <Box mb={3}>
-        <Grid
-          container
-          direction="column"
-          justify="space-evenly"
-          alignItems="center"
-        >
-          <Box mb="1.5rem">
-            <Typography variant="h3">Assign Teams</Typography>
-          </Box>
-          <Grid container direction="row" justify="center" alignItems="center">
-            {displayPlayers()}
-          </Grid>
-        </Grid>
-      </Box>
-      <Box mb={4}>
-        <Grid
-          container
-          direction="column"
-          justify="space-evenly"
-          alignItems="center"
-        >
-          <Box mb="1.5rem">
-            <Typography variant="h3">Assign SpyMaster</Typography>
-          </Box>
+      <Pulse>
+        <Box m={3}>
           <Grid
             container
-            direction="row"
-            justify="center"
+            direction="column"
+            justify="space-evenly"
             alignItems="center"
-            spacing={4}
           >
-            <Grid item>{displayBlueRoles()}</Grid>
-            <Grid item>{displayRedRoles()}</Grid>
+            <Box mb="1.5rem">
+              <Typography variant="h3">Assign Teams</Typography>
+            </Box>
+            <Grid
+              container
+              direction="row"
+              justify="center"
+              alignItems="center"
+            >
+              {displayPlayers()}
+            </Grid>
           </Grid>
-        </Grid>
-      </Box>
+        </Box>
+        <Box mb={4}>
+          <Grid
+            container
+            direction="column"
+            justify="space-evenly"
+            alignItems="center"
+          >
+            <Box mb="1.5rem">
+              <Typography variant="h3">Assign SpyMaster</Typography>
+            </Box>
+            <Grid
+              container
+              direction="row"
+              justify="center"
+              alignItems="center"
+              spacing={4}
+            >
+              <Grid item>{displayBlueRoles()}</Grid>
+              <Grid item>{displayRedRoles()}</Grid>
+            </Grid>
+          </Grid>
+        </Box>
+      </Pulse>
     </>
   );
 };

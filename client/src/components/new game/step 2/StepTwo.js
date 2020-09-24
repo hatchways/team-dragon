@@ -1,6 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { useNewGame, usePlayers } from "../../../contexts/DataContext";
+import {
+  Box,
+  Typography,
+  List,
+  ListItemIcon,
+  ListItem,
+  ListItemText,
+} from "@material-ui/core";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
+import Flip from "react-reveal/Flip";
 import socket from "../../../socket";
+
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    item: {
+      padding: 0,
+    },
+  }),
+);
 
 const StepTwo = () => {
   const newGameContext = useNewGame();
@@ -8,6 +27,8 @@ const StepTwo = () => {
 
   const usePlayersContext = usePlayers();
   const [players, setPlayers] = usePlayersContext;
+
+  const classes = useStyles();
 
   useEffect(() => {
     // User joins the room
@@ -17,7 +38,7 @@ const StepTwo = () => {
     let data = {
       room: room,
       matchId: matchId,
-      token: token
+      token: token,
     };
     if (newGame.matchId !== "") {
       socket.emit("join-match", data);
@@ -32,26 +53,24 @@ const StepTwo = () => {
   const showPlayers = () => {
     return players.map((player, i) => {
       return (
-        <div key={i}>
-          <p>
-            Player ID: {player.id} / Player Name: {player.name}
-          </p>
-        </div>
+        <ListItem className={classes.item} key={i}>
+          <Flip left>
+            <ListItemIcon>
+              <CheckCircleIcon color="primary" />
+            </ListItemIcon>
+            <ListItemText primary={player.name} />
+          </Flip>
+        </ListItem>
       );
     });
   };
 
   return (
     <>
-      <h2>step2</h2>
-      {showPlayers()}
-      <p>waiting room as people join. </p>
-      <p>
-        when players join, they will be added to a state on the host's frontend.
-      </p>
-      <p>
-        once all players have joined, host can click "next" to assign roles.
-      </p>
+      <Box height={200}>
+        <Typography variant="h3">Players Joined:</Typography>
+        <List>{showPlayers()}</List>
+      </Box>
     </>
   );
 };
