@@ -63,7 +63,7 @@ module.exports = {
         if (!currentMatch) {
           throw new Error("Match does not exist!");
         }
-        
+
         players.forEach(({ id, name, team, spyMaster }) => {
           // Assign team to each player
           currentMatch.assignTeam({ id, name }, team);

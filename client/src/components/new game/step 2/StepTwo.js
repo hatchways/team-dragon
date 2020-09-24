@@ -13,7 +13,6 @@ import { makeStyles, createStyles } from "@material-ui/core/styles";
 import Flip from "react-reveal/Flip";
 import socket from "../../../socket";
 
-
 const useStyles = makeStyles((theme) =>
   createStyles({
     item: {
@@ -21,8 +20,6 @@ const useStyles = makeStyles((theme) =>
     },
   }),
 );
-
-
 
 const StepTwo = () => {
   const newGameContext = useNewGame();
@@ -33,7 +30,6 @@ const StepTwo = () => {
 
   const classes = useStyles();
 
-
   useEffect(() => {
     // User joins the room
     let room = "match-" + newGame.matchId;
@@ -42,7 +38,7 @@ const StepTwo = () => {
     let data = {
       room: room,
       matchId: matchId,
-      token: token
+      token: token,
     };
     if (newGame.matchId !== "") {
       socket.emit("join-match", data);
@@ -70,9 +66,9 @@ const StepTwo = () => {
 
   return (
     <>
-    <Box  height={200}>
-      <Typography variant="h3">Players Joined:</Typography>
-      <List>{showPlayers()}</List>
+      <Box height={200}>
+        <Typography variant="h3">Players Joined:</Typography>
+        <List>{showPlayers()}</List>
       </Box>
     </>
   );
