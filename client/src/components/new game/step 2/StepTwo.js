@@ -13,11 +13,11 @@ const StepTwo = () => {
     // User joins the room
     let room = "match-" + newGame.matchId;
     let matchId = newGame.matchId;
-    let userEmail = localStorage.getItem("email");
+    let token = localStorage.getItem("token");
     let data = {
       room: room,
       matchId: matchId,
-      userEmail: userEmail,
+      token: token
     };
     if (newGame.matchId !== "") {
       socket.emit("join-match", data);

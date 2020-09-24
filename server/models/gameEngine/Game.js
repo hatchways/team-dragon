@@ -24,7 +24,6 @@ class Game {
 
   // Team assignment to players
   assignTeam({ id, name }, team) {
-    console.log("Assigning Teams:", id, name, team);
     switch (team) {
       case this.redTeam.name:
         this.redTeam.addPlayer(new Player(id, name, team));
@@ -146,23 +145,21 @@ class Game {
 
   // New user joins the match and gets added to players array of the match
   joinMatch(user) {
-    this.players.push(user);
-    return this.players;
-    // if (this.players.length === 0) {
-    //   this.players.push(user);
-    //   return this.players;
-    // }
+    if (this.players.length === 0) {
+      this.players.push(user);
+      return this.players;
+    }
 
-    //To avoid duplication
-    // this.players.forEach((player) => {
-    //   if (player.id !== user.id) {
-    //     console.log("object");
-    //     this.players.push(user);
-    //     return this.players;
-    //   } else {
-    //     console.log("User already in the game!");
-    //   }
-    // });
+    // To avoid duplication
+    this.players.forEach((player) => {
+      if (player.id.toString() === user.id.toString()) {
+        throw new Error("User already in the game!");
+      } else {
+        this.players.push(user);
+      }
+    });
+
+    return this.players;
   }
 
   // Sets the current user
