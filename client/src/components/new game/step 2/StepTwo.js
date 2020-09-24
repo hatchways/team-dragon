@@ -22,11 +22,8 @@ const useStyles = makeStyles((theme) =>
 );
 
 const StepTwo = () => {
-  const newGameContext = useNewGame();
-  const [newGame, setNewGame] = newGameContext;
-
-  const usePlayersContext = usePlayers();
-  const [players, setPlayers] = usePlayersContext;
+  const [newGame, setNewGame] = useNewGame();
+  const [players, setPlayers] = usePlayers();
 
   const classes = useStyles();
 
@@ -41,6 +38,7 @@ const StepTwo = () => {
       token: token,
     };
     if (newGame.matchId !== "") {
+      console.log("socket-emit-playerjoined");
       socket.emit("join-match", data);
     }
     //Shows players that have joined so far in game setup (Will be displayed in StepTwo.js)

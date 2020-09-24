@@ -11,12 +11,10 @@ import RoleSelect from "./RoleSelect";
 import Pulse from "react-reveal/Pulse";
 
 const StepThree = () => {
-  const newPlayerContext = usePlayers();
-  const [players, setPlayers] = newPlayerContext;
+  const [players, setPlayers] = usePlayers();
 
   //Holds ID of spyMaster
-  const newSpyMasterContext = useSpyMaster();
-  const [spyMaster, setSpyMaster] = newSpyMasterContext;
+  const [spyMaster, setSpyMaster] = useSpyMaster();
 
   const displayPlayers = useCallback(() => {
     return players.map((player, i) => {

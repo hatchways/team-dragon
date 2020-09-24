@@ -7,14 +7,9 @@ import WaitingRoom from "../components/new game/WaitingRoom";
 import socket from "../socket";
 
 const GameSetup = (props) => {
-  const SpyMasterContext = useGameSpyMaster();
-  const [isSpyMaster, setIsSpyMaster] = SpyMasterContext;
-
-  const GameStatusContext = useGameStatus();
-  const [gameStatus, setGameStatus] = GameStatusContext;
-
-  const newGameContext = useNewGame();
-  const [newGame, setNewGame] = newGameContext;
+  const [isSpyMaster, setIsSpyMaster] = useGameSpyMaster();
+  const [gameStatus, setGameStatus] = useGameStatus();
+  const [newGame, setNewGame] = useNewGame();
 
   const gameJourney = () => {
     if (localStorage.getItem("id") === newGame.hostId) {

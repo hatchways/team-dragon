@@ -39,16 +39,13 @@ const NewGame = (props) => {
   const classes = useStyles();
 
   //Holds Match ID + Template for Passing Roles to Server
-  const newGameContext = useNewGame();
-  const [newGame, setNewGame] = newGameContext;
+  const [newGame, setNewGame] = useNewGame();
 
   //Holds All Players + Roles
-  const newPlayersContext = usePlayers();
-  const [players] = newPlayersContext;
+  const [players] = usePlayers();
 
   //Holds Selected SpyMaster
-  const newSpyMasterContext = useSpyMaster();
-  const [spyMaster] = newSpyMasterContext;
+  const [spyMaster] = useSpyMaster();
 
   const resetNewGame = async () => {
     try {

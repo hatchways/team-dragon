@@ -21,8 +21,7 @@ const LinkInvite = (props) => {
   const classes = useStyles();
 
   //Holds Match ID to be copied and shared with other players
-  const newGameContext = useNewGame();
-  const [newGame] = newGameContext;
+  const [newGame] = useNewGame();
 
   const [copy, setCopy] = useState({
     value: "",

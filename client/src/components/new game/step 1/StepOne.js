@@ -15,9 +15,7 @@ const useStyles = makeStyles((theme) =>
 
 const StepOne = (props) => {
   const classes = useStyles();
-
-  const newGameContext = useNewGame();
-  const [newGame, setNewGame] = newGameContext;
+  const [newGame, setNewGame] = useNewGame();
 
   return (
     <>

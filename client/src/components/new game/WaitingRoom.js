@@ -27,9 +27,7 @@ const useStyles = makeStyles((theme) =>
 
 const WaitingRoom = (props) => {
   const classes = useStyles();
-
-  const newGameContext = useNewGame();
-  const [newGame, setNewGame] = newGameContext;
+  const [newGame, setNewGame] = useNewGame();
 
   const userName = localStorage.getItem("name");
 

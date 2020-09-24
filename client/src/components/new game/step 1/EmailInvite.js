@@ -31,8 +31,7 @@ const useStyles = makeStyles((theme) =>
 );
 
 const EmailInvite = () => {
-  const emailsContext = useEmails();
-  const [emails, setEmails] = emailsContext;
+  const [emails, setEmails] = useEmails();
 
   const [emailForm, setEmailForm] = useState("");
   const [validate, setValidate] = useState({ error: false, message: "" });
