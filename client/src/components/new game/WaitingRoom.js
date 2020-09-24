@@ -1,10 +1,38 @@
 import React, { useEffect } from "react";
 import StepTwo from "./step 2/StepTwo";
 import { useNewGame } from "../../contexts/DataContext";
+import {
+  Button,
+  Container,
+  Divider,
+  Grid,
+  Typography,
+  Card,
+  Box,
+} from "@material-ui/core";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    card: {
+      padding: "2rem",
+      marginTop: "2rem",
+    },
+    titleDivider: {
+      borderTop: `7px solid ${theme.palette.primary.main}`,
+      width: "5rem",
+      marginTop: "1rem",
+    },
+  }),
+);
 
 const WaitingRoom = (props) => {
+  const classes = useStyles();
+
   const newGameContext = useNewGame();
   const [newGame, setNewGame] = newGameContext;
+
+  const userName = localStorage.getItem("name");
 
   useEffect(() => {
     setNewGame((prevState) => ({
@@ -14,10 +42,22 @@ const WaitingRoom = (props) => {
   }, []);
 
   return (
-    <div>
-      <h2>Welcome, please wait for assignment</h2>
-      <StepTwo />
-    </div>
+    <Container maxWidth="md">
+      <Card className={classes.card}>
+        <Typography align="center" variant="h1">
+          Welcome {userName}!
+        </Typography>
+        <Grid container direction="row" justify="center" alignItems="center">
+          <Divider className={classes.titleDivider} />
+        </Grid>
+        <Box mt={2}>
+        <Typography align="center" variant="h3">
+          Please wait as your host assigns the teams.
+        </Typography>
+        </Box>
+        <StepTwo />
+      </Card>
+    </Container>
   );
 };
 
