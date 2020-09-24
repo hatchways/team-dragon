@@ -152,14 +152,14 @@ class Game {
 
     // To avoid duplication
     this.players.forEach((player) => {
-      if (player.id.toString() !== user.id.toString()) {
-        console.log("object");
-        this.players.push(user);
-        return this.players;
+      if (player.id.toString() === user.id.toString()) {
+        throw new Error("User already in the game!");
       } else {
-        console.log("User already in the game!");
+        this.players.push(user);
       }
     });
+
+    return this.players;
   }
 
   // Sets the current user
