@@ -51,6 +51,16 @@ export function DataProvider({ children }) {
   //Holds Players who have accepted game invite
   const [players, setPlayers] = useState([]);
 
+  //Default State (for testing)
+  // const [players, setPlayers] = useState([
+  //   { name: "Karl", id: "1" },
+  //   { name: "Jorawar", id: "2" },
+  //   { name: "Nicholas", id: "3" },
+  //   { name: "Bonnie", id: "4" },
+  //   { name: "Henry", id: "5" },
+  //   { name: "Joy", id: "6" },
+  // ]);
+
   const providerPlayers = useMemo(() => [players, setPlayers], [
     players,
     setPlayers,

@@ -4,6 +4,7 @@ import { Button, Typography, Box, Grid } from "@material-ui/core";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import LinkIcon from "@material-ui/icons/Link";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import Flip from "react-reveal/Flip";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -59,7 +60,9 @@ const LinkInvite = (props) => {
           </CopyToClipboard>
         </Box>
         {copy.copied ? (
-          <span className={classes.copyConfirm}>Copied.</span>
+          <Flip left>
+            <span className={classes.copyConfirm}>Copied.</span>
+          </Flip>
         ) : null}
       </Grid>
     </>

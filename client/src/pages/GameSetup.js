@@ -45,7 +45,7 @@ const GameSetup = (props) => {
 
   return (
     <div>
-      {gameStatus === "running" ? <h1>START THE GAMEEEEEEE</h1> : gameJourney()}
+      {gameStatus === "running" ? <h1>GAME STARTED!</h1> : gameJourney()}
       <div>Chat Component Here </div>
     </div>
   );
