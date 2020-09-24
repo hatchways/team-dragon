@@ -5,19 +5,9 @@ const User = require("../models/User");
 
 exports.postCreateMatch = async (req, res, next) => {
   try {
-    // Hard coded data to be replaced by real users
-    const player1 = {
-      id: 12345,
-      name: "John",
-    };
-    const player2 = {
-      id: 13255,
-      name: "Derrick",
-    };
     if (!req.user) {
       return res
-        .status(404)
-        .json({ success: false, error: "Please Sign in !" });
+        .json({ success: false, error: "Please Sign in !"});
     }
     const hostId = req.user._id;
     // User id coming from request
@@ -50,13 +40,6 @@ exports.postCreateMatch = async (req, res, next) => {
     if (!result) {
       return res.status(404).json({ success: false, error: "Match not saved" });
     }
-
-    // Assign Team to player
-    gameEngine.assignTeam(player1, "red");
-    gameEngine.assignTeam(player2, "blue");
-
-    // Assign Roles
-    gameEngine.assignRole(13255, "guesser");
 
     // // Test JSON method
     // console.log("JSON", gameEngine.toJson());

@@ -31,6 +31,12 @@ const Landing = (props) => {
   const createNewGame = async () => {
     try {
       const getData = await axios.post("/create-match");
+      if(getData.data.error){
+        alert(getData.data.error);
+        // localStorage.clear();
+        props.history.push('/login');
+        return null;
+      }
       await setNewGame((prevState) => ({
         ...prevState,
         hostId: localStorage.getItem("id"),
