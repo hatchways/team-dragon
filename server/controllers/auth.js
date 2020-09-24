@@ -29,6 +29,14 @@ module.exports = {
         password: req.body.password,
       });
 
+      // Creating user session
+      if (req.session) {
+        req.session.isLoggedIn = true;
+        req.session.user = newUser;
+        const result = await req.session.save();
+        console.log(req.session.user.name, " logged in");
+      }
+
       const payload = {
         id: newUser.id,
         email: newUser.email,
