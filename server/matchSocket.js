@@ -70,8 +70,8 @@ module.exports = {
                 io.to(room).emit("update-players", { match, errors });
               })
               .catch((err) => {
-                console.log("Generic error:", err);
-                console.log(errors);
+                console.log(err);
+                console.log("errors: ",errors);
               });
           });
         } catch (err) {
@@ -107,9 +107,7 @@ module.exports = {
           currentMatch.startGame();
           io.to(matchRoom).emit("update-roles", currentMatch);
         } catch (err) {
-          if (err) {
-            console.log(errors);
-          }
+          console.log(err)
         }
       });
 

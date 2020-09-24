@@ -149,15 +149,11 @@ class Game {
       this.players.push(user);
       return this.players;
     }
-
     // To avoid duplication
-    this.players.forEach((player) => {
-      if (player.id.toString() === user.id.toString()) {
-        throw new Error("User already in the game!");
-      } else {
-        this.players.push(user);
-      }
-    });
+    const result = this.players.find(player => player.id.toString() === user.id.toString());
+    if(!result){
+      this.players.push(user);
+    }
 
     return this.players;
   }
