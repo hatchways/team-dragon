@@ -25,22 +25,22 @@ const useStyles = makeStyles((theme) =>
 const StepTwo = (props) => {
   const [newGame] = useNewGame();
   const [players, setPlayers] = usePlayers();
-  let { gameId } = useParams();
+  let { id } = useParams();
 
   const classes = useStyles();
 
   useEffect(() => {
     // User joins the room
-    let room = "match-" + gameId;
+    let room = "match-" + id;
     let token = localStorage.getItem("token");
     let data = {
       room: room,
-      matchId: gameId,
+      matchId: id,
       token: token,
     };
 
-    if (gameId !== "") {
-      console.log("socket-emit-playerjoined");
+    if (id !== "") {
+      console.log("socket-emit-playerjoined", data);
       socket.emit("join-match", data);
     }
     //Shows players that have joined so far in game setup (Will be displayed in StepTwo.js)

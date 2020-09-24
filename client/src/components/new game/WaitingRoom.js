@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) =>
 const WaitingRoom = (props) => {
   const classes = useStyles();
   const [newGame, setNewGame] = useNewGame();
-  let { gameId } = useParams();
+  let { id } = useParams();
 
 
   const userName = localStorage.getItem("name");
@@ -37,11 +37,9 @@ const WaitingRoom = (props) => {
   useEffect(() => {
     setNewGame((prevState) => ({
       ...prevState,
-      matchId: gameId,
+      matchId: id,
     }));
   }, []);
-
-  console.log('newGame', newGame)
 
   return (
     <Container maxWidth="md">

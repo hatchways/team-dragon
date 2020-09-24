@@ -42,8 +42,6 @@ const GameSetup = (props) => {
     localStorage.setItem("newGame", JSON.stringify(newGame));
   }, [newGame, gameStatus]);
 
-  console.log('newGame', newGame)
-
   return (
     <div>{gameStatus === "running" ? <Game {...props} /> : gameJourney()}</div>
   );

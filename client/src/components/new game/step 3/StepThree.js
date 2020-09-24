@@ -13,8 +13,6 @@ const StepThree = () => {
   //Holds ID of spyMaster
   const [spyMaster, setSpyMaster] = useSpyMaster();
 
-
-
   const displayPlayers = useCallback(() => {
     return players.map((player, i) => {
       return (
@@ -56,6 +54,31 @@ const StepThree = () => {
       </Grid>
     );
   }, [players, spyMaster, setSpyMaster]);
+
+  useEffect(() => {
+    //Fixes bug where player is selected as spymaster, but than allocated to the other team. Solution could likely be improved.
+
+    //Check Blue Team
+    for (let i = 0; i < players.length; i++) {
+      if (players[i].id === spyMaster.blue && players[i].team !== "blue") {
+        setSpyMaster((prevState) => ({
+          ...prevState,
+          blue: "",
+        }));
+      }
+    }
+
+    //Check Red Team
+    for (let i = 0; i < players.length; i++) {
+      if (players[i].id === spyMaster.red && players[i].team !== "red") {
+        setSpyMaster((prevState) => ({
+          ...prevState,
+          red: "",
+        }));
+      }
+    }
+
+  }, [players]);
 
   return (
     <>
