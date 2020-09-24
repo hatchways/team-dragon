@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useNewGame } from "../contexts/DataContext";
 import { useGameStatus } from "../contexts/GameContext";
 import NewGame from "../components/new game/NewGame";
@@ -7,8 +7,6 @@ import Game from "../components/Game";
 import socket from "../socket";
 
 const GameSetup = (props) => {
-  const [game, setGame] = useState(null);
-
   const [newGame, setNewGame] = useNewGame();
   const [gameStatus, setGameStatus] = useGameStatus();
 
@@ -22,7 +20,6 @@ const GameSetup = (props) => {
     //Shows players now assigned on teams and roles, ALSO - change gameStatus now === "running"
     socket.on("update-roles", (match) => {
       setGameStatus(match.gameStatus);
-      setGame(match);
     });
   }, []);
 
@@ -40,12 +37,7 @@ const GameSetup = (props) => {
   };
 
   return (
-    <div>
-      {gameStatus === "running" 
-        ? <Game {...props} game={game} /> 
-        : gameJourney()
-      }
-    </div>
+    <div>{gameStatus === "running" ? <Game {...props} /> : gameJourney()}</div>
   );
 };
 

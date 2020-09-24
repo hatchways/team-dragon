@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const config = require("./config");
+const allMatches = require("./models/gameModel/allMatches");
 
 let ioExport;
 
@@ -19,15 +20,13 @@ exports.socket = (server) => {
           return;
         }
 
-        // check db to find user?
-
         // join a game
         socket.join(recv.gameId);
 
         // create room details if does not exist
         if (roomDetails[recv.gameId] === undefined) {
-          console.log("creating room:", recv.gameId);
           roomDetails[recv.gameId] = {
+            state: allMatches.getAllMatches().get(parseInt(recv.gameId)),
             history: [],
           };
         }
@@ -52,6 +51,7 @@ exports.socket = (server) => {
         // return assigned name and chat history
         fn({
           name: decoded.name,
+          state: roomDetails[recv.gameId].state,
           history: roomDetails[recv.gameId].history,
         });
       });
