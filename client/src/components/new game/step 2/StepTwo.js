@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useNewGame, usePlayers } from "../../../contexts/DataContext";
+import { useParams } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -21,24 +22,24 @@ const useStyles = makeStyles((theme) =>
   }),
 );
 
-const StepTwo = () => {
+const StepTwo = (props) => {
   const [newGame] = useNewGame();
   const [players, setPlayers] = usePlayers();
+  let { gameId } = useParams();
 
   const classes = useStyles();
 
   useEffect(() => {
     // User joins the room
-    let room = "match-" + newGame.matchId;
-    let matchId = newGame.matchId;
+    let room = "match-" + gameId;
     let token = localStorage.getItem("token");
     let data = {
       room: room,
-      matchId: matchId,
+      matchId: gameId,
       token: token,
     };
 
-    if (newGame.matchId !== "") {
+    if (gameId !== "") {
       console.log("socket-emit-playerjoined");
       socket.emit("join-match", data);
     }

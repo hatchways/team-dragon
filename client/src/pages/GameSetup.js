@@ -28,7 +28,6 @@ const GameSetup = (props) => {
     if (gameData) {
       setNewGame(JSON.parse(localStorage.getItem("newGame")));
       setPlayers(JSON.parse(localStorage.getItem("players")));
-
     }
 
     //Shows players now assigned on teams and roles, ALSO - change gameStatus now === "running"
