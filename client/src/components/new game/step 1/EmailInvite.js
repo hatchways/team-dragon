@@ -16,12 +16,16 @@ import {
 import CheckIcon from "@material-ui/icons/Check";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import isEmail from "validator/lib/isEmail";
+import Flip from "react-reveal/Flip";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
     invite: {
       background: theme.grey.dark,
       color: theme.white,
+    },
+    item: {
+      padding: 0,
     },
   }),
 );
@@ -60,18 +64,13 @@ const EmailInvite = () => {
 
   const displayEmails = emails.map((email, i) => {
     return (
-      <ListItem key={i}>
-        <ListItemIcon>
-          <CheckIcon color="primary" />
-        </ListItemIcon>
-        <Grid
-          container
-          direction="row"
-          justify="flex-start"
-          alignItems="center"
-        >
+      <ListItem className={classes.item} key={i}>
+        <Flip left>
+          <ListItemIcon>
+            <CheckIcon color="primary" />
+          </ListItemIcon>
           <ListItemText primary={email} />
-        </Grid>
+        </Flip>
       </ListItem>
     );
   });

@@ -9,6 +9,7 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import Flip from "react-reveal/Flip";
 
 import socket from "../../../socket";
 
@@ -42,12 +43,19 @@ const StepTwo = () => {
     return players.map((player, i) => {
       return (
         <ListItem key={i}>
-          <ListItemIcon>
-            <CheckCircleIcon color="primary" />
-          </ListItemIcon>
- 
-            <ListItemText primary={player.name} />
-     
+          <Flip left>
+            <ListItemIcon>
+              <CheckCircleIcon color="primary" />
+            </ListItemIcon>
+            <Grid
+              container
+              direction="row"
+              justify="flex-start"
+              alignItems="center"
+            >
+              <ListItemText primary={player.name} />
+            </Grid>
+          </Flip>
         </ListItem>
       );
     });
