@@ -38,6 +38,8 @@ const WaitingRoom = (props) => {
     }));
   }, []);
 
+  console.log('newGame', newGame)
+
   return (
     <Container maxWidth="md">
       <Card className={classes.card}>

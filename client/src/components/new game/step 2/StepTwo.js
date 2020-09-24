@@ -37,12 +37,14 @@ const StepTwo = () => {
       matchId: matchId,
       token: token,
     };
+
     if (newGame.matchId !== "") {
       console.log("socket-emit-playerjoined");
       socket.emit("join-match", data);
     }
     //Shows players that have joined so far in game setup (Will be displayed in StepTwo.js)
     socket.on("update-players", (match) => {
+      console.log("socket-on-add-players");
       setPlayers(match.players);
     });
   }, [newGame]);

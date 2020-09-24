@@ -150,14 +150,24 @@ class Game {
       return this.players;
     }
 
+    console.log("this.players", this.players);
+    console.log("user.id", user.id);
+
     // To avoid duplication
-    this.players.forEach((player) => {
+    let duplicate = false;
+
+    for (let player of this.players) {
       if (player.id.toString() === user.id.toString()) {
-        throw new Error("User already in the game!");
-      } else {
-        this.players.push(user);
+        duplicate = true;
+        break;
       }
-    });
+    }
+
+    if (duplicate === false) {
+      this.players.push(user);
+    } else {
+      console.log("Duplicate User");
+    }
 
     return this.players;
   }

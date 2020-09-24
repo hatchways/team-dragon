@@ -1,8 +1,5 @@
-import React, { useCallback } from "react";
-import {
-  /* useNewGame,  */ usePlayers,
-  useSpyMaster,
-} from "../../../contexts/DataContext";
+import React, { useCallback, useEffect } from "react";
+import { usePlayers, useSpyMaster } from "../../../contexts/DataContext";
 
 //import { useAxios } from "../../../hooks/useAxios";
 import { Grid, Box, Typography } from "@material-ui/core";
@@ -15,6 +12,8 @@ const StepThree = () => {
 
   //Holds ID of spyMaster
   const [spyMaster, setSpyMaster] = useSpyMaster();
+
+
 
   const displayPlayers = useCallback(() => {
     return players.map((player, i) => {
