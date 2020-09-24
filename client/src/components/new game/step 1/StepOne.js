@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import EmailInvite from "./EmailInvite";
 import LinkInvite from "./LinkInvite";
 import { useNewGame } from "../../../contexts/DataContext";
@@ -15,7 +15,6 @@ const useStyles = makeStyles((theme) =>
 
 const StepOne = (props) => {
   const classes = useStyles();
-  const [newGame, setNewGame] = useNewGame();
 
   return (
     <>

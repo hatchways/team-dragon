@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import StepOne from "../new game/step 1/StepOne";
 import StepTwo from "../new game/step 2/StepTwo.js";
 import StepThree from "../new game/step 3/StepThree.js";

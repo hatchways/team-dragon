@@ -7,7 +7,7 @@ import {
   FormLabel,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import { red, blue, grey, black } from "@material-ui/core/colors";
+import { red, blue } from "@material-ui/core/colors";
 
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 
@@ -21,19 +21,19 @@ const useStyles = makeStyles((theme) =>
   }),
 );
 
-const noTeamColor = grey[500];
+// const noTeamColor = grey[500];
 const blueTeamColor = blue[500];
 const redTeamColor = red[500];
 
-const NoTeamRadio = withStyles({
-  root: {
-    color: noTeamColor,
-    "&$checked": {
-      color: noTeamColor,
-    },
-  },
-  checked: {},
-})((props) => <Radio color="default" {...props} />);
+// const NoTeamRadio = withStyles({
+//   root: {
+//     color: noTeamColor,
+//     "&$checked": {
+//       color: noTeamColor,
+//     },
+//   },
+//   checked: {},
+// })((props) => <Radio color="default" {...props} />);
 
 const BlueRadio = withStyles({
   root: {

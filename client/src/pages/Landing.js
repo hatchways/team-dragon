@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { useNewGame } from "../contexts/DataContext";
 import { makeStyles } from "@material-ui/core/styles";

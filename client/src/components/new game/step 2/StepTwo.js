@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNewGame, usePlayers } from "../../../contexts/DataContext";
 import {
   Box,
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) =>
 );
 
 const StepTwo = () => {
-  const [newGame, setNewGame] = useNewGame();
+  const [newGame] = useNewGame();
   const [players, setPlayers] = usePlayers();
 
   const classes = useStyles();

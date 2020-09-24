@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import NewGame from "../components/new game/NewGame";
 import { useGameStatus, useGameSpyMaster } from "../contexts/GameContext";
 import { useNewGame } from "../contexts/DataContext";
