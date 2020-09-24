@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import NewGame from "../components/new game/NewGame";
 import { useGameStatus, useGameSpyMaster } from "../contexts/GameContext";
 import { useNewGame } from "../contexts/DataContext";
-
+import Game from "../components/Game";
 import WaitingRoom from "../components/new game/WaitingRoom";
 import socket from "../socket";
 
@@ -44,10 +44,7 @@ const GameSetup = (props) => {
   }, [newGame, gameStatus]);
 
   return (
-    <div>
-      {gameStatus === "running" ? <h1>GAME STARTED!</h1> : gameJourney()}
-      <div>Chat Component Here </div>
-    </div>
+    <div>{gameStatus === "running" ? <Game {...props} /> : gameJourney()}</div>
   );
 };
 

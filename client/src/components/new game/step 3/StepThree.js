@@ -8,7 +8,7 @@ import {
 import { Grid, Box, Typography } from "@material-ui/core";
 import PlayerSelect from "./PlayerSelect";
 import RoleSelect from "./RoleSelect";
-import Pulse from 'react-reveal/Pulse';
+import Pulse from "react-reveal/Pulse";
 
 const StepThree = () => {
   const newPlayerContext = usePlayers();
