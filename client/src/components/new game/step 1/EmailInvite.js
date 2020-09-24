@@ -77,7 +77,7 @@ const EmailInvite = () => {
 
   return (
     <>
-      <Typography variant="h3">Invite friends via email</Typography>
+      <Typography variant="h3">Invite friends via email:</Typography>
       <Box mt={".8rem"}>
         <form className={classes.form} onSubmit={handleSubmit}>
           <TextField

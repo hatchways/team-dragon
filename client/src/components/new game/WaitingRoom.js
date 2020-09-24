@@ -50,9 +50,9 @@ const WaitingRoom = (props) => {
           <Divider className={classes.titleDivider} />
         </Grid>
         <Box mt={2}>
-        <Typography align="center" variant="h3">
-          Please wait as your host assigns the teams.
-        </Typography>
+          <Typography align="center" variant="h3">
+            Please wait as your host assigns the teams.
+          </Typography>
         </Box>
         <StepTwo />
       </Card>
