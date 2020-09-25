@@ -150,23 +150,10 @@ class Game {
       return this.players;
     }
 
-    console.log("this.players", this.players);
-    console.log("user.id", user.id);
-
     // To avoid duplication
-    let duplicate = false;
-
-    for (let player of this.players) {
-      if (player.id.toString() === user.id.toString()) {
-        duplicate = true;
-        break;
-      }
-    }
-
-    if (duplicate === false) {
+    const result = this.players.find(player => player.id.toString() === user.id.toString());
+    if(!result){
       this.players.push(user);
-    } else {
-      console.log("Duplicate User");
     }
 
     return this.players;
