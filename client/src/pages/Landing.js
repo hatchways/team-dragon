@@ -48,8 +48,6 @@ const Landing = (props) => {
     props.history.push("/login");
   };
 
-  console.log('newGame', newGame)
-
   const createNewGame = async () => {
     try {
       const getData = await axios.post("/create-match");
