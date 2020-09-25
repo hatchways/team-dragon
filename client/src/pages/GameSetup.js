@@ -1,28 +1,14 @@
-import React, { useEffect, useState } from "react";
-import NewGame from "../components/new game/NewGame";
-import { useGameStatus, useGameSpyMaster } from "../contexts/GameContext";
+import React, { useEffect } from "react";
 import { useNewGame } from "../contexts/DataContext";
-import Game from "../components/Game";
+import { useGameStatus } from "../contexts/GameContext";
+import NewGame from "../components/new game/NewGame";
 import WaitingRoom from "../components/new game/WaitingRoom";
+import Game from "../components/Game";
 import socket from "../socket";
 
 const GameSetup = (props) => {
-  const SpyMasterContext = useGameSpyMaster();
-  const [isSpyMaster, setIsSpyMaster] = SpyMasterContext;
-
-  const GameStatusContext = useGameStatus();
-  const [gameStatus, setGameStatus] = GameStatusContext;
-
-  const newGameContext = useNewGame();
-  const [newGame, setNewGame] = newGameContext;
-
-  const gameJourney = () => {
-    if (localStorage.getItem("id") === newGame.hostId) {
-      return <NewGame value={props} />;
-    } else {
-      return <WaitingRoom value={props} />;
-    }
-  };
+  const [newGame, setNewGame] = useNewGame();
+  const [gameStatus, setGameStatus] = useGameStatus();
 
   const gameData = localStorage.getItem("newGame");
 
@@ -34,7 +20,6 @@ const GameSetup = (props) => {
     //Shows players now assigned on teams and roles, ALSO - change gameStatus now === "running"
     socket.on("update-roles", (match) => {
       setGameStatus(match.gameStatus);
-      console.log("Updated Roles: ", match);
     });
   }, []);
 
@@ -42,6 +27,14 @@ const GameSetup = (props) => {
   useEffect(() => {
     localStorage.setItem("newGame", JSON.stringify(newGame));
   }, [newGame, gameStatus]);
+
+  const gameJourney = () => {
+    if (localStorage.getItem("id") === newGame.hostId) {
+      return <NewGame value={props} />;
+    } else {
+      return <WaitingRoom value={props} />;
+    }
+  };
 
   return (
     <div>{gameStatus === "running" ? <Game {...props} /> : gameJourney()}</div>

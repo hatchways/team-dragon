@@ -30,6 +30,7 @@ const BoardCard = (props) => {
 };
 
 BoardCard.defaultProps = {
+  clicked: false,
   spyMaster: false,
 };
 
