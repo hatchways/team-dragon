@@ -44,11 +44,12 @@ const StepTwo = () => {
       socket.emit("join-match", data);
     }
     //Shows players that have joined so far in game setup (Will be displayed in StepTwo.js)
-    socket.on("update-players", (match) => {
+    socket.on("update-players", ({match,errors}) => {
+      console.log(errors);
       setPlayers(match.players);
     });
   }, [newGame]);
-
+  
   const showPlayers = () => {
     return players.map((player, i) => {
       return (
