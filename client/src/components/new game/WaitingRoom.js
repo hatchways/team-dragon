@@ -35,7 +35,6 @@ const WaitingRoom = (props) => {
   const [hostName] = useHostName();
   let { id } = useParams();
 
-
   const userName = localStorage.getItem("name");
 
   useEffect(() => {

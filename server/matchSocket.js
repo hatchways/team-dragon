@@ -71,7 +71,7 @@ module.exports = {
               })
               .catch((err) => {
                 console.log(err);
-                console.log("errors: ",errors);
+                console.log("errors: ", errors);
               });
           });
         } catch (err) {
@@ -107,7 +107,7 @@ module.exports = {
           currentMatch.startGame();
           io.to(matchRoom).emit("update-roles", currentMatch);
         } catch (err) {
-          console.log(err)
+          console.log(err);
         }
       });
 

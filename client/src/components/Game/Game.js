@@ -28,8 +28,8 @@ const Game = (props) => {
       const redPlayers = recv.state.redTeam.players;
       const bluePlayers = recv.state.blueTeam.players;
 
-      const redIdx = redPlayers.findIndex((p) => p.name === name);
-      const blueIdx = bluePlayers.findIndex((p) => p.name === name);
+      const redIdx = redPlayers.findIndex((p) => p.name === recv.name);
+      const blueIdx = bluePlayers.findIndex((p) => p.name === recv.name);
 
       if (redIdx > -1) {
         if (redPlayers[redIdx].role === "spy-master") {
@@ -55,7 +55,7 @@ const Game = (props) => {
       console.log("user not valid");
       // props.history.push("/login");
     });
-  }, [name, gameId, token]);
+  }, [gameId, token]);
 
   const sendMessage = (msg) => {
     const msgData = {

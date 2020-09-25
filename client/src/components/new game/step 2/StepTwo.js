@@ -45,19 +45,15 @@ const StepTwo = (props) => {
     };
 
     if (id !== "") {
-      console.log("socket-emit-playerjoined", data);
       socket.emit("join-match", data);
     }
     //Shows players that have joined so far in game setup (Will be displayed in StepTwo.js)
 
     socket.on("update-players", ({ match, errors }) => {
-      console.log("socket-on-update-players", match);
-      console.log(errors);
       setPlayers(match.players);
       setHostName(match.currentUser.name);
-      console.log("host-name-set:", hostName);
     });
-  }, [newGame, hostName]);
+  }, [newGame]);
 
   const showPlayers = () => {
     return players.map((player, i) => {
