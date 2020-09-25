@@ -8,6 +8,8 @@ const PlayersContext = React.createContext();
 
 const SpyMasterContext = React.createContext();
 
+const HostNameContext = React.createContext();
+
 // Custom hook for Emails to be invited to game
 export function useEmails() {
   return useContext(EmailContext);
@@ -26,6 +28,10 @@ export function usePlayers() {
 // Custom hook for holding SpyMaster
 export function useSpyMaster() {
   return useContext(SpyMasterContext);
+}
+
+export function useHostName() {
+  return useContext(HostNameContext);
 }
 
 export function DataProvider({ children }) {
@@ -78,12 +84,21 @@ export function DataProvider({ children }) {
     setSpyMaster,
   ]);
 
+  const [hostName, setHostName] = useState("");
+
+  const providerHostName = useMemo(() => [hostName, setHostName], [
+    hostName,
+    setHostName,
+  ]);
+
   return (
     <NewGameContext.Provider value={providerNewGame}>
       <EmailContext.Provider value={providerEmails}>
         <PlayersContext.Provider value={providerPlayers}>
           <SpyMasterContext.Provider value={providerSpyMaster}>
-            {children}
+            <HostNameContext.Provider value={providerHostName}>
+              {children}
+            </HostNameContext.Provider>
           </SpyMasterContext.Provider>
         </PlayersContext.Provider>
       </EmailContext.Provider>

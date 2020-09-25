@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import StepTwo from "./step 2/StepTwo";
-import { useNewGame } from "../../contexts/DataContext";
+import { useNewGame, useHostName } from "../../contexts/DataContext";
 import { useParams } from "react-router-dom";
 import {
   Container,
@@ -23,12 +23,16 @@ const useStyles = makeStyles((theme) =>
       width: "5rem",
       marginTop: "1rem",
     },
+    host: {
+      color: theme.palette.primary.main
+    }
   }),
 );
 
 const WaitingRoom = (props) => {
   const classes = useStyles();
   const [newGame, setNewGame] = useNewGame();
+  const [hostName] = useHostName();
   let { id } = useParams();
 
 
@@ -50,9 +54,10 @@ const WaitingRoom = (props) => {
         <Grid container direction="row" justify="center" alignItems="center">
           <Divider className={classes.titleDivider} />
         </Grid>
-        <Box mt={2}>
+        <Box my={2}>
           <Typography align="center" variant="h3">
-            Please wait as your host assigns the teams.
+            Your host is: <Box component="span" className={classes.host}>{hostName}</Box> <br />
+            Please wait while they assign the teams.
           </Typography>
         </Box>
         <StepTwo />
