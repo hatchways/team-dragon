@@ -6,8 +6,7 @@ const User = require("../models/User");
 exports.postCreateMatch = async (req, res, next) => {
   try {
     if (!req.user) {
-      return res
-        .json({ success: false, error: "Please Sign in !"});
+      return res.json({ success: false, error: "Please Sign in !" });
     }
     const hostId = req.user._id;
     // User id coming from request

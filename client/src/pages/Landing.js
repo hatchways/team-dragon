@@ -44,7 +44,7 @@ const Landing = (props) => {
 
   const handleClose = () => {
     setOpenDialog(false);
-    // If the error is: User not signed in 
+    // If the error is: User not signed in
     props.history.push("/login");
   };
 
@@ -113,10 +113,7 @@ const Landing = (props) => {
           </Button>
         )}
       </Card>
-      <Dialog
-        open={openDialog}
-        onClose={handleClose}
-      >
+      <Dialog open={openDialog} onClose={handleClose}>
         <DialogTitle>{error}</DialogTitle>
         <DialogContent>
           <DialogContentText>

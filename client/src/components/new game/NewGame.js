@@ -63,8 +63,6 @@ const NewGame = (props) => {
     }
   }, []);
 
-  console.log("newGame", newGame);
-
   const resetNewGame = async () => {
     try {
       const getData = await axios.post("/create-match");

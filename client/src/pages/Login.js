@@ -62,7 +62,7 @@ const Login = (props) => {
       props.history.push("/");
     } catch (err) {
       if (err.response) {
-        console.log(err.response.data)
+        console.log(err.response.data);
         const errObj = err.response.data;
         setErrors(errObj.errors);
       } else {

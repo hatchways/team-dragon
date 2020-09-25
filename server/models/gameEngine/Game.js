@@ -151,8 +151,10 @@ class Game {
     }
 
     // To avoid duplication
-    const result = this.players.find(player => player.id.toString() === user.id.toString());
-    if(!result){
+    const result = this.players.find(
+      (player) => player.id.toString() === user.id.toString(),
+    );
+    if (!result) {
       this.players.push(user);
     }
 

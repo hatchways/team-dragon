@@ -77,7 +77,6 @@ const StepThree = () => {
         }));
       }
     }
-
   }, [players]);
 
   return (

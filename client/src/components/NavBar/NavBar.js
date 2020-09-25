@@ -7,7 +7,7 @@ import useStyles from "./styles";
 
 const NavBar = () => {
   const classes = useStyles();
-  const [gameStatus, setGameStatus] = useGameStatus();
+  const [gameStatus] = useGameStatus();
 
   if (gameStatus !== "running") {
     return (
