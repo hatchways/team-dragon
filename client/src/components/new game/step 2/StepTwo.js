@@ -1,5 +1,9 @@
 import React, { useEffect } from "react";
-import { useNewGame, usePlayers } from "../../../contexts/DataContext";
+import {
+  useNewGame,
+  usePlayers,
+  useHostName,
+} from "../../../contexts/DataContext";
 import { useParams } from "react-router-dom";
 import {
   Box,
@@ -25,6 +29,7 @@ const useStyles = makeStyles((theme) =>
 const StepTwo = (props) => {
   const [newGame] = useNewGame();
   const [players, setPlayers] = usePlayers();
+  const [hostName, setHostName] = useHostName();
   let { id } = useParams();
 
   const classes = useStyles();
@@ -45,13 +50,15 @@ const StepTwo = (props) => {
     }
     //Shows players that have joined so far in game setup (Will be displayed in StepTwo.js)
 
-    socket.on("update-players", ({match,errors}) => {
-      console.log("socket-on-update-players", match)
+    socket.on("update-players", ({ match, errors }) => {
+      console.log("socket-on-update-players", match);
       console.log(errors);
       setPlayers(match.players);
+      setHostName(match.currentUser.name);
+      console.log("host-name-set:", hostName);
     });
-  }, [newGame]);
-  
+  }, [newGame, hostName]);
+
   const showPlayers = () => {
     return players.map((player, i) => {
       return (
