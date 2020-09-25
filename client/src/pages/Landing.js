@@ -1,4 +1,5 @@
-import React, { useEffect,useState } from "react";
+import React, { useState } from "react";
+
 import { Link } from "react-router-dom";
 import { useNewGame } from "../contexts/DataContext";
 import { makeStyles } from "@material-ui/core/styles";
@@ -35,6 +36,7 @@ const Landing = (props) => {
   const classes = useStyles();
 
   //Holds Match ID + Template for Passing Roles to Server
+
   const NewGameContext = useNewGame();
   const [newGame, setNewGame] = NewGameContext;
   const [openDialog, setOpenDialog] = useState(false);
@@ -57,6 +59,7 @@ const Landing = (props) => {
       }
       await setNewGame((prevState) => ({
         ...prevState,
+        step: 1,
         hostId: localStorage.getItem("id"),
         matchId: getData.data.match.id,
       }));

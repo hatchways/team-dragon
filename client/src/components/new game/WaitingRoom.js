@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import StepTwo from "./step 2/StepTwo";
 import { useNewGame } from "../../contexts/DataContext";
+import { useParams } from "react-router-dom";
 import {
   Container,
   Divider,
@@ -27,16 +28,16 @@ const useStyles = makeStyles((theme) =>
 
 const WaitingRoom = (props) => {
   const classes = useStyles();
+  const [newGame, setNewGame] = useNewGame();
+  let { id } = useParams();
 
-  const newGameContext = useNewGame();
-  const [newGame, setNewGame] = newGameContext;
 
   const userName = localStorage.getItem("name");
 
   useEffect(() => {
     setNewGame((prevState) => ({
       ...prevState,
-      matchId: props.value.match.params.id,
+      matchId: id,
     }));
   }, []);
 

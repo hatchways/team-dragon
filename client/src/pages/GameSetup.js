@@ -1,20 +1,36 @@
 import React, { useEffect } from "react";
-import { useNewGame } from "../contexts/DataContext";
-import { useGameStatus } from "../contexts/GameContext";
 import NewGame from "../components/new game/NewGame";
+import { useGameStatus, useGameSpyMaster } from "../contexts/GameContext";
+import { useNewGame, usePlayers } from "../contexts/DataContext";
+import Game from "../components/Game";
+
 import WaitingRoom from "../components/new game/WaitingRoom";
 import Game from "../components/Game";
 import socket from "../socket";
 
 const GameSetup = (props) => {
-  const [newGame, setNewGame] = useNewGame();
+  const [isSpyMaster, setIsSpyMaster] = useGameSpyMaster();
   const [gameStatus, setGameStatus] = useGameStatus();
+  const [newGame, setNewGame] = useNewGame();
+  const [players, setPlayers] = usePlayers();
+
+
+
+  const gameJourney = () => {
+    if (localStorage.getItem("id") === newGame.hostId) {
+      return <NewGame value={props} />;
+    } else {
+      return <WaitingRoom value={props} />;
+    }
+  };
+
 
   const gameData = localStorage.getItem("newGame");
 
   useEffect(() => {
     if (gameData) {
       setNewGame(JSON.parse(localStorage.getItem("newGame")));
+      setPlayers(JSON.parse(localStorage.getItem("players")));
     }
 
     //Shows players now assigned on teams and roles, ALSO - change gameStatus now === "running"

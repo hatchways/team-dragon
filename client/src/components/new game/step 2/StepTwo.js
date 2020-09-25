@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNewGame, usePlayers } from "../../../contexts/DataContext";
+import { useParams } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -21,31 +22,32 @@ const useStyles = makeStyles((theme) =>
   }),
 );
 
-const StepTwo = () => {
-  const newGameContext = useNewGame();
-  const [newGame, setNewGame] = newGameContext;
-
-  const usePlayersContext = usePlayers();
-  const [players, setPlayers] = usePlayersContext;
+const StepTwo = (props) => {
+  const [newGame] = useNewGame();
+  const [players, setPlayers] = usePlayers();
+  let { id } = useParams();
 
   const classes = useStyles();
 
   useEffect(() => {
     // User joins the room
-    let room = "match-" + newGame.matchId;
-    let matchId = newGame.matchId;
+    let room = "match-" + id;
     let token = localStorage.getItem("token");
     let data = {
       room: room,
-      matchId: matchId,
+      matchId: id,
       token: token,
     };
-    if (newGame.matchId !== "") {
+
+    if (id !== "") {
+      console.log("socket-emit-playerjoined", data);
       socket.emit("join-match", data);
     }
     //Shows players that have joined so far in game setup (Will be displayed in StepTwo.js)
+
     socket.on("update-players", ({match,errors}) => {
       console.log(errors);
+
       setPlayers(match.players);
     });
   }, [newGame]);

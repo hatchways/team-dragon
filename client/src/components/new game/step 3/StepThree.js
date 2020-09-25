@@ -1,8 +1,5 @@
-import React, { useCallback } from "react";
-import {
-  /* useNewGame,  */ usePlayers,
-  useSpyMaster,
-} from "../../../contexts/DataContext";
+import React, { useCallback, useEffect } from "react";
+import { usePlayers, useSpyMaster } from "../../../contexts/DataContext";
 
 //import { useAxios } from "../../../hooks/useAxios";
 import { Grid, Box, Typography } from "@material-ui/core";
@@ -11,12 +8,10 @@ import RoleSelect from "./RoleSelect";
 import Pulse from "react-reveal/Pulse";
 
 const StepThree = () => {
-  const newPlayerContext = usePlayers();
-  const [players, setPlayers] = newPlayerContext;
+  const [players, setPlayers] = usePlayers();
 
   //Holds ID of spyMaster
-  const newSpyMasterContext = useSpyMaster();
-  const [spyMaster, setSpyMaster] = newSpyMasterContext;
+  const [spyMaster, setSpyMaster] = useSpyMaster();
 
   const displayPlayers = useCallback(() => {
     return players.map((player, i) => {
@@ -59,6 +54,31 @@ const StepThree = () => {
       </Grid>
     );
   }, [players, spyMaster, setSpyMaster]);
+
+  useEffect(() => {
+    //Fixes bug where player is selected as spymaster, but than allocated to the other team. Solution could likely be improved.
+
+    //Check Blue Team
+    for (let i = 0; i < players.length; i++) {
+      if (players[i].id === spyMaster.blue && players[i].team !== "blue") {
+        setSpyMaster((prevState) => ({
+          ...prevState,
+          blue: "",
+        }));
+      }
+    }
+
+    //Check Red Team
+    for (let i = 0; i < players.length; i++) {
+      if (players[i].id === spyMaster.red && players[i].team !== "red") {
+        setSpyMaster((prevState) => ({
+          ...prevState,
+          red: "",
+        }));
+      }
+    }
+
+  }, [players]);
 
   return (
     <>

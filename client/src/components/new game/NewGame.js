@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import StepOne from "../new game/step 1/StepOne";
 import StepTwo from "../new game/step 2/StepTwo.js";
 import StepThree from "../new game/step 3/StepThree.js";
@@ -39,16 +40,30 @@ const NewGame = (props) => {
   const classes = useStyles();
 
   //Holds Match ID + Template for Passing Roles to Server
-  const newGameContext = useNewGame();
-  const [newGame, setNewGame] = newGameContext;
+  const [newGame, setNewGame] = useNewGame();
 
   //Holds All Players + Roles
-  const newPlayersContext = usePlayers();
-  const [players] = newPlayersContext;
+  const [players] = usePlayers();
 
   //Holds Selected SpyMaster
-  const newSpyMasterContext = useSpyMaster();
-  const [spyMaster] = newSpyMasterContext;
+  const [spyMaster] = useSpyMaster();
+
+  let { id } = useParams();
+
+  useEffect(() => {
+    if(id !== localStorage.getItem("newGame").matchId) {
+      console.log("rannn")
+      setNewGame((prevState) => ({
+        ...prevState,
+        step: 1,
+        matchId: id,
+      }));
+      localStorage.setItem("newGame", JSON.stringify(newGame))
+    }
+  }, [])
+
+  console.log('newGame', newGame)
+
 
   const resetNewGame = async () => {
     try {
