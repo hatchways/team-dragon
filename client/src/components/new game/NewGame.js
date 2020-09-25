@@ -51,19 +51,19 @@ const NewGame = (props) => {
   let { id } = useParams();
 
   useEffect(() => {
-    if(id !== localStorage.getItem("newGame").matchId) {
-      console.log("rannn")
-      setNewGame((prevState) => ({
-        ...prevState,
-        step: 1,
-        matchId: id,
-      }));
-      localStorage.setItem("newGame", JSON.stringify(newGame))
+    if (localStorage.getItem("newGame")) {
+      if (id !== localStorage.getItem("newGame").matchId) {
+        setNewGame((prevState) => ({
+          ...prevState,
+          step: 1,
+          matchId: id,
+        }));
+        localStorage.setItem("newGame", JSON.stringify(newGame));
+      }
     }
-  }, [])
+  }, []);
 
-  console.log('newGame', newGame)
-
+  console.log("newGame", newGame);
 
   const resetNewGame = async () => {
     try {
