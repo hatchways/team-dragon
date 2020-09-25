@@ -46,8 +46,8 @@ const StepTwo = (props) => {
     //Shows players that have joined so far in game setup (Will be displayed in StepTwo.js)
 
     socket.on("update-players", ({match,errors}) => {
+      console.log("socket-on-update-players", match)
       console.log(errors);
-
       setPlayers(match.players);
     });
   }, [newGame]);
