@@ -8,11 +8,8 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
-
 const passportStrategy = require("./config/passport");
 const config = require("./config");
-
-const indexRouter = require("./routes/index");
 const gameRouter = require("./routes/game");
 const authRouter = require("./routes/auth");
 const User = require("./models/User");
@@ -72,7 +69,6 @@ mongoose
   .catch((err) => console.log(err));
 
 // setup routes
-app.use("/", indexRouter);
 app.use("/users", authRouter);
 app.use(gameRouter);
 

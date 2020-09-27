@@ -21,7 +21,7 @@ const GameSetup = (props) => {
 
     //Shows players now assigned on teams and roles, ALSO - change gameStatus now === "running"
     socket.on("update-roles", (match) => {
-      console.log("socket-on-update-roles", match)
+      console.log("socket-on-update-roles", match);
       setGameStatus(match.gameStatus);
     });
   }, [gameData, setGameStatus, setNewGame, setPlayers]);

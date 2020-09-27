@@ -100,7 +100,7 @@ class Game {
 
   //change Turn
   changeTurn() {
-    if ((this.turn = "blue")) {
+    if (this.turn == "blue") {
       this.turn = "red";
       console.log(`${this.turn} team's turn!`);
     } else {
@@ -113,7 +113,7 @@ class Game {
   resetGame() {
     this.redTeam = new Team("red");
     this.blueTeam = new Team("blue");
-    this.board = gameData;
+    this.board = getData();
     this.turn = "blue";
     console.log("Game was reset!!!");
   }

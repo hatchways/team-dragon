@@ -1,5 +1,3 @@
-const Team = require("./Team");
-
 class Player {
   constructor(id, name, team) {
     this.id = id;
