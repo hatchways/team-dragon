@@ -33,7 +33,7 @@ module.exports = {
       if (req.session) {
         req.session.isLoggedIn = true;
         req.session.user = newUser;
-        const result = await req.session.save();
+        await req.session.save();
         console.log(req.session.user.name, " logged in");
       }
 
@@ -84,7 +84,7 @@ module.exports = {
         if (req.session) {
           req.session.isLoggedIn = true;
           req.session.user = user;
-          const result = await req.session.save();
+          await req.session.save();
           console.log(req.session.user.name, " logged in");
         }
 

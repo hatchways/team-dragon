@@ -51,6 +51,7 @@ exports.postCreateMatch = async (req, res, next) => {
   } catch (err) {
     if (err) {
       console.log(err);
+      return next(err);
     }
   }
 };

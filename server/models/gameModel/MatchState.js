@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const teamSchema = require("./team");
 const Schema = mongoose.Schema;
 
 // Match skeleton
