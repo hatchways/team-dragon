@@ -37,8 +37,6 @@ const useStyles = makeStyles((theme) =>
 );
 
 const NewGame = (props) => {
- 
- 
   const classes = useStyles();
 
   //Holds Match ID + Template for Passing Roles to Server
@@ -52,13 +50,13 @@ const NewGame = (props) => {
 
   let { id } = useParams();
 
+  // Goes back to the step of the host when page refreshes
   useEffect(() => window.localStorage.setItem("newGame", newGame), [newGame]);
-
 
   const resetNewGame = async () => {
     try {
       const getData = await axios.post("/create-match");
-      console.log('getData', getData)
+      console.log("getData", getData);
       await setNewGame(1);
       await props.value.history.push(String(getData.data.match.id));
     } catch (err) {
@@ -69,8 +67,6 @@ const NewGame = (props) => {
   const nextStep = () => {
     setNewGame((prevState) => prevState + 1);
   };
-
-
 
   //Sends Date to Start Game
   const startMatch = async (e) => {
@@ -119,7 +115,9 @@ const NewGame = (props) => {
       case 3:
         return <StepThree />;
       default:
-        return <h2>Error. The New Game component is showing and it shouldn't be.</h2>;
+        return (
+          <h2>Error. The New Game component is showing and it shouldn't be.</h2>
+        );
     }
   };
 

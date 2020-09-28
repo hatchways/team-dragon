@@ -73,9 +73,6 @@ export function DataProvider({ children }) {
 
   const providerPlayers = [players, setPlayers];
 
-  useEffect(() => {
-    localStorage.setItem("players", JSON.stringify(players));
-  }, [players]);
 
   //Holds SpyMaster
   const [spyMaster, setSpyMaster] = useState({ blue: "", red: "" });
