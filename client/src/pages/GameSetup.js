@@ -15,7 +15,7 @@ const GameSetup = (props) => {
 
   useEffect(() => {
     if (gameData) {
-      setNewGame(JSON.parse(localStorage.getItem("newGame")));
+      // setNewGame(JSON.parse(localStorage.getItem("newGame")));
       setPlayers(JSON.parse(localStorage.getItem("players")));
     }
 

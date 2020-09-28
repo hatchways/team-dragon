@@ -49,11 +49,19 @@ const StepTwo = (props) => {
     }
     //Shows players that have joined so far in game setup (Will be displayed in StepTwo.js)
 
+    // socket.on("update-players", ({ game, errors }) => {
+    //   setPlayers(game.players);
+    //   setHostName(game.currentUser.name);
+    // });
+  }, []);
+
+  useEffect(()=>{
     socket.on("update-players", ({ game, errors }) => {
+      console.log("updated players", game.players)
       setPlayers(game.players);
       setHostName(game.currentUser.name);
     });
-  }, []);
+  },[players]);
 
   const showPlayers = () => {
     return players.map((player, i) => {
