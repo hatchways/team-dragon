@@ -18,11 +18,7 @@ const Register = (props) => {
   const [errors, setErrors] = useState({});
 
   const validateForm = () => {
-    return (
-      name.length > 0 && 
-      email.length > 0 && 
-      password.length > 0
-    );
+    return name.length > 0 && email.length > 0 && password.length > 0;
   };
 
   const handleSubmit = async (e) => {

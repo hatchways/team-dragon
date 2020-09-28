@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import Avatar from "@material-ui/core/Avatar";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
-import Divider from "@material-ui/core/Divider";
 import Icon from "@material-ui/core/Icon";
 import Typography from "@material-ui/core/Typography";
 import useStyles from "./styles";
