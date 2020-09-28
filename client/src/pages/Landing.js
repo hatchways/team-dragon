@@ -55,12 +55,7 @@ const Landing = (props) => {
         // localStorage.clear();
         return null;
       }
-      await setNewGame((prevState) => ({
-        ...prevState,
-        step: 1,
-        hostId: getData.data.match.currentUser._id,
-        matchId: getData.data.match.id.toString(),
-      }));
+      await setNewGame(1);
       await props.history.push(String(getData.data.match.id));
     } catch (err) {
       console.log(err);

@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
 import StepOne from "../new game/step 1/StepOne";
 import StepTwo from "../new game/step 2/StepTwo.js";
 import StepThree from "../new game/step 3/StepThree.js";
+import { useParams } from "react-router-dom";
 import {
   useNewGame,
   usePlayers,
@@ -37,6 +37,8 @@ const useStyles = makeStyles((theme) =>
 );
 
 const NewGame = (props) => {
+ 
+ 
   const classes = useStyles();
 
   //Holds Match ID + Template for Passing Roles to Server
@@ -50,16 +52,14 @@ const NewGame = (props) => {
 
   let { id } = useParams();
 
+  useEffect(() => window.localStorage.setItem("newGame", newGame), [newGame]);
+
+
   const resetNewGame = async () => {
     try {
       const getData = await axios.post("/create-match");
       console.log('getData', getData)
-      await setNewGame((prevState) => ({
-        ...prevState,
-        step: 1,
-        hostId: getData.data.match.currentUser._id,
-        matchId: getData.data.match.id,
-      }));
+      await setNewGame(1);
       await props.value.history.push(String(getData.data.match.id));
     } catch (err) {
       console.log(err);
@@ -67,17 +67,15 @@ const NewGame = (props) => {
   };
 
   const nextStep = () => {
-    const { step } = newGame;
-    setNewGame((prevState) => ({
-      ...prevState,
-      step: step + 1,
-    }));
+    setNewGame((prevState) => prevState + 1);
   };
+
+
 
   //Sends Date to Start Game
   const startMatch = async (e) => {
     try {
-      const setMatch = (newGame, players, spyMaster) => {
+      const setMatch = (players, spyMaster) => {
         let spyMasters = [spyMaster.blue, spyMaster.red];
 
         let playerAssign = players.map((player) => {
@@ -99,11 +97,11 @@ const NewGame = (props) => {
         });
 
         return {
-          matchId: newGame.matchId,
+          matchId: id,
           players: playerAssign,
         };
       };
-      const matchDetails = await setMatch(newGame, players, spyMaster);
+      const matchDetails = await setMatch(players, spyMaster);
       socket.emit("start-game", matchDetails);
     } catch (err) {
       console.log(err);
@@ -111,8 +109,7 @@ const NewGame = (props) => {
   };
 
   const newGameSteps = () => {
-    const { step } = newGame;
-    switch (step) {
+    switch (newGame) {
       // case 0:
       //   return <NewGameLoading />;
       case 1:
@@ -122,7 +119,7 @@ const NewGame = (props) => {
       case 3:
         return <StepThree />;
       default:
-        return <h2>Game Starts?</h2>;
+        return <h2>Error. The New Game component is showing and it shouldn't be.</h2>;
     }
   };
 
@@ -146,7 +143,7 @@ const NewGame = (props) => {
             alignItems="center"
           >
             <Box mx={2}>
-              {newGame.step < 3 ? (
+              {newGame < 3 ? (
                 <Button variant="contained" color="primary" onClick={nextStep}>
                   Next
                 </Button>

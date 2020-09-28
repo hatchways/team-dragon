@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import StepTwo from "./step 2/StepTwo";
-import { useNewGame, useHostName } from "../../contexts/DataContext";
+import { useHostName } from "../../contexts/DataContext";
 import { useParams } from "react-router-dom";
 import {
   Container,
@@ -31,18 +31,11 @@ const useStyles = makeStyles((theme) =>
 
 const WaitingRoom = (props) => {
   const classes = useStyles();
-  const [newGame, setNewGame] = useNewGame();
   const [hostName] = useHostName();
   let { id } = useParams();
 
   const userName = localStorage.getItem("name");
 
-  useEffect(() => {
-    setNewGame((prevState) => ({
-      ...prevState,
-      matchId: id,
-    }));
-  }, []);
 
   return (
     <Container maxWidth="md">

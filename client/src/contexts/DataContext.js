@@ -10,6 +10,8 @@ const SpyMasterContext = React.createContext();
 
 const HostNameContext = React.createContext();
 
+const HostIdContext = React.createContext();
+
 // Custom hook for Emails to be invited to game
 export function useEmails() {
   return useContext(EmailContext);
@@ -34,6 +36,10 @@ export function useHostName() {
   return useContext(HostNameContext);
 }
 
+export function useHostId() {
+  return useContext(HostIdContext);
+}
+
 export function DataProvider({ children }) {
   //Holds emails to be invited to game
   const [emails, setEmails] = useState([]);
@@ -43,11 +49,9 @@ export function DataProvider({ children }) {
   ]);
 
   //Holds New Game Steps + Game Data
-  const [newGame, setNewGame] = useState({
-    step: 1,
-    matchId: "",
-    hostId: null,
-  });
+  const initialState = () =>
+    Number(window.localStorage.getItem("newGame") || null);
+  const [newGame, setNewGame] = useState(initialState);
 
   const providerNewGame = useMemo(() => [newGame, setNewGame], [
     newGame,
@@ -67,7 +71,7 @@ export function DataProvider({ children }) {
   //   { name: "Joy", id: "6" },
   // ]);
 
-  const providerPlayers = [players, setPlayers]
+  const providerPlayers = [players, setPlayers];
 
   useEffect(() => {
     localStorage.setItem("players", JSON.stringify(players));
@@ -75,17 +79,21 @@ export function DataProvider({ children }) {
 
   //Holds SpyMaster
   const [spyMaster, setSpyMaster] = useState({ blue: "", red: "" });
-
   const providerSpyMaster = useMemo(() => [spyMaster, setSpyMaster], [
     spyMaster,
     setSpyMaster,
   ]);
 
   const [hostName, setHostName] = useState("");
-
   const providerHostName = useMemo(() => [hostName, setHostName], [
     hostName,
     setHostName,
+  ]);
+
+  const [hostId, setHostId] = useState("");
+  const providerHostId = useMemo(() => [hostId, setHostId], [
+    hostName,
+    setHostId,
   ]);
 
   return (
@@ -94,7 +102,9 @@ export function DataProvider({ children }) {
         <PlayersContext.Provider value={providerPlayers}>
           <SpyMasterContext.Provider value={providerSpyMaster}>
             <HostNameContext.Provider value={providerHostName}>
-              {children}
+              <HostIdContext.Provider value={providerHostId}>
+                {children}
+              </HostIdContext.Provider>
             </HostNameContext.Provider>
           </SpyMasterContext.Provider>
         </PlayersContext.Provider>

@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import {
   usePlayers,
   useHostName,
+  useHostId
 } from "../../../contexts/DataContext";
 import { useParams } from "react-router-dom";
 import {
@@ -28,9 +29,11 @@ const useStyles = makeStyles((theme) =>
 const StepTwo = (props) => {
   const [players, setPlayers] = usePlayers();
   const [hostName, setHostName] = useHostName();
+  const [hostId, setHostId] = useHostId();
   let { id } = useParams();
 
   const classes = useStyles();
+
 
 
 
@@ -55,11 +58,16 @@ const StepTwo = (props) => {
      //Shows players that have joined so far in game setup (Will be displayed in StepTwo.js)
      socket.on("update-players", ({ match, errors }) => {
       console.log('on-update-players', match)
+      console.log(match.currentUser._id)
       setPlayers(match.players);
+      setHostId(match.currentUser._id);
       setHostName(match.currentUser.name);
     });
   }, [players])
 
+  
+console.log(hostId)
+console.log(hostName)
   console.log('players-outside', players)
 
   const showPlayers = () => {
