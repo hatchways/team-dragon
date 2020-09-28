@@ -7,15 +7,15 @@ import useStyles from "./styles";
 const BoardCard = (props) => {
   const classes = useStyles(props);
 
-  let styles = [`${classes.card}`];
+  let styles = [`${classes.Card}`];
   if (props.type === "red") {
-    styles.push(`${classes.red}`);
+    styles.push(`${classes.Red}`);
   } else if (props.type === "blue") {
-    styles.push(`${classes.blue}`);
+    styles.push(`${classes.Blue}`);
   } else if (props.type === "innocent") {
-    styles.push(`${classes.innocent}`);
+    styles.push(`${classes.Innocent}`);
   } else {
-    styles.push(`${classes.assassin}`);
+    styles.push(`${classes.Assassin}`);
   }
 
   if (props.clicked) {

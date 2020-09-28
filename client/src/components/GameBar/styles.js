@@ -1,12 +1,12 @@
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-  navBar: {
+  NavBar: {
     width: "100%",
     height: "100%",
     background: theme.white,
   },
-  navBarWrap: {
+  NavBarWrap: {
     width: "90%",
     height: "100%",
     margin: "0 auto",
@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  brand: {
+  Brand: {
     textTransform: "uppercase",
     letterSpacing: "0.6rem",
     "& a": {
@@ -22,17 +22,46 @@ const useStyles = makeStyles((theme) => ({
       color: "black",
     },
   },
-  red: {
-    color: theme.red.medium,
+  Scoreboard: {
+    display: "flex",
+    alignItems: "center",
   },
-  blue: {
-    color: theme.blue.medium,
+  BlueScore: (props) => ({
+    padding: "10px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    color: props.turn === "blue" ? theme.white : theme.blue.medium,
+    background: props.turn === "blue" ? theme.blue.medium : "none",
+    borderRadius: "5px",
+    "& h3": {
+      margin: "0.5rem",
+      fontSize: "1.5rem",
+    },
+  }),
+  RedScore:(props) => ({
+    padding: "10px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    color: props.turn === "red" ? theme.white : theme.red.medium,
+    background: props.turn === "red" ? theme.red.medium : "none",
+    borderRadius: "5px",
+    "& h3": {
+      margin: "0.5rem",
+      fontSize: "1.5rem",
+    },
+  }),
+  BarControls: {
+    display: "flex",
+    alignItems: "center",
   },
-  profileText: {
-    padding: "0 0.5rem",
+  NewGameButton: {
+    marginRight: "2rem",
   },
-  button: {
-    marginRight: "1rem",
+  Profile: {
+    display: "flex",
+    alignItems: "center",
   },
 }));
 

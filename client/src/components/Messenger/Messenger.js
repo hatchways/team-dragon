@@ -26,33 +26,33 @@ const Messenger = (props) => {
   const messageList = props.messages.map((m) => {
     if (m.sender === "alert") {
       return (
-        <div key={uuid()} className={classes.message}>
-          <Typography className={classes.alert}>{m.message}</Typography>
+        <div key={uuid()} className={classes.Message}>
+          <Typography className={classes.Alert}>{m.message}</Typography>
         </div>
       );
     } else if (m.sender === props.currentUser) {
       return (
-        <div key={uuid()} className={classes.messageMe}>
-          <Typography className={classes.messageMeMsg}>{m.message}</Typography>
+        <div key={uuid()} className={classes.MessageMe}>
+          <Typography className={classes.MessageMeMsg}>{m.message}</Typography>
         </div>
       );
     } else {
       return (
-        <div key={uuid()} className={classes.message}>
-          <Typography className={classes.messageSender}>{m.sender}:</Typography>
-          <Typography className={classes.messageMsg}>{m.message}</Typography>
+        <div key={uuid()} className={classes.Message}>
+          <Typography className={classes.MessageSender}>{m.sender}:</Typography>
+          <Typography className={classes.MessageMsg}>{m.message}</Typography>
         </div>
       );
     }
   });
 
   return (
-    <div className={classes.messenger}>
-      <List className={classes.messageContainer} ref={elRef}>
+    <div className={classes.Messenger}>
+      <List className={classes.MessageContainer} ref={elRef}>
         {messageList}
       </List>
       <Divider />
-      <form className={classes.messageInput} onSubmit={handleSubmit}>
+      <form className={classes.MessageInput} onSubmit={handleSubmit}>
         <TextField
           variant="outlined"
           type="text"

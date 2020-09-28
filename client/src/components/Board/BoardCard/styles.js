@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
-  card: (props) => ({
+  Card: (props) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -12,28 +12,28 @@ const useStyles = makeStyles((theme) => ({
       transform: "scale(1.2)",
     },
   }),
-  red: (props) => ({
+  Red: (props) => ({
     color: props.spyMaster ? theme.red.medium : theme.grey.dark,
     "&.clicked": {
       background: `linear-gradient(45deg, ${theme.red.medium} 50%, ${theme.red.light} 85%)`,
       color: theme.white,
     },
   }),
-  blue: (props) => ({
+  Blue: (props) => ({
     color: props.spyMaster ? theme.blue.medium : theme.grey.dark,
     "&.clicked": {
       background: `linear-gradient(45deg, ${theme.blue.medium} 50%, ${theme.blue.light} 85%)`,
       color: theme.white,
     },
   }),
-  innocent: (props) => ({
+  Innocent: (props) => ({
     color: props.spyMaster ? theme.grey.mediumDark : theme.grey.dark,
     "&.clicked": {
       background: theme.grey.medium,
       color: theme.grey.mediumDark,
     },
   }),
-  assassin: {
+  Assassin: {
     color: theme.grey.dark,
   },
 }));

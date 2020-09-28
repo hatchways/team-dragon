@@ -1,47 +1,23 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { makeStyles } from "@material-ui/core/styles";
-import {
-  Button,
-  Card,
-  Container,
-  TextField,
-  Typography,
-} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import Container from "@material-ui/core/Container";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import useStyles from './styles';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingTop: theme.spacing(4),
-  },
-  card: {
-    padding: "2rem 4rem",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  textField: {
-    fontFamily: theme.fontFamily,
-    margin: "1rem 0",
-  },
-  button: {
-    margin: "1rem 0",
-  },
-}));
-
-const Register = (props) => {
+const Login = (props) => {
   const classes = useStyles();
 
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
   const validateForm = () => {
-    return name.length > 0 && email.length > 0 && password.length > 0;
+    return email.length > 0 && password.length > 0;
   };
 
   const handleSubmit = async (e) => {
@@ -49,11 +25,9 @@ const Register = (props) => {
     setLoading(true);
 
     try {
-      const { data } = await axios.post("/users/register", {
-        name,
+      const { data } = await axios.post("/users/login", {
         email,
         password,
-        password2: password,
       });
 
       axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
@@ -65,6 +39,7 @@ const Register = (props) => {
       props.history.push("/");
     } catch (err) {
       if (err.response) {
+        console.log(err.response.data);
         const errObj = err.response.data;
         setErrors(errObj.errors);
       } else {
@@ -77,30 +52,13 @@ const Register = (props) => {
   };
 
   return (
-    <Container className={classes.root} maxWidth="sm">
-      <Card className={classes.card}>
-        <form className={classes.form} onSubmit={handleSubmit}>
-          <Typography variant="h3">Sign Up</Typography>
+    <Container className={classes.Login} maxWidth="sm">
+      <Card className={classes.FormContainer}>
+        <form className={classes.Form} onSubmit={handleSubmit}>
+          <Typography variant="h3">Sign In</Typography>
 
           <TextField
-            className={classes.textField}
-            required
-            fullWidth
-            variant="outlined"
-            InputLabelProps={{ shrink: true }}
-            label="Name:"
-            type="text"
-            id="name"
-            name="name"
-            placeholder="Enter your name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            error={errors.name !== undefined}
-            helperText={errors.name}
-          />
-
-          <TextField
-            className={classes.textField}
+            className={classes.TextField}
             required
             fullWidth
             variant="outlined"
@@ -117,7 +75,7 @@ const Register = (props) => {
           />
 
           <TextField
-            className={classes.textField}
+            className={classes.TextField}
             required
             fullWidth
             variant="outlined"
@@ -134,18 +92,18 @@ const Register = (props) => {
           />
 
           <Button
-            className={classes.button}
+            className={classes.Button}
             variant="contained"
             color="primary"
             size="large"
             type="submit"
             disabled={isLoading || !validateForm()}
           >
-            Sign Up
+            Sign In
           </Button>
 
           <Typography variant="body1">
-            Already have an account? <Link to="/login">Sign In</Link>
+            Don't have an account? <Link to="/register">Sign Up</Link>
           </Typography>
         </form>
       </Card>
@@ -153,4 +111,4 @@ const Register = (props) => {
   );
 };
 
-export default Register;
+export default Login;

@@ -7,7 +7,7 @@ const Board = (props) => {
   const classes = useStyles(props);
 
   return (
-    <div className={classes.board}>
+    <div className={classes.Board}>
       {props.board.map((card, idx) => (
         <BoardCard
           spyMaster={props.spyMaster}

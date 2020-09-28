@@ -11,6 +11,9 @@ const Game = (props) => {
   const [messages, setMessages] = useState([]);
   const [board, setBoard] = useState([]);
   const [isSpyMaster, setSpyMaster] = useState(false);
+  const [redScore, setRedScore] = useState(0);
+  const [blueScore, setBlueScore] = useState(0);
+  const [turn, setTurn] = useState('');
 
   const gameId = props.match.params.id;
   const token = window.localStorage.getItem("token");
@@ -18,6 +21,8 @@ const Game = (props) => {
   useEffect(() => {
     // join the match
     socket.emit("join", { token, gameId }, (recv) => {
+      console.log(recv);
+
       setName(recv.name);
       setMessages(recv.history);
       setBoard(recv.state.board);
@@ -38,6 +43,9 @@ const Game = (props) => {
           setSpyMaster(true);
         }
       }
+
+      // set current state of the game
+      setTurn(recv.state.turn);
     });
 
     socket.on("message", (recv) => {
@@ -70,9 +78,13 @@ const Game = (props) => {
   };
 
   return (
-    <div className={classes.game}>
-      <GameBar />
-      <div className={classes.gameArea}>
+    <div className={classes.Game}>
+      <GameBar
+        turn={turn}
+        redScore={redScore}
+        blueScore={blueScore}
+      />
+      <div className={classes.GameArea}>
         <Messenger
           spyMaster={isSpyMaster}
           currentUser={name}
