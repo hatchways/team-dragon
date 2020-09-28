@@ -3,96 +3,20 @@ const config = require("./config");
 const allGames = require("./models/gameModel/allGames");
 const User = require("./models/User");
 
-// let ioExport;
-
-exports.socket = (server) => {
+module.exports = (server) => {
   const io = require("socket.io")(server);
   const clientDetails = {};
   const roomDetails = {};
 
-  // ioExport = io;
-
   io.on("connection", (socket) => {
-    socket.on("join", (recv, fn) => {
-      // validate user token
-      jwt.verify(recv.token, config.secret, (err, decoded) => {
-        if (err) {
-          socket.emit("redirect");
-          return;
-        }
-
-        // join a game
-        socket.join(recv.gameId);
-
-        // create room details if does not exist
-        if (roomDetails[recv.gameId] === undefined) {
-          roomDetails[recv.gameId] = {
-            state: allGames.getAllGames().get(parseInt(recv.gameId)),
-            history: [],
-          };
-        }
-
-        // assign user a name and store user details
-        if (clientDetails[socket.id] === undefined) {
-          clientDetails[socket.id] = {
-            name: decoded.name,
-            rooms: [recv.gameId],
-          };
-        }
-
-        // update room of joining client
-        const alert = {
-          sender: "alert",
-          message: `${decoded.name} joined the game`,
-        };
-
-        roomDetails[recv.gameId].history.push(alert);
-        socket.to(recv.gameId).broadcast.emit("alert", alert);
-
-        // return assigned name and chat history
-        fn({
-          name: decoded.name,
-          state: roomDetails[recv.gameId].state,
-          history: roomDetails[recv.gameId].history,
-        });
-      });
-    });
-
-    socket.on("message", (recv) => {
-      // save message into history
-      roomDetails[recv.gameId].history.push(recv.msgData);
-
-      // update other clients with the message
-      io.to(recv.gameId).emit("message", recv.msgData);
-    });
-
-    socket.on("disconnect", () => {
-      // lookup the disconnecting user and remove
-      const user = clientDetails[socket.id];
-      if (user !== undefined) {
-        user.rooms.forEach((room) => {
-          const alert = {
-            sender: "alert",
-            message: `${user.name} left the game`,
-          };
-
-          roomDetails[room].history.push(alert);
-          io.to(room).emit("alert", alert);
-        });
-
-        delete clientDetails[socket.id];
-      }
-    });
-
-    // ----------------------Waiting Room---------------------
-
     let errors = [];
     let gameRoom;
+
     // Socket listener for game rooms
     socket.on("join-game", ({ room, gameId, token }) => {
       try {
         let game;
-        // authentication
+        // Authentication
         jwt.verify(token, config.secret, (err, decoded) => {
           if (!decoded) {
             errors.push({ name: err.name, message: err.message });
@@ -100,7 +24,7 @@ exports.socket = (server) => {
           if (err) {
             throw err;
           }
-          //Joining room
+          // Joining room
           gameRoom = room;
           socket.join(gameRoom);
 
@@ -182,18 +106,83 @@ exports.socket = (server) => {
       }
     });
 
+    socket.on("join", (recv, fn) => {
+      // validate user token
+      jwt.verify(recv.token, config.secret, (err, decoded) => {
+        if (err) {
+          socket.emit("redirect");
+          return;
+        }
+
+        // join a game
+        socket.join(recv.gameId);
+
+        // create room details if does not exist
+        if (roomDetails[recv.gameId] === undefined) {
+          roomDetails[recv.gameId] = {
+            state: allGames.getAllGames().get(parseInt(recv.gameId)),
+            history: [],
+          };
+        }
+
+        // assign user a name and store user details
+        if (clientDetails[socket.id] === undefined) {
+          clientDetails[socket.id] = {
+            name: decoded.name,
+            rooms: [recv.gameId],
+          };
+        }
+
+        // update room of joining client
+        const alert = {
+          sender: "alert",
+          message: `${decoded.name} joined the game`,
+        };
+
+        roomDetails[recv.gameId].history.push(alert);
+        socket.to(recv.gameId).broadcast.emit("alert", alert);
+
+        // return assigned name and chat history
+        fn({
+          name: decoded.name,
+          state: roomDetails[recv.gameId].state,
+          history: roomDetails[recv.gameId].history,
+        });
+      });
+    });
+
+    // SOcket listener for messenger
+    socket.on("message", (recv) => {
+      // save message into history
+      roomDetails[recv.gameId].history.push(recv.msgData);
+
+      // update other clients with the message
+      io.to(recv.gameId).emit("message", recv.msgData);
+    });
+
     // Socket listener for next move
     socket.on("move", ({ gameId, playerId, cardIndex }) => {
       let currentGame = allGames.getAllGames().get(parseInt(gameId));
       currentGame.pickCard(playerId, cardIndex); // Result of the move would be in console for now
     });
+
+    // clean up when a user disconnects
+    socket.on("disconnect", () => {
+      // lookup the disconnecting user and remove
+      const user = clientDetails[socket.id];
+      if (user !== undefined) {
+        user.rooms.forEach((room) => {
+          const alert = {
+            sender: "alert",
+            message: `${user.name} left the game`,
+          };
+
+          roomDetails[room].history.push(alert);
+          io.to(room).emit("alert", alert);
+        });
+
+        delete clientDetails[socket.id];
+      }
+    });
   });
 };
-
-// exports.getIO = () => {
-//   if (!ioExport) {
-//     console.log("io not initialized!");
-//   }
-
-//   return ioExport;
-// };
