@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 const Landing = (props) => {
   const classes = useStyles();
 
-  //Holds Match ID + Template for Passing Roles to Server
+  //Holds Game ID + Template for Passing Roles to Server
 
   const NewGameContext = useNewGame();
   const [newGame, setNewGame] = NewGameContext;
@@ -50,7 +50,7 @@ const Landing = (props) => {
 
   const createNewGame = async () => {
     try {
-      const getData = await axios.post("/create-match");
+      const getData = await axios.post("/create-game");
       if (getData.data.error) {
         setError(getData.data.error);
         setOpenDialog(true);
@@ -61,9 +61,9 @@ const Landing = (props) => {
         ...prevState,
         step: 1,
         hostId: localStorage.getItem("id"),
-        matchId: getData.data.match.id,
+        gameId: getData.data.game.id,
       }));
-      await props.history.push(String(getData.data.match.id));
+      await props.history.push(String(getData.data.game.id));
     } catch (err) {
       console.log(err);
     }

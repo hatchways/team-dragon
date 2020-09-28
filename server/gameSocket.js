@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const config = require("./config");
 
 const { getIO } = require("./socket");
-const allMatches = require("./models/gameModel/allMatches");
+const allGames = require("./models/gameModel/allGames");
 const User = require("./models/User");
 let ioExport;
 let socketExport;
@@ -12,13 +12,13 @@ module.exports = {
     ioExport = io;
     io.on("connection", (socket) => {
       socketExport = socket;
-      console.log("new user connected to match socket");
+      console.log("new user connected to game socket");
       let errors = [];
-      let matchRoom;
+      let gameRoom;
       // Socket listener for match rooms
-      socket.on("join-match", ({ room, matchId, token }) => {
+      socket.on("join-game", ({ room, gameId, token }) => {
         try {
-          let match;
+          let game;
           // authentication
           jwt.verify(token, config.secret, (err, decoded) => {
             if (!decoded) {
@@ -28,8 +28,8 @@ module.exports = {
               throw err;
             }
             //Joining room
-            matchRoom = room;
-            socket.join(room);
+            gameRoom = room;
+            socket.join(gameRoom);
 
             const { email } = decoded;
             User.findOne({ email: email })
@@ -46,28 +46,28 @@ module.exports = {
                   name: user.name,
                 };
 
-                if (!matchId) {
+                if (!gameId) {
                   errors.push({
                     name: "UndefinedError",
-                    message: "Match not created yet",
+                    message: "Game not created yet",
                   });
-                  throw new Error("Match id is undefined or null");
+                  throw new Error("Game id is undefined or null");
                 }
-                let currentMatch = allMatches
-                  .getAllMatches()
-                  .get(parseInt(matchId));
+                let currentGame = allGames
+                  .getAllGames()
+                  .get(parseInt(gameId));
 
-                if (!currentMatch) {
+                if (!currentGame) {
                   errors.push({
                     name: "UndefinedError",
-                    message: "Match not found",
+                    message: "Game not found",
                   });
-                  throw new Error("Match does not exist!");
+                  throw new Error("Game does not exist!");
                 }
-                currentMatch.joinMatch(newPlayer);
-                match = currentMatch;
+                currentGame.joinGame(newPlayer);
+                game = currentGame;
                 // Send updated players array to front
-                io.to(room).emit("update-players", { match, errors });
+                io.to(gameRoom).emit("update-players", { game, errors });
               })
               .catch((err) => {
                 console.log(err);
@@ -80,16 +80,16 @@ module.exports = {
       });
 
       // Receive assigned roles emitted from FE
-      socket.on("start-game", ({ matchId, players }) => {
+      socket.on("start-game", ({ gameId, players }) => {
         try {
-          let currentMatch = allMatches.getAllMatches().get(parseInt(matchId));
+          let currentGame = allGame.getAllGames().get(parseInt(gameId));
 
-          if (!currentMatch) {
+          if (!currentGame) {
             errors.push({
               name: "UndefinedError",
-              message: "Match not found",
+              message: "Game not found",
             });
-            throw new Error("Match does not exist!");
+            throw new Error("Game does not exist!");
           }
 
           players.forEach(({ id, name, team, spyMaster }) => {
@@ -98,30 +98,30 @@ module.exports = {
 
             // Assign role to each player
             if (!spyMaster) {
-              currentMatch.assignRole(id, "guesser");
+              currentGame.assignRole(id, "guesser");
             } else {
-              currentMatch.assignRole(id, "spy-master");
+              currentGame.assignRole(id, "spy-master");
             }
           });
 
-          currentMatch.startGame();
-          io.to(matchRoom).emit("update-roles", currentMatch);
+          currentGame.startGame();
+          io.to(gameRoom).emit("update-roles", currentGame);
         } catch (err) {
           console.log(err);
         }
       });
 
       // Socket listener for next move
-      socket.on("move", ({ matchId, playerId, cardIndex }) => {
-        let currentMatch = allMatches.getAllMatches().get(parseInt(matchId));
-        currentMatch.pickCard(playerId, cardIndex); // Result of the move would be in console for now
+      socket.on("move", ({ gameId, playerId, cardIndex }) => {
+        let currentGame = allGames.getAllGames().get(parseInt(gameId));
+        currentGame.pickCard(playerId, cardIndex); // Result of the move would be in console for now
       });
     });
   },
-  getMatchIO: () => {
+  getGameIO: () => {
     return ioExport;
   },
-  getMatchSocket: () => {
+  getGameSocket: () => {
     return socketExport;
   },
 };

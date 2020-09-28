@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const config = require("./config");
-const allMatches = require("./models/gameModel/allMatches");
+const allGames = require("./models/gameModel/allGames");
 
 let ioExport;
 
@@ -26,7 +26,7 @@ exports.socket = (server) => {
         // create room details if does not exist
         if (roomDetails[recv.gameId] === undefined) {
           roomDetails[recv.gameId] = {
-            state: allMatches.getAllMatches().get(parseInt(recv.gameId)),
+            state: allGames.getAllGames().get(parseInt(recv.gameId)),
             history: [],
           };
         }

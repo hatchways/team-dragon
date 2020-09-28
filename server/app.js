@@ -13,7 +13,7 @@ const config = require("./config");
 const gameRouter = require("./routes/game");
 const authRouter = require("./routes/auth");
 const User = require("./models/User");
-const matchSocket = require("./matchSocket");
+const gameSocket = require("./gameSocket");
 
 // app configuration
 var app = express();
@@ -64,7 +64,7 @@ mongoose
   })
   .then(() => {
     console.log("Connected to database");
-    matchSocket.init();
+    gameSocket.init();
   })
   .catch((err) => console.log(err));
 

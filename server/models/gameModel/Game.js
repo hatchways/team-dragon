@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 // Game Skeleton
-const matchSchema = new Schema({
-  matchId: {
+const gameSchema = new Schema({
+  gameId: {
     type: String,
     required: true,
   },
@@ -17,11 +17,11 @@ const matchSchema = new Schema({
       name: {
         type: String,
       },
-      matchId: {
+      gameId: {
         type: Number,
       },
     },
   ],
 });
 
-module.exports = mongoose.model("Match", matchSchema);
+module.exports = mongoose.model("Game", gameSchema);

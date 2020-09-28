@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) =>
 const LinkInvite = (props) => {
   const classes = useStyles();
 
-  //Holds Match ID to be copied and shared with other players
+  //Holds Game ID to be copied and shared with other players
   const [newGame] = useNewGame();
 
   const [copy, setCopy] = useState({
@@ -30,7 +30,7 @@ const LinkInvite = (props) => {
 
   useEffect(() => {
     setCopy({
-      value: `http://localhost:3000/${newGame.matchId}`,
+      value: `http://localhost:3000/${newGame.gameId}`,
       copied: false,
     });
   }, [newGame]);
@@ -44,7 +44,7 @@ const LinkInvite = (props) => {
             text={copy.value}
             onCopy={() =>
               setCopy({
-                value: `http://localhost:3000/${newGame.matchId}`,
+                value: `http://localhost:3000/${newGame.gameId}`,
                 copied: true,
               })
             }
