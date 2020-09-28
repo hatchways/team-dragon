@@ -13,7 +13,6 @@ const config = require("./config");
 const gameRouter = require("./routes/game");
 const authRouter = require("./routes/auth");
 const User = require("./models/User");
-const gameSocket = require("./gameSocket");
 
 // app configuration
 var app = express();
