@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
       fontSize: "1.5rem",
     },
   }),
-  RedScore:(props) => ({
+  RedScore: (props) => ({
     padding: "10px",
     display: "flex",
     flexDirection: "column",

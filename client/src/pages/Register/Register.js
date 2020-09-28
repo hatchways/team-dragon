@@ -6,7 +6,7 @@ import Card from "@material-ui/core/Card";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import useStyles from './styles';
+import useStyles from "./styles";
 
 const Register = (props) => {
   const classes = useStyles();
@@ -18,11 +18,7 @@ const Register = (props) => {
   const [errors, setErrors] = useState({});
 
   const validateForm = () => {
-    return (
-      name.length > 0 && 
-      email.length > 0 && 
-      password.length > 0
-    );
+    return name.length > 0 && email.length > 0 && password.length > 0;
   };
 
   const handleSubmit = async (e) => {

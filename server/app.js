@@ -63,7 +63,6 @@ mongoose
   })
   .then(() => {
     console.log("Connected to database");
-    // gameSocket.init();
   })
   .catch((err) => console.log(err));
 

@@ -51,14 +51,14 @@ const StepTwo = (props) => {
     }
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     socket.on("update-players", ({ game, errors }) => {
-      console.log("updated players", game.players)
+      console.log("updated players", game.players);
       setPlayers(game.players);
       setHostId(game.currentUser._id);
       setHostName(game.currentUser.name);
     });
-  },[players]);
+  }, [players]);
 
 
   const showPlayers = () => {

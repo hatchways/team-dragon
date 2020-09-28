@@ -13,7 +13,7 @@ const Game = (props) => {
   const [isSpyMaster, setSpyMaster] = useState(false);
   const [redScore, setRedScore] = useState(0);
   const [blueScore, setBlueScore] = useState(0);
-  const [turn, setTurn] = useState('');
+  const [turn, setTurn] = useState("");
 
   const gameId = props.match.params.id;
   const token = window.localStorage.getItem("token");
@@ -79,11 +79,7 @@ const Game = (props) => {
 
   return (
     <div className={classes.Game}>
-      <GameBar
-        turn={turn}
-        redScore={redScore}
-        blueScore={blueScore}
-      />
+      <GameBar turn={turn} redScore={redScore} blueScore={blueScore} />
       <div className={classes.GameArea}>
         <Messenger
           spyMaster={isSpyMaster}

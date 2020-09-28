@@ -1,10 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import Avatar from "@material-ui/core/Avatar";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
-import Divider from "@material-ui/core/Divider";
 import Icon from "@material-ui/core/Icon";
 import Typography from "@material-ui/core/Typography";
 import useStyles from "./styles";
@@ -23,11 +22,7 @@ const GameBar = (props) => {
             <Typography variant="h3">{props.blueScore}</Typography>
             <Typography>Blue Team</Typography>
           </Box>
-          <Box 
-            display="flex" 
-            justifyContent="center" 
-            padding={"0 10px"}
-          >
+          <Box display="flex" justifyContent="center" padding={"0 10px"}>
             <Typography variant="h2">-</Typography>
           </Box>
           <Box className={classes.RedScore}>
@@ -61,6 +56,6 @@ GameBar.propTypes = {
   turn: PropTypes.string.isRequired,
   redScore: PropTypes.number.isRequired,
   blueScore: PropTypes.number.isRequired,
-}
+};
 
 export default GameBar;

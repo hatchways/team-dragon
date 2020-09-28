@@ -6,7 +6,7 @@ import Card from "@material-ui/core/Card";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import useStyles from './styles';
+import useStyles from "./styles";
 
 const Login = (props) => {
   const classes = useStyles();
