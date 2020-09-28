@@ -3,6 +3,7 @@ import {
   useNewGame,
   usePlayers,
   useHostName,
+  useHostId
 } from "../../../contexts/DataContext";
 import { useParams } from "react-router-dom";
 import {
@@ -27,9 +28,9 @@ const useStyles = makeStyles((theme) =>
 );
 
 const StepTwo = (props) => {
-  const [newGame] = useNewGame();
   const [players, setPlayers] = usePlayers();
   const [hostName, setHostName] = useHostName();
+  const [hostId, setHostId] = useHostId();
   let { id } = useParams();
 
   const classes = useStyles();
@@ -45,23 +46,20 @@ const StepTwo = (props) => {
     };
 
     if (id !== "") {
+      console.log('emit-join-match', data)
       socket.emit("join-game", data);
     }
-    //Shows players that have joined so far in game setup (Will be displayed in StepTwo.js)
-
-    // socket.on("update-players", ({ game, errors }) => {
-    //   setPlayers(game.players);
-    //   setHostName(game.currentUser.name);
-    // });
   }, []);
 
   useEffect(()=>{
     socket.on("update-players", ({ game, errors }) => {
       console.log("updated players", game.players)
       setPlayers(game.players);
+      setHostId(game.currentUser._id);
       setHostName(game.currentUser.name);
     });
   },[players]);
+
 
   const showPlayers = () => {
     return players.map((player, i) => {

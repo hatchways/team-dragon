@@ -37,8 +37,7 @@ const Landing = (props) => {
 
   //Holds Game ID + Template for Passing Roles to Server
 
-  const NewGameContext = useNewGame();
-  const [newGame, setNewGame] = NewGameContext;
+  const [newGame, setNewGame] = useNewGame();
   const [openDialog, setOpenDialog] = useState(false);
   const [error, setError] = useState("");
 
@@ -57,12 +56,7 @@ const Landing = (props) => {
         // localStorage.clear();
         return null;
       }
-      await setNewGame((prevState) => ({
-        ...prevState,
-        step: 1,
-        hostId: localStorage.getItem("id"),
-        gameId: getData.data.game.id,
-      }));
+      await setNewGame(1);
       await props.history.push(String(getData.data.game.id));
     } catch (err) {
       console.log(err);
