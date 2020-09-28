@@ -18,8 +18,6 @@ const Game = (props) => {
   useEffect(() => {
     // join the match
     socket.emit("join", { token, gameId }, (recv) => {
-      console.log(recv);
-
       setName(recv.name);
       setMessages(recv.history);
       setBoard(recv.state.board);
