@@ -3,7 +3,7 @@ const Player = require("./Player");
 const { getData } = require("./gameData");
 const getRandomNumber = require("./util/randomNumber");
 
-class Game {
+class GameEngine {
   constructor() {
     this.id = getRandomNumber(1000);
     this.redTeam = new Team("red");
@@ -14,7 +14,7 @@ class Game {
     this.players = [];
     this.currentUser = null;
     this.gameStatus = "setup";
-    console.log("Match ID:", this.id);
+    console.log("Game ID:", this.id);
   }
 
   // Get Board with all cards in an array
@@ -70,7 +70,7 @@ class Game {
     console.log(`${team} team picks a card and gets : ${cardType} card`);
     switch (cardType) {
       case "assasin":
-        this.matchOver(team);
+        this.gameOver(team);
         break;
 
       case "innocent":
@@ -95,7 +95,7 @@ class Game {
     }
 
     this.cardsFlipped += 1;
-    this.matchDecision();
+    this.gameDecision();
   }
 
   //change Turn
@@ -118,33 +118,33 @@ class Game {
     console.log("Game was reset!!!");
   }
 
-  // Any case where match comes to an end
-  matchOver(looserTeam) {
+  // Any case where game comes to an end
+  gameOver(looserTeam) {
     if (looserTeam === this.redTeam.name) {
-      console.log("Congrats! Blue team won the match");
+      console.log("Congrats! Blue team won the game");
     } else {
-      console.log("Congrats! Red team won the match");
+      console.log("Congrats! Red team won the game");
     }
-    this.matchStatus = "over";
+    this.gameStatus = "over";
   }
 
   // Decision whether blue or red wins
-  matchDecision() {
+  gameDecision() {
     if (this.redTeam.points + this.blueTeam.points === 16) {
       if (this.redTeam.points > this.blueTeam.points) {
-        console.log(`${this.redTeam.name} wins the match`);
+        console.log(`${this.redTeam.name} wins the game`);
       } else if (this.redTeam.points === this.blueTeam.points) {
-        console.log("Match was a DRAW");
+        console.log("Game was a DRAW");
       } else {
-        console.log(`${this.blueTeam.name} wins the match`);
+        console.log(`${this.blueTeam.name} wins the game`);
       }
     } else {
       console.log("Next Move Please!");
     }
   }
 
-  // New user joins the match and gets added to players array of the match
-  joinMatch(user) {
+  // New user joins the game and gets added to players array of the game
+  joinGame(user) {
     if (this.players.length === 0) {
       this.players.push(user);
       return this.players;
@@ -166,7 +166,7 @@ class Game {
     this.currentUser = user;
   }
 
-  // Updated players in the array for this match
+  // Updated players in the array for this game
   getCurrentPlayers() {
     return this.players;
   }
@@ -180,4 +180,4 @@ class Game {
   }
 }
 
-module.exports = Game;
+module.exports = GameEngine;

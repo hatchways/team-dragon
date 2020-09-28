@@ -40,7 +40,7 @@ const WaitingRoom = (props) => {
   useEffect(() => {
     setNewGame((prevState) => ({
       ...prevState,
-      matchId: id,
+      gameId: id,
     }));
   }, []);
 

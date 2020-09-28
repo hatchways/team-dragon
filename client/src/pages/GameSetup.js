@@ -15,14 +15,14 @@ const GameSetup = (props) => {
 
   useEffect(() => {
     if (gameData) {
-      setNewGame(JSON.parse(localStorage.getItem("newGame")));
+      // setNewGame(JSON.parse(localStorage.getItem("newGame")));
       setPlayers(JSON.parse(localStorage.getItem("players")));
     }
 
     //Shows players now assigned on teams and roles, ALSO - change gameStatus now === "running"
-    socket.on("update-roles", (match) => {
-      console.log("socket-on-update-roles", match);
-      setGameStatus(match.gameStatus);
+    socket.on("update-roles", (game) => {
+      console.log("socket-on-update-roles", game);
+      setGameStatus(game.gameStatus);
     });
   }, [gameData, setGameStatus, setNewGame, setPlayers]);
 

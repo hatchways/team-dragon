@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) =>
 const NewGame = (props) => {
   const classes = useStyles();
 
-  //Holds Match ID + Template for Passing Roles to Server
+  //Holds Game ID + Template for Passing Roles to Server
   const [newGame, setNewGame] = useNewGame();
 
   //Holds All Players + Roles
@@ -52,11 +52,11 @@ const NewGame = (props) => {
 
   useEffect(() => {
     if (localStorage.getItem("newGame")) {
-      if (id !== localStorage.getItem("newGame").matchId) {
+      if (id !== localStorage.getItem("newGame").gameId) {
         setNewGame((prevState) => ({
           ...prevState,
           step: 1,
-          matchId: id,
+          gameId: id,
         }));
         localStorage.setItem("newGame", JSON.stringify(newGame));
       }
@@ -65,14 +65,14 @@ const NewGame = (props) => {
 
   const resetNewGame = async () => {
     try {
-      const getData = await axios.post("/create-match");
+      const getData = await axios.post("/create-game");
       await setNewGame((prevState) => ({
         ...prevState,
         step: 1,
         hostId: localStorage.getItem("id"),
-        matchId: getData.data.match.id,
+        gameId: getData.data.game.id,
       }));
-      await props.value.history.push(String(getData.data.match.id));
+      await props.value.history.push(String(getData.data.game.id));
     } catch (err) {
       console.log(err);
     }
@@ -87,9 +87,9 @@ const NewGame = (props) => {
   };
 
   //Sends Date to Start Game
-  const startMatch = async (e) => {
+  const startGame = async (e) => {
     try {
-      const setMatch = (newGame, players, spyMaster) => {
+      const setGame = (newGame, players, spyMaster) => {
         let spyMasters = [spyMaster.blue, spyMaster.red];
 
         let playerAssign = players.map((player) => {
@@ -111,12 +111,12 @@ const NewGame = (props) => {
         });
 
         return {
-          matchId: newGame.matchId,
+          gameId: newGame.gameId,
           players: playerAssign,
         };
       };
-      const matchDetails = await setMatch(newGame, players, spyMaster);
-      socket.emit("start-game", matchDetails);
+      const gameDetails = await setGame(newGame, players, spyMaster);
+      socket.emit("start-game", gameDetails);
     } catch (err) {
       console.log(err);
     }
@@ -167,7 +167,7 @@ const NewGame = (props) => {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={startMatch}
+                  onClick={startGame}
                 >
                   Create Game
                 </Button>

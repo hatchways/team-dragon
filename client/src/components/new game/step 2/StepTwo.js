@@ -36,24 +36,32 @@ const StepTwo = (props) => {
 
   useEffect(() => {
     // User joins the room
-    let room = "match-" + id;
+    let room = "game-" + id;
     let token = localStorage.getItem("token");
     let data = {
       room: room,
-      matchId: id,
+      gameId: id,
       token: token,
     };
 
     if (id !== "") {
-      socket.emit("join-match", data);
+      socket.emit("join-game", data);
     }
     //Shows players that have joined so far in game setup (Will be displayed in StepTwo.js)
 
-    socket.on("update-players", ({ match, errors }) => {
-      setPlayers(match.players);
-      setHostName(match.currentUser.name);
+    // socket.on("update-players", ({ game, errors }) => {
+    //   setPlayers(game.players);
+    //   setHostName(game.currentUser.name);
+    // });
+  }, []);
+
+  useEffect(()=>{
+    socket.on("update-players", ({ game, errors }) => {
+      console.log("updated players", game.players)
+      setPlayers(game.players);
+      setHostName(game.currentUser.name);
     });
-  }, [newGame]);
+  },[players]);
 
   const showPlayers = () => {
     return players.map((player, i) => {
