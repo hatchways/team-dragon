@@ -50,26 +50,14 @@ const NewGame = (props) => {
 
   let { id } = useParams();
 
-  useEffect(() => {
-    if (localStorage.getItem("newGame")) {
-      if (id !== localStorage.getItem("newGame").matchId) {
-        setNewGame((prevState) => ({
-          ...prevState,
-          step: 1,
-          matchId: id,
-        }));
-        localStorage.setItem("newGame", JSON.stringify(newGame));
-      }
-    }
-  }, []);
-
   const resetNewGame = async () => {
     try {
       const getData = await axios.post("/create-match");
+      console.log('getData', getData)
       await setNewGame((prevState) => ({
         ...prevState,
         step: 1,
-        hostId: localStorage.getItem("id"),
+        hostId: getData.data.match.currentUser._id,
         matchId: getData.data.match.id,
       }));
       await props.value.history.push(String(getData.data.match.id));

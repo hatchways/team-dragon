@@ -67,10 +67,7 @@ export function DataProvider({ children }) {
   //   { name: "Joy", id: "6" },
   // ]);
 
-  const providerPlayers = useMemo(() => [players, setPlayers], [
-    players,
-    setPlayers,
-  ]);
+  const providerPlayers = [players, setPlayers]
 
   useEffect(() => {
     localStorage.setItem("players", JSON.stringify(players));

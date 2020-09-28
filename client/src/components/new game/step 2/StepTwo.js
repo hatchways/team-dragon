@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import {
-  useNewGame,
   usePlayers,
   useHostName,
 } from "../../../contexts/DataContext";
@@ -27,12 +26,13 @@ const useStyles = makeStyles((theme) =>
 );
 
 const StepTwo = (props) => {
-  const [newGame] = useNewGame();
   const [players, setPlayers] = usePlayers();
   const [hostName, setHostName] = useHostName();
   let { id } = useParams();
 
   const classes = useStyles();
+
+
 
   useEffect(() => {
     // User joins the room
@@ -45,15 +45,22 @@ const StepTwo = (props) => {
     };
 
     if (id !== "") {
+      console.log('emit-join-match', data)
       socket.emit("join-match", data);
     }
-    //Shows players that have joined so far in game setup (Will be displayed in StepTwo.js)
+  
+  }, []);
 
-    socket.on("update-players", ({ match, errors }) => {
+  useEffect(() => {
+     //Shows players that have joined so far in game setup (Will be displayed in StepTwo.js)
+     socket.on("update-players", ({ match, errors }) => {
+      console.log('on-update-players', match)
       setPlayers(match.players);
       setHostName(match.currentUser.name);
     });
-  }, [newGame]);
+  }, [players])
+
+  console.log('players-outside', players)
 
   const showPlayers = () => {
     return players.map((player, i) => {

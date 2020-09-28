@@ -13,18 +13,22 @@ const GameSetup = (props) => {
 
   const gameData = localStorage.getItem("newGame");
 
+  console.log("gameSetup render");
+
   useEffect(() => {
     if (gameData) {
-      setNewGame(JSON.parse(localStorage.getItem("newGame")));
-      setPlayers(JSON.parse(localStorage.getItem("players")));
+      // setNewGame(JSON.parse(localStorage.getItem("newGame")));
+      // setPlayers(JSON.parse(localStorage.getItem("players")));
     }
+  }, []);
 
+  useEffect(() => {
     //Shows players now assigned on teams and roles, ALSO - change gameStatus now === "running"
     socket.on("update-roles", (match) => {
       console.log("socket-on-update-roles", match);
       setGameStatus(match.gameStatus);
     });
-  }, [gameData, setGameStatus, setNewGame, setPlayers]);
+  }, [gameData, setGameStatus /* , setNewGame */]);
 
   // Stores New Game Info to Local Storage
   useEffect(() => {
