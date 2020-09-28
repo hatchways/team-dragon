@@ -54,15 +54,12 @@ const StepTwo = (props) => {
   useEffect(()=>{
     socket.on("update-players", ({ game, errors }) => {
       console.log("updated players", game.players)
-      console.log(game.currentUser._id)
       setPlayers(game.players);
       setHostId(game.currentUser._id);
       setHostName(game.currentUser.name);
     });
   },[players]);
 
-  console.log('hostName', hostName)
-  console.log('hostId', hostId)
 
   const showPlayers = () => {
     return players.map((player, i) => {
