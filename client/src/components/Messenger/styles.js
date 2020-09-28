@@ -7,12 +7,12 @@ const useStyles = makeStyles((theme) => ({
     background: theme.grey.superLight,
     overflow: "hidden",
   },
-  MessageContainer: {
+  MessageContainer: (props) => ({
     padding: "2rem",
-    minHeight: "80%",
-    maxHeight: "80%",
+    minHeight: props.isTurn ? "calc(80% - 52px)" : "80%",
+    maxHeight: props.isTurn ? "calc(80% - 52px)" : "80%",
     overflow: "auto",
-  },
+  }),
   Message: {
     padding: "0.8rem",
     width: "auto",
@@ -53,6 +53,21 @@ const useStyles = makeStyles((theme) => ({
   Alert: {
     fontStyle: "italic",
     color: theme.grey.dark,
+  },
+  MessageMove: {
+    padding: "0.8rem",
+    width: "auto",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  MessageMoveMsg: {
+    margin: 0,
+    padding: "1rem",
+    background: theme.grey.dark,
+    color: theme.white,
+    borderRadius: "15px 15px 15px 15px",
+    display: "inline-block",
   },
 }));
 

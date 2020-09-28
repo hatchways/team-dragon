@@ -31,14 +31,14 @@ const BoardCard = (props) => {
 
 BoardCard.defaultProps = {
   clicked: false,
-  spyMaster: false,
+  isSpyMaster: false,
 };
 
 BoardCard.propTypes = {
   word: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   clicked: PropTypes.bool.isRequired,
-  spyMaster: PropTypes.bool,
+  isSpyMaster: PropTypes.bool,
 };
 
 export default BoardCard;

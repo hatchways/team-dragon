@@ -53,7 +53,7 @@ const GameBar = (props) => {
 };
 
 GameBar.propTypes = {
-  turn: PropTypes.string.isRequired,
+  currentTurn: PropTypes.string.isRequired,
   redScore: PropTypes.number.isRequired,
   blueScore: PropTypes.number.isRequired,
 };

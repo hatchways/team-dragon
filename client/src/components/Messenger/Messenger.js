@@ -9,7 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import useStyles from "./styles";
 
 const Messenger = (props) => {
-  const classes = useStyles();
+  const classes = useStyles(props);
   const elRef = React.useRef(null);
   const [messageInput, setMessageInput] = useState("");
 
@@ -30,7 +30,7 @@ const Messenger = (props) => {
           <Typography className={classes.Alert}>{m.message}</Typography>
         </div>
       );
-    } else if (m.sender === props.currentUser) {
+    } else if (m.sender === props.name) {
       return (
         <div key={uuid()} className={classes.MessageMe}>
           <Typography className={classes.MessageMeMsg}>{m.message}</Typography>
@@ -51,6 +51,13 @@ const Messenger = (props) => {
       <List className={classes.MessageContainer} ref={elRef}>
         {messageList}
       </List>
+      {props.isTurn && (
+        <div className={classes.MessageMove}>
+          <Typography className={classes.MessageMoveMsg}>
+            Make Your Move!
+          </Typography>
+        </div>
+      )}
       <Divider />
       <form className={classes.MessageInput} onSubmit={handleSubmit}>
         <TextField
@@ -76,13 +83,17 @@ const Messenger = (props) => {
 };
 
 Messenger.defaultProps = {
-  spyMaster: false,
+  name: "",
+  isSpyMaster: false,
+  isTurn: false,
 };
 
 Messenger.propTypes = {
   messages: PropTypes.array.isRequired,
   sendMessage: PropTypes.func.isRequired,
-  spyMaster: PropTypes.bool,
+  name: PropTypes.string,
+  isSpyMaster: PropTypes.bool,
+  isTurn: PropTypes.bool,
 };
 
 export default Messenger;

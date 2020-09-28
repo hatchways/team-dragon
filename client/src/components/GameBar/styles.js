@@ -31,8 +31,8 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    color: props.turn === "blue" ? theme.white : theme.blue.medium,
-    background: props.turn === "blue" ? theme.blue.medium : "none",
+    color: props.currentTurn === "blue" ? theme.white : theme.blue.medium,
+    background: props.currentTurn === "blue" ? theme.blue.medium : "none",
     borderRadius: "5px",
     "& h3": {
       margin: "0.5rem",
@@ -44,8 +44,8 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    color: props.turn === "red" ? theme.white : theme.red.medium,
-    background: props.turn === "red" ? theme.red.medium : "none",
+    color: props.urrentTurn === "red" ? theme.white : theme.red.medium,
+    background: props.currentTurn === "red" ? theme.red.medium : "none",
     borderRadius: "5px",
     "& h3": {
       margin: "0.5rem",

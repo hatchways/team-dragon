@@ -3,7 +3,7 @@ import {
   useNewGame,
   usePlayers,
   useHostName,
-  useHostId
+  useHostId,
 } from "../../../contexts/DataContext";
 import { useParams } from "react-router-dom";
 import {
@@ -46,7 +46,7 @@ const StepTwo = (props) => {
     };
 
     if (id !== "") {
-      console.log('emit-join-match', data)
+      console.log("emit-join-match", data);
       socket.emit("join-game", data);
     }
   }, []);
@@ -59,7 +59,6 @@ const StepTwo = (props) => {
       setHostName(game.currentUser.name);
     });
   }, [players]);
-
 
   const showPlayers = () => {
     return players.map((player, i) => {
