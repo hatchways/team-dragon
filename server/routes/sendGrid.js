@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const gameController = require("../controllers/sendGrid.js");
+const emailController = require("../controllers/sendGrid.js");
 
-router.post("/send-email", gameController.sendEmail);
+router.post("/send-email", emailController.sendEmail);
 
 module.exports = router;
