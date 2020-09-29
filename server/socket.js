@@ -151,11 +151,18 @@ module.exports = (server) => {
 
     // Socket listener for messenger
     socket.on("message", (recv) => {
+      const { gameId, token, msgData } = recv;
+
+      const decoded = jwt.verify(token, config.secret);
+      if (!decoded) {
+        throw new Error("Token not valid");
+      }
+
       // save message into history
-      roomDetails[recv.gameId].history.push(recv.msgData);
+      roomDetails[gameId].history.push(msgData);
 
       // update other clients with the message
-      io.to(recv.gameId).emit("message", recv.msgData);
+      io.to(gameId).emit("message", msgData);
     });
 
     // Socket listener for next move
