@@ -54,20 +54,15 @@ const useStyles = makeStyles((theme) => ({
     fontStyle: "italic",
     color: theme.grey.dark,
   },
-  MessageMove: {
+  YourTurn: {
+    height: "52px",
     padding: "0.8rem",
     width: "auto",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-  },
-  MessageMoveMsg: {
-    margin: 0,
-    padding: "1rem",
     background: theme.grey.dark,
     color: theme.white,
-    borderRadius: "15px 15px 15px 15px",
-    display: "inline-block",
   },
 }));
 

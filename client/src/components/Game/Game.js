@@ -21,7 +21,7 @@ const Game = (props) => {
 
   useEffect(() => {
     // join the match
-    socket.emit("join", { token, gameId }, (recv) => {
+    socket.emit("join", { gameId, token }, (recv) => {
       console.log(recv);
 
       setName(recv.name);

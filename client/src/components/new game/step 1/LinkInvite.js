@@ -33,7 +33,7 @@ const LinkInvite = (props) => {
       value: `http://localhost:3000/${id}`,
       copied: false,
     });
-  }, []);
+  }, [id]);
 
   return (
     <>
