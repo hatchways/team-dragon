@@ -87,7 +87,7 @@ const Game = (props) => {
 
   const changeTurn = () => {
     socket.emit("change-turn", { gameId });
-  }
+  };
 
   return (
     <div className={classes.Game}>
