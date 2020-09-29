@@ -3,7 +3,9 @@ import { useGameStatus } from "../contexts/GameContext";
 import { useHostId } from "../contexts/DataContext";
 import NewGame from "../components/new game/NewGame";
 import WaitingRoom from "../components/new game/WaitingRoom";
+import GameOver from "../components/GameOver/GameOver"
 import Game from "./Game";
+import { Button } from "@material-ui/core";
 import socket from "../socket";
 
 const GameSetup = (props) => {
@@ -19,7 +21,6 @@ const GameSetup = (props) => {
   }, [setGameStatus]);
 
   const gameJourney = () => {
-    console.log(hostId);
     if (localStorage.getItem("id") === hostId) {
       return <NewGame value={props} />;
     } else {
@@ -27,8 +28,21 @@ const GameSetup = (props) => {
     }
   };
 
+
+    const handleEndGame = () => {
+      //Need a socket event here instead of setGameStatus
+      setGameStatus("over")
+    };
+    
+
   return (
-    <div>{gameStatus === "running" ? <Game {...props} /> : gameJourney()}</div>
+    <> 
+    {gameStatus === "over" && <GameOver />}
+      <div>
+        {gameStatus === "running" ? <Game {...props} /> : gameJourney()}
+      </div>
+     {localStorage.getItem("id") === hostId && <Button onClick={handleEndGame}>End Game</Button>} 
+    </>
   );
 };
 
