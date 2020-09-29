@@ -3,7 +3,7 @@ import { useGameStatus } from "../contexts/GameContext";
 import { useHostId } from "../contexts/DataContext";
 import NewGame from "../components/new game/NewGame";
 import WaitingRoom from "../components/new game/WaitingRoom";
-import Game from "../components/Game";
+import Game from "./Game";
 import socket from "../socket";
 
 const GameSetup = (props) => {

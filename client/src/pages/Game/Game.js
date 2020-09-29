@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import GameBar from "../GameBar";
-import Messenger from "../Messenger";
-import Board from "../Board";
+import GameBar from "../../components/GameBar";
+import Messenger from "../../components/Messenger";
+import Board from "../../components/Board";
 import socket from "../../socket";
 import useStyles from "./styles";
 
@@ -76,8 +76,8 @@ const Game = (props) => {
 
     // send message to the server
     socket.emit("message", {
-      token,
       gameId,
+      token,
       msgData,
     });
   };
