@@ -19,7 +19,9 @@ exports.sendEmail = async (req, res, next) => {
     await Promise.all(
       emails.map((email) => {
         sgMail
-          .send(emailData.messageOne(email, host.name, gameId))
+          .send(
+            emailData.messageOne(email, host.name, gameId, process.env.DOMAIN),
+          )
           .then(() => {
             console.log("Email Success");
           })
