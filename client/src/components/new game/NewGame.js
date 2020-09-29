@@ -7,6 +7,7 @@ import {
   useNewGame,
   usePlayers,
   useSpyMaster,
+  useEmails,
 } from "../../contexts/DataContext";
 import {
   Button,
@@ -39,6 +40,9 @@ const useStyles = makeStyles((theme) =>
 const NewGame = (props) => {
   const classes = useStyles();
 
+  // const [openDialog, setOpenDialog] = useState(false);
+  // const [error, setError] = useState("");
+
   //Holds Game ID + Template for Passing Roles to Server
   const [newGame, setNewGame] = useNewGame();
 
@@ -48,48 +52,49 @@ const NewGame = (props) => {
   //Holds Selected SpyMaster
   const [spyMaster] = useSpyMaster();
 
+  //Holds Emails to be Invited to Game
+  const [emails, setEmails] = useEmails();
+
   let { id } = useParams();
 
-  useEffect(() => {
-    if (localStorage.getItem("newGame")) {
-      if (id !== localStorage.getItem("newGame").gameId) {
-        setNewGame((prevState) => ({
-          ...prevState,
-          step: 1,
-          gameId: id,
-        }));
-        localStorage.setItem("newGame", JSON.stringify(newGame));
-      }
-    }
-  }, []);
+  // Goes back to the step of the host when page refreshes
+  useEffect(() => window.localStorage.setItem("newGame", newGame), [newGame]);
 
   const resetNewGame = async () => {
     try {
       const getData = await axios.post("/create-game");
-      await setNewGame((prevState) => ({
-        ...prevState,
-        step: 1,
-        hostId: localStorage.getItem("id"),
-        gameId: getData.data.game.id,
-      }));
+      await setNewGame(1);
       await props.value.history.push(String(getData.data.game.id));
     } catch (err) {
       console.log(err);
     }
   };
 
-  const nextStep = () => {
-    const { step } = newGame;
-    setNewGame((prevState) => ({
-      ...prevState,
-      step: step + 1,
-    }));
+  const nextStep = async () => {
+    console.log('emails.length', emails.length)
+    try {
+      if (newGame !== 1 || emails.length < 1) {
+        await setNewGame((prevState) => prevState + 1);
+      } else {
+        const getData = await axios.post("/send-email", { emails, gameId: id });
+        if (getData.data.error) {
+          console.log('Error:', getData.data.error)
+          // setError(getData.data.error);
+          // setOpenDialog(true);
+          return null;
+        }
+        await setEmails([]);
+        await setNewGame((prevState) => prevState + 1);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   //Sends Date to Start Game
   const startGame = async (e) => {
     try {
-      const setGame = (newGame, players, spyMaster) => {
+      const setGame = (players, spyMaster) => {
         let spyMasters = [spyMaster.blue, spyMaster.red];
 
         let playerAssign = players.map((player) => {
@@ -111,11 +116,12 @@ const NewGame = (props) => {
         });
 
         return {
-          gameId: newGame.gameId,
+          gameId: id,
           players: playerAssign,
         };
       };
-      const gameDetails = await setGame(newGame, players, spyMaster);
+      const gameDetails = await setGame(players, spyMaster);
+      console.log("emit-start-game", gameDetails);
       socket.emit("start-game", gameDetails);
     } catch (err) {
       console.log(err);
@@ -123,10 +129,7 @@ const NewGame = (props) => {
   };
 
   const newGameSteps = () => {
-    const { step } = newGame;
-    switch (step) {
-      // case 0:
-      //   return <NewGameLoading />;
+    switch (newGame) {
       case 1:
         return <StepOne />;
       case 2:
@@ -134,7 +137,12 @@ const NewGame = (props) => {
       case 3:
         return <StepThree />;
       default:
-        return <h2>Game Starts?</h2>;
+        return (
+          <h2>
+            Error. It is likely the New Game component is showing and it
+            shouldn't be.
+          </h2>
+        );
     }
   };
 
@@ -158,17 +166,13 @@ const NewGame = (props) => {
             alignItems="center"
           >
             <Box mx={2}>
-              {newGame.step < 3 ? (
+              {newGame < 3 ? (
                 <Button variant="contained" color="primary" onClick={nextStep}>
                   Next
                 </Button>
               ) : (
                 //Needs Logic here to initiate final role allocation.
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={startGame}
-                >
+                <Button variant="contained" color="primary" onClick={startGame}>
                   Create Game
                 </Button>
               )}

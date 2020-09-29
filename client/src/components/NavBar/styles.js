@@ -1,12 +1,12 @@
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-  navBar: {
+  NavBar: {
     width: "100%",
     height: "12vh",
     background: theme.white,
   },
-  navBarWrap: {
+  NavBarWrap: {
     width: "90%",
     height: "100%",
     margin: "0 auto",
@@ -14,25 +14,13 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
   },
-  brand: {
+  Brand: {
     textTransform: "uppercase",
     letterSpacing: "0.6rem",
     "& a": {
       textDecoration: "none",
       color: "black",
     },
-  },
-  red: {
-    color: theme.red.medium,
-  },
-  blue: {
-    color: theme.blue.medium,
-  },
-  profileText: {
-    padding: "0 0.5rem",
-  },
-  button: {
-    marginRight: "1rem",
   },
 }));
 

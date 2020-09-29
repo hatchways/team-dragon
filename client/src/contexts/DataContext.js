@@ -1,4 +1,4 @@
-import React, { useContext, useState, useMemo, useEffect } from "react";
+import React, { useContext, useState, useMemo} from "react";
 
 const EmailContext = React.createContext();
 
@@ -9,6 +9,8 @@ const PlayersContext = React.createContext();
 const SpyMasterContext = React.createContext();
 
 const HostNameContext = React.createContext();
+
+const HostIdContext = React.createContext();
 
 // Custom hook for Emails to be invited to game
 export function useEmails() {
@@ -30,8 +32,14 @@ export function useSpyMaster() {
   return useContext(SpyMasterContext);
 }
 
+// Holds Host Name to display for Waiting Room.js
 export function useHostName() {
   return useContext(HostNameContext);
+}
+
+//Holds Host Id on Game Setup.js to determine if the user is a host.
+export function useHostId() {
+  return useContext(HostIdContext);
 }
 
 export function DataProvider({ children }) {
@@ -42,12 +50,10 @@ export function DataProvider({ children }) {
     setEmails,
   ]);
 
-  //Holds New Game Steps + Game Data
-  const [newGame, setNewGame] = useState({
-    step: 1,
-    gameId: "",
-    hostId: null,
-  });
+  //Holds New Game Steps for Host
+  const initialState = () =>
+    Number(window.localStorage.getItem("newGame") || null);
+  const [newGame, setNewGame] = useState(initialState);
 
   const providerNewGame = useMemo(() => [newGame, setNewGame], [
     newGame,
@@ -57,24 +63,10 @@ export function DataProvider({ children }) {
   //Holds Players who have accepted game invite
   const [players, setPlayers] = useState([]);
 
-  //Default State (for testing)
-  // const [players, setPlayers] = useState([
-  //   { name: "Karl", id: "1" },
-  //   { name: "Jorawar", id: "2" },
-  //   { name: "Nicholas", id: "3" },
-  //   { name: "Bonnie", id: "4" },
-  //   { name: "Henry", id: "5" },
-  //   { name: "Joy", id: "6" },
-  // ]);
-
   const providerPlayers = useMemo(() => [players, setPlayers], [
     players,
     setPlayers,
   ]);
-
-  useEffect(() => {
-    localStorage.setItem("players", JSON.stringify(players));
-  }, [players]);
 
   //Holds SpyMaster
   const [spyMaster, setSpyMaster] = useState({ blue: "", red: "" });
@@ -91,13 +83,21 @@ export function DataProvider({ children }) {
     setHostName,
   ]);
 
+  const [hostId, setHostId] = useState("");
+  const providerHostId = useMemo(() => [hostId, setHostId], [
+    hostName,
+    setHostId,
+  ]);
+
   return (
     <NewGameContext.Provider value={providerNewGame}>
       <EmailContext.Provider value={providerEmails}>
         <PlayersContext.Provider value={providerPlayers}>
           <SpyMasterContext.Provider value={providerSpyMaster}>
             <HostNameContext.Provider value={providerHostName}>
-              {children}
+              <HostIdContext.Provider value={providerHostId}>
+                {children}
+              </HostIdContext.Provider>
             </HostNameContext.Provider>
           </SpyMasterContext.Provider>
         </PlayersContext.Provider>

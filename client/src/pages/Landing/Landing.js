@@ -1,44 +1,23 @@
 import React, { useState } from "react";
-
 import { Link } from "react-router-dom";
-import { useNewGame } from "../contexts/DataContext";
-import { makeStyles } from "@material-ui/core/styles";
-import {
-  Button,
-  Card,
-  Container,
-  Typography,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from "@material-ui/core";
 import axios from "axios";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingTop: theme.spacing(4),
-  },
-  card: {
-    padding: "2rem",
-    textAlign: "center",
-  },
-  heading: {
-    marginBottom: "2rem",
-  },
-  button: {
-    margin: "0 1rem",
-  },
-}));
+import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import Container from "@material-ui/core/Container";
+import Typography from "@material-ui/core/Typography";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import { useNewGame } from "../../contexts/DataContext";
+import useStyles from "./styles";
 
 const Landing = (props) => {
   const classes = useStyles();
 
   //Holds Game ID + Template for Passing Roles to Server
-
-  const NewGameContext = useNewGame();
-  const [newGame, setNewGame] = NewGameContext;
+  const [newGame, setNewGame] = useNewGame();
   const [openDialog, setOpenDialog] = useState(false);
   const [error, setError] = useState("");
 
@@ -57,12 +36,7 @@ const Landing = (props) => {
         // localStorage.clear();
         return null;
       }
-      await setNewGame((prevState) => ({
-        ...prevState,
-        step: 1,
-        hostId: localStorage.getItem("id"),
-        gameId: getData.data.game.id,
-      }));
+      await setNewGame(1);
       await props.history.push(String(getData.data.game.id));
     } catch (err) {
       console.log(err);
@@ -70,16 +44,16 @@ const Landing = (props) => {
   };
 
   return (
-    <Container className={classes.root} maxWidth="md">
-      <Card className={classes.card}>
-        <Typography className={classes.heading} variant="h2">
+    <Container className={classes.Landing} maxWidth="md">
+      <Card className={classes.Card}>
+        <Typography className={classes.Heading} variant="h2">
           Welcome to Cluewords!
         </Typography>
 
         {!localStorage.id ? (
           <>
             <Button
-              className={classes.button}
+              className={classes.Button}
               component={Link}
               to="/register"
               variant="contained"
@@ -89,7 +63,7 @@ const Landing = (props) => {
               Sign Up
             </Button>
             <Button
-              className={classes.button}
+              className={classes.Button}
               component={Link}
               to="/login"
               variant="contained"
@@ -101,7 +75,7 @@ const Landing = (props) => {
           </>
         ) : (
           <Button
-            className={classes.button}
+            className={classes.Button}
             onClick={createNewGame}
             variant="contained"
             color="primary"

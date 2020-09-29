@@ -7,10 +7,14 @@ import useStyles from "./styles";
 
 const Game = (props) => {
   const classes = useStyles();
-  const [name, setName] = useState([]);
+  const [name, setName] = useState("");
+  const [team, setTeam] = useState("");
   const [messages, setMessages] = useState([]);
   const [board, setBoard] = useState([]);
-  const [isSpyMaster, setSpyMaster] = useState(false);
+  const [isSpyMaster, setIsSpyMaster] = useState(false);
+  const [currentTurn, setCurrentTurn] = useState("");
+  const [redScore, setRedScore] = useState(0);
+  const [blueScore, setBlueScore] = useState(0);
 
   const gameId = props.match.params.id;
   const token = window.localStorage.getItem("token");
@@ -32,14 +36,21 @@ const Game = (props) => {
       const blueIdx = bluePlayers.findIndex((p) => p.name === recv.name);
 
       if (redIdx > -1) {
+        setTeam("red");
+
         if (redPlayers[redIdx].role === "spy-master") {
-          setSpyMaster(true);
+          setIsSpyMaster(true);
         }
       } else if (blueIdx > -1) {
+        setTeam("blue");
+
         if (bluePlayers[blueIdx].role === "spy-master") {
-          setSpyMaster(true);
+          setIsSpyMaster(true);
         }
       }
+
+      // set current state of the game
+      setCurrentTurn(recv.state.turn);
     });
 
     socket.on("message", (recv) => {
@@ -72,16 +83,21 @@ const Game = (props) => {
   };
 
   return (
-    <div className={classes.game}>
-      <GameBar />
-      <div className={classes.gameArea}>
+    <div className={classes.Game}>
+      <GameBar
+        currentTurn={currentTurn}
+        redScore={redScore}
+        blueScore={blueScore}
+      />
+      <div className={classes.GameArea}>
         <Messenger
-          spyMaster={isSpyMaster}
-          currentUser={name}
           messages={messages}
           sendMessage={sendMessage}
+          name={name}
+          isSpyMaster={isSpyMaster}
+          isTurn={team === currentTurn}
         />
-        <Board spyMaster={isSpyMaster} board={board} />
+        <Board board={board} isSpyMaster={isSpyMaster} />
       </div>
     </div>
   );

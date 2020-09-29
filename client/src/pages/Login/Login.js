@@ -1,35 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { makeStyles } from "@material-ui/core/styles";
-import {
-  Button,
-  Card,
-  Container,
-  TextField,
-  Typography,
-} from "@material-ui/core";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingTop: theme.spacing(4),
-  },
-  card: {
-    padding: "2rem 4rem",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  textField: {
-    fontFamily: theme.fontFamily,
-    margin: "1rem 0",
-  },
-  button: {
-    margin: "1rem 0",
-  },
-}));
+import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import Container from "@material-ui/core/Container";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import useStyles from "./styles";
 
 const Login = (props) => {
   const classes = useStyles();
@@ -75,13 +52,13 @@ const Login = (props) => {
   };
 
   return (
-    <Container className={classes.root} maxWidth="sm">
-      <Card className={classes.card}>
-        <form className={classes.form} onSubmit={handleSubmit}>
+    <Container className={classes.Login} maxWidth="sm">
+      <Card className={classes.FormContainer}>
+        <form className={classes.Form} onSubmit={handleSubmit}>
           <Typography variant="h3">Sign In</Typography>
 
           <TextField
-            className={classes.textField}
+            className={classes.TextField}
             required
             fullWidth
             variant="outlined"
@@ -98,7 +75,7 @@ const Login = (props) => {
           />
 
           <TextField
-            className={classes.textField}
+            className={classes.TextField}
             required
             fullWidth
             variant="outlined"
@@ -115,7 +92,7 @@ const Login = (props) => {
           />
 
           <Button
-            className={classes.button}
+            className={classes.Button}
             variant="contained"
             color="primary"
             size="large"

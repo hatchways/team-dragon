@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNewGame } from "../../../contexts/DataContext";
+import { useParams } from "react-router-dom";
 import { Button, Typography, Box, Grid } from "@material-ui/core";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import LinkIcon from "@material-ui/icons/Link";
@@ -21,7 +21,7 @@ const LinkInvite = (props) => {
   const classes = useStyles();
 
   //Holds Game ID to be copied and shared with other players
-  const [newGame] = useNewGame();
+  let { id } = useParams();
 
   const [copy, setCopy] = useState({
     value: "",
@@ -30,10 +30,10 @@ const LinkInvite = (props) => {
 
   useEffect(() => {
     setCopy({
-      value: `http://localhost:3000/${newGame.gameId}`,
+      value: `http://localhost:3000/${id}`,
       copied: false,
     });
-  }, [newGame]);
+  }, []);
 
   return (
     <>
@@ -44,7 +44,7 @@ const LinkInvite = (props) => {
             text={copy.value}
             onCopy={() =>
               setCopy({
-                value: `http://localhost:3000/${newGame.gameId}`,
+                value: `http://localhost:3000/${id}`,
                 copied: true,
               })
             }
