@@ -9,75 +9,69 @@ module.exports = (server) => {
   const roomDetails = {};
 
   io.on("connection", (socket) => {
-    let errors = [];
+    const errors = [];
     let gameRoom;
 
     // Socket listener for game rooms
-    socket.on("join-game", ({ room, gameId, token }) => {
+    socket.on("join-game", async (recv) => {
+      const { room, gameId, token } = recv;
+
       try {
         let game;
-        // Authentication
-        jwt.verify(token, config.secret, (err, decoded) => {
-          if (!decoded) {
-            errors.push({ name: err.name, message: err.message });
-          }
-          if (err) {
-            throw err;
-          }
-          // Joining room
-          gameRoom = room;
-          socket.join(gameRoom);
+        const decoded = jwt.verify(token, config.secret);
+        if (!decoded) {
+          throw new Error("Token not valid");
+        }
 
-          const { email } = decoded;
-          User.findOne({ email: email })
-            .then((user) => {
-              if (!user) {
-                errors.push({
-                  name: "NotFoundError",
-                  message: "Email id does not exist!",
-                });
-                throw new Error("Email id does not exist in database!");
-              }
-              let newPlayer = {
-                id: user._id,
-                name: user.name,
-              };
+        // Joining room
+        gameRoom = room;
+        socket.join(gameRoom);
 
-              if (!gameId) {
-                errors.push({
-                  name: "UndefinedError",
-                  message: "Game not created yet",
-                });
-                throw new Error("Game id is undefined or null");
-              }
-              let currentGame = allGames.getAllGames().get(parseInt(gameId));
+        const user = await User.findOne({ email: decoded.email });
+        if (!user) {
+          errors.push({
+            name: "NotFoundError",
+            message: "Email id does not exist!",
+          });
+          throw new Error("Email id does not exist in database");
+        }
 
-              if (!currentGame) {
-                errors.push({
-                  name: "UndefinedError",
-                  message: "Game not found",
-                });
-                throw new Error("Game does not exist!");
-              }
-              currentGame.joinGame(newPlayer);
-              game = currentGame;
-              // Send updated players array to front
-              io.to(gameRoom).emit("update-players", { game, errors });
-            })
-            .catch((err) => {
-              console.log(err);
-              console.log("errors: ", errors);
-            });
-        });
+        const newPlayer = {
+          id: user.id,
+          name: user.name,
+        };
+
+        if (!gameId) {
+          errors.push({
+            name: "UndefinedError",
+            message: "Game not created yet",
+          });
+          throw new Error("Game not created");
+        }
+        const currentGame = allGames.getAllGames().get(parseInt(gameId));
+        if (!currentGame) {
+          errors.push({
+            name: "UndefinedError",
+            message: "Game not found",
+          });
+          throw new Error("Game does not Exist");
+        }
+
+        currentGame.joinGame(newPlayer);
+        game = currentGame;
+
+        io.to(gameRoom).emit("update-players", { game, errors });
       } catch (err) {
         console.log(err);
       }
     });
 
     // Receive assigned roles emitted from FE
-    socket.on("start-game", ({ gameId, players }) => {
+    socket.on("start-game", (recv) => {
+      const { gameId, players } = recv;
+
       try {
-        let currentGame = allGames.getAllGames().get(parseInt(gameId));
+        const currentGame = allGames.getAllGames().get(parseInt(gameId));
 
         if (!currentGame) {
           errors.push({
@@ -107,15 +101,16 @@ module.exports = (server) => {
     });
 
     socket.on("join", (recv, fn) => {
-      // validate user token
-      jwt.verify(recv.token, config.secret, (err, decoded) => {
-        if (err) {
-          socket.emit("redirect");
-          return;
+      const { gameId, token } = recv;
+
+      try {
+        const decoded = jwt.verify(token, config.secret);
+        if (!decoded) {
+          throw new Error("Token not valid");
         }
 
-        // join a game
-        socket.join(recv.gameId);
+        // join a game room
+        socket.join(gameId);
 
         // create room details if does not exist
         if (roomDetails[recv.gameId] === undefined) {
@@ -148,10 +143,13 @@ module.exports = (server) => {
           state: roomDetails[recv.gameId].state,
           history: roomDetails[recv.gameId].history,
         });
-      });
+      } catch (err) {
+        console.log(err);
+        socket.emit("redirect");
+      }
     });
 
-    // SOcket listener for messenger
+    // Socket listener for messenger
     socket.on("message", (recv) => {
       // save message into history
       roomDetails[recv.gameId].history.push(recv.msgData);
@@ -161,12 +159,14 @@ module.exports = (server) => {
     });
 
     // Socket listener for next move
-    socket.on("move", ({ gameId, playerId, cardIndex }) => {
-      let currentGame = allGames.getAllGames().get(parseInt(gameId));
+    socket.on("move", (recv) => {
+      const { gameId, playerId, cardIndex } = recv;
+
+      const currentGame = allGames.getAllGames().get(parseInt(gameId));
       currentGame.pickCard(playerId, cardIndex); // Result of the move would be in console for now
     });
 
-    // clean up when a user disconnects
+    // Clean up when a user disconnects
     socket.on("disconnect", () => {
       // lookup the disconnecting user and remove
       const user = clientDetails[socket.id];
