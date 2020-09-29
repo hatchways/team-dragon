@@ -7,6 +7,7 @@ import List from "@material-ui/core/List";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import useStyles from "./styles";
+import { Box } from "@material-ui/core";
 
 const Messenger = (props) => {
   const classes = useStyles(props);
@@ -19,6 +20,12 @@ const Messenger = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    // if no input, do not send
+    if(!messageInput || !messageInput.trim()) {
+      return;
+    }
+
     props.sendMessage(messageInput);
     setMessageInput("");
   };
@@ -56,13 +63,29 @@ const Messenger = (props) => {
       )}
       <Divider />
       <form className={classes.MessageInput} onSubmit={handleSubmit}>
-        <TextField
-          variant="outlined"
-          type="text"
-          placeholder="Type here..."
-          value={messageInput}
-          onChange={(e) => setMessageInput(e.target.value)}
-        />
+        <Box
+          width="100%"
+          display="flex"
+          justifyContent="space-around"
+          alignItems="center"
+        >
+          <TextField
+            variant="outlined"
+            type="text"
+            placeholder="Type here..."
+            value={messageInput}
+            onChange={(e) => setMessageInput(e.target.value)}
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            size="large"
+          >
+            Send
+          </Button>
+        </Box>
+
         {props.isSpyMaster && (
           <Button
             variant="contained"
