@@ -11,9 +11,9 @@ const NavBar = () => {
 
   if (gameStatus !== "running") {
     return (
-      <nav className={classes.navBar}>
-        <Box className={classes.navBarWrap}>
-          <Typography className={classes.brand} variant="h3">
+      <nav className={classes.NavBar}>
+        <Box className={classes.NavBarWrap}>
+          <Typography className={classes.Brand} variant="h3">
             <Link to="/">Cluewords</Link>
           </Typography>
         </Box>

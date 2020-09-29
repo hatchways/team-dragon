@@ -97,7 +97,7 @@ const NewGame = (props) => {
         };
       };
       const gameDetails = await setGame(players, spyMaster);
-      console.log('emit-start-game', gameDetails)
+      console.log("emit-start-game", gameDetails);
       socket.emit("start-game", gameDetails);
     } catch (err) {
       console.log(err);

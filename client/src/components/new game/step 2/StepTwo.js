@@ -3,7 +3,7 @@ import {
   useNewGame,
   usePlayers,
   useHostName,
-  useHostId
+  useHostId,
 } from "../../../contexts/DataContext";
 import { useParams } from "react-router-dom";
 import {
@@ -46,20 +46,19 @@ const StepTwo = (props) => {
     };
 
     if (id !== "") {
-      console.log('emit-join-match', data)
+      console.log("emit-join-match", data);
       socket.emit("join-game", data);
     }
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     socket.on("update-players", ({ game, errors }) => {
-      console.log("updated players", game.players)
+      console.log("updated players", game.players);
       setPlayers(game.players);
       setHostId(game.currentUser._id);
       setHostName(game.currentUser.name);
     });
-  },[players]);
-
+  }, [players]);
 
   const showPlayers = () => {
     return players.map((player, i) => {

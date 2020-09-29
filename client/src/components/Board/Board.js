@@ -7,10 +7,10 @@ const Board = (props) => {
   const classes = useStyles(props);
 
   return (
-    <div className={classes.board}>
+    <div className={classes.Board}>
       {props.board.map((card, idx) => (
         <BoardCard
-          spyMaster={props.spyMaster}
+          isSpyMaster={props.isSpyMaster}
           key={idx}
           word={card.word}
           type={card.type}
@@ -22,12 +22,12 @@ const Board = (props) => {
 };
 
 Board.defaultProps = {
-  spyMaster: false,
+  isSpyMaster: false,
 };
 
 Board.propTypes = {
   board: PropTypes.array.isRequired,
-  spyMaster: PropTypes.bool,
+  isSpyMaster: PropTypes.bool,
 };
 
 export default Board;

@@ -1,40 +1,40 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
-  messenger: {
+  Messenger: {
     width: "100%",
     height: "100%",
     background: theme.grey.superLight,
     overflow: "hidden",
   },
-  messageContainer: {
+  MessageContainer: (props) => ({
     padding: "2rem",
-    minHeight: "80%",
-    maxHeight: "80%",
+    minHeight: props.isTurn ? "calc(80% - 52px)" : "80%",
+    maxHeight: props.isTurn ? "calc(80% - 52px)" : "80%",
     overflow: "auto",
-  },
-  message: {
+  }),
+  Message: {
     padding: "0.8rem",
     width: "auto",
   },
-  messageSender: {
+  MessageSender: {
     fontSize: "0.9rem",
     marginBottom: "0.5rem",
   },
-  messageMsg: {
+  MessageMsg: {
     margin: 0,
     padding: "1rem",
     background: theme.grey.medium,
     borderRadius: "0px 15px 15px 15px",
     display: "inline-block",
   },
-  messageMe: {
+  MessageMe: {
     padding: "0.8rem",
     width: "auto",
     display: "flex",
     justifyContent: "flex-end",
   },
-  messageMeMsg: {
+  MessageMeMsg: {
     margin: 0,
     padding: "1rem",
     background: theme.red.medium,
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.white,
     display: "inline-block",
   },
-  messageInput: {
+  MessageInput: {
     height: "20%",
     padding: "2rem",
     display: "flex",
@@ -50,9 +50,24 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  alert: {
+  Alert: {
     fontStyle: "italic",
     color: theme.grey.dark,
+  },
+  MessageMove: {
+    padding: "0.8rem",
+    width: "auto",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  MessageMoveMsg: {
+    margin: 0,
+    padding: "1rem",
+    background: theme.grey.dark,
+    color: theme.white,
+    borderRadius: "15px 15px 15px 15px",
+    display: "inline-block",
   },
 }));
 
