@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   Container,
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
   card: {
     width: "70%",
-    height: "60vh",
+    height: "70vh",
     margin: "0 auto",
     padding: theme.spacing(4),
   },
@@ -49,19 +49,21 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
   },
   editIcon: {
-    margin: "0 1rem"
+    // margin: "0 .5rem",
   },
   fileInput: {
     display: "none",
   },
-  userDetails:{
-    paddingLeft: theme.spacing(2)
-  }
+  userDetails: {
+    paddingLeft: theme.spacing(2),
+  },
 }));
 
 const ProfileSettings = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
-  const [profileImage, setProfileImage] = useState("");
+  const [profileImageFile, setProfileImageFile] = useState("");
   const [profileImageUrl, setProfileImageUrl] = useState("");
 
   const handleClose = () => {
@@ -75,6 +77,12 @@ const ProfileSettings = () => {
   const handleImageUrl = (e) => {
     setProfileImageUrl(e.target.value);
   };
+
+  useEffect(() => {
+    setName(localStorage.getItem("name"));
+    setEmail(localStorage.getItem("email"));
+  }, []);
+
   const classes = useStyles();
   return (
     <Container className={classes.root}>
@@ -114,16 +122,17 @@ const ProfileSettings = () => {
                 <List>
                   <ListItem>
                     <Typography>
-                      <strong>Name:</strong> John Doe
+                      <strong>Name:</strong> {name ? name : "Not available"}
                     </Typography>
-                    <EditOutlinedIcon
-                      color="primary"
-                      className={classes.editIcon}
-                    />
+                    <Button color="primary">
+                      <EditOutlinedIcon
+                        className={classes.editIcon}
+                      />
+                    </Button>
                   </ListItem>
                   <ListItem>
                     <Typography>
-                      <strong>Email:</strong> abc@gmail.com
+                      <strong>Email:</strong> {email ? email : "Not available"}
                     </Typography>
                   </ListItem>
                 </List>
