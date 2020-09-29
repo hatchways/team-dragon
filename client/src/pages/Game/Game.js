@@ -21,8 +21,8 @@ const Game = (props) => {
 
   useEffect(() => {
     // join the match
-    socket.emit("join", { gameId, token }, (recv) => {
-      console.log(recv);
+    socket.emit("init-game", { gameId, token }, (recv) => {
+      console.log("Game State:", recv);
 
       setName(recv.name);
       setMessages(recv.history);
@@ -53,12 +53,15 @@ const Game = (props) => {
       setCurrentTurn(recv.state.turn);
     });
 
-    socket.on("message", (recv) => {
-      // update message list
-      setMessages((prevMessages) => [...prevMessages, recv]);
+    socket.on("update-game", (recv) => {
+      console.log("Updated Game State:", recv);
+
+      // set current state of the game
+      setBoard(recv.board);
+      setCurrentTurn(recv.turn);
     });
 
-    socket.on("alert", (recv) => {
+    socket.on("new-message", (recv) => {
       setMessages((prevMessages) => [...prevMessages, recv]);
     });
 
@@ -82,6 +85,10 @@ const Game = (props) => {
     });
   };
 
+  const changeTurn = () => {
+    socket.emit("change-turn", { gameId });
+  }
+
   return (
     <div className={classes.Game}>
       <GameBar
@@ -96,6 +103,7 @@ const Game = (props) => {
           name={name}
           isSpyMaster={isSpyMaster}
           isTurn={team === currentTurn}
+          changeTurn={changeTurn}
         />
         <Board board={board} isSpyMaster={isSpyMaster} />
       </div>

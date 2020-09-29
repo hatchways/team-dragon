@@ -65,10 +65,11 @@ const Messenger = (props) => {
         />
         {props.isSpyMaster && (
           <Button
-            type="submit"
             variant="contained"
             color="primary"
             size="large"
+            onClick={props.changeTurn}
+            disabled={!props.isTurn}
           >
             Done
           </Button>
@@ -90,6 +91,7 @@ Messenger.propTypes = {
   name: PropTypes.string,
   isSpyMaster: PropTypes.bool,
   isTurn: PropTypes.bool,
+  changeTurn: PropTypes.func,
 };
 
 export default Messenger;
