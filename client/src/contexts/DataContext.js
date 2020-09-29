@@ -1,4 +1,4 @@
-import React, { useContext, useState, useMemo} from "react";
+import React, { useContext, useState, useMemo } from "react";
 
 const EmailContext = React.createContext();
 
@@ -85,7 +85,7 @@ export function DataProvider({ children }) {
 
   const [hostId, setHostId] = useState("");
   const providerHostId = useMemo(() => [hostId, setHostId], [
-    hostName,
+    hostId,
     setHostId,
   ]);
 

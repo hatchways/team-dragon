@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNewGame } from "../../contexts/DataContext";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
@@ -10,7 +11,6 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { useNewGame } from "../../contexts/DataContext";
 import useStyles from "./styles";
 
 const Landing = (props) => {

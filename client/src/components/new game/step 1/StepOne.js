@@ -1,7 +1,6 @@
 import React from "react";
 import EmailInvite from "./EmailInvite";
 import LinkInvite from "./LinkInvite";
-import { useNewGame } from "../../../contexts/DataContext";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import { Divider, Grid, Box } from "@material-ui/core";
 import Pulse from "react-reveal/Pulse";

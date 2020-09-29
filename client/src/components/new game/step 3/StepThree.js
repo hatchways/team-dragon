@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect } from "react";
 import { usePlayers, useSpyMaster } from "../../../contexts/DataContext";
-
 //import { useAxios } from "../../../hooks/useAxios";
 import { Grid, Box, Typography } from "@material-ui/core";
 import PlayerSelect from "./PlayerSelect";
@@ -77,7 +76,7 @@ const StepThree = () => {
         }));
       }
     }
-  }, [players]);
+  }, [players, setSpyMaster, spyMaster]);
 
   return (
     <>

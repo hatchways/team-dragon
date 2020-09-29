@@ -52,11 +52,7 @@ const Messenger = (props) => {
         {messageList}
       </List>
       {props.isTurn && (
-        <div className={classes.MessageMove}>
-          <Typography className={classes.MessageMoveMsg}>
-            Make Your Move!
-          </Typography>
-        </div>
+        <Typography className={classes.YourTurn}>Make Your Move!</Typography>
       )}
       <Divider />
       <form className={classes.MessageInput} onSubmit={handleSubmit}>
@@ -67,7 +63,7 @@ const Messenger = (props) => {
           value={messageInput}
           onChange={(e) => setMessageInput(e.target.value)}
         />
-        {props.spyMaster && (
+        {props.isSpyMaster && (
           <Button
             type="submit"
             variant="contained"
