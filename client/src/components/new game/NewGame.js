@@ -71,22 +71,22 @@ const NewGame = (props) => {
   };
 
   const nextStep = async () => {
+    console.log('emails.length', emails.length)
     try {
-      if (newGame !== 1) {
+      if (newGame !== 1 || emails.length < 1) {
         await setNewGame((prevState) => prevState + 1);
       } else {
-        const getData = await axios.post("/send-email", {emails, gameId: id});
+        const getData = await axios.post("/send-email", { emails, gameId: id });
         if (getData.data.error) {
           setError(getData.data.error);
           setOpenDialog(true);
           return null;
         }
-        // await setEmails([]);
-        // await setNewGame((prevState) => prevState + 1);
+        await setEmails([]);
+        await setNewGame((prevState) => prevState + 1);
       }
     } catch (err) {
       console.log(err);
-     
     }
   };
 

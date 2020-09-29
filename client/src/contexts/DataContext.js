@@ -44,7 +44,7 @@ export function useHostId() {
 
 export function DataProvider({ children }) {
   //Holds emails to be invited to game
-  const [emails, setEmails] = useState(["karl@secen.ca", "karl.secen@gmail.com"]);
+  const [emails, setEmails] = useState([]);
   const providerEmails = useMemo(() => [emails, setEmails], [
     emails,
     setEmails,
