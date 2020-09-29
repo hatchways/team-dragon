@@ -71,7 +71,6 @@ const NewGame = (props) => {
   };
 
   const nextStep = async () => {
-    console.log("emails.length", emails.length);
     try {
       if (newGame !== 1 || emails.length < 1) {
         await setNewGame((prevState) => prevState + 1);
@@ -91,7 +90,7 @@ const NewGame = (props) => {
     }
   };
 
-  //Sends Date to Start Game
+  //Sends Data to Start Game
   const startGame = async () => {
     try {
       const setGame = (players, spyMaster) => {
