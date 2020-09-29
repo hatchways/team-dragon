@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    color: props.urrentTurn === "red" ? theme.white : theme.red.medium,
+    color: props.currentTurn === "red" ? theme.white : theme.red.medium,
     background: props.currentTurn === "red" ? theme.red.medium : "none",
     borderRadius: "5px",
     "& h3": {

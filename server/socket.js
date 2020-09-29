@@ -100,7 +100,7 @@ module.exports = (server) => {
       }
     });
 
-    socket.on("join", (recv, fn) => {
+    socket.on("init-game", (recv, fn) => {
       const { gameId, token } = recv;
 
       try {
@@ -135,7 +135,7 @@ module.exports = (server) => {
         };
 
         roomDetails[recv.gameId].history.push(alert);
-        socket.to(recv.gameId).broadcast.emit("alert", alert);
+        socket.to(recv.gameId).broadcast.emit("new-message", alert);
 
         // return assigned name and chat history
         fn({
@@ -162,7 +162,7 @@ module.exports = (server) => {
       roomDetails[gameId].history.push(msgData);
 
       // update other clients with the message
-      io.to(gameId).emit("message", msgData);
+      io.to(gameId).emit("new-message", msgData);
     });
 
     // Socket listener for next move
@@ -171,6 +171,15 @@ module.exports = (server) => {
 
       const currentGame = allGames.getAllGames().get(parseInt(gameId));
       currentGame.pickCard(playerId, cardIndex); // Result of the move would be in console for now
+    });
+
+    socket.on("change-turn", (recv) => {
+      const { gameId } = recv;
+
+      const currentGame = allGames.getAllGames().get(parseInt(gameId));
+      currentGame.changeTurn();
+
+      io.to(gameId).emit("update-game", currentGame);
     });
 
     // Clean up when a user disconnects
