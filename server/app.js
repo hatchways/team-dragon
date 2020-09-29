@@ -12,6 +12,7 @@ const passportStrategy = require("./config/passport");
 const config = require("./config");
 const gameRouter = require("./routes/game");
 const authRouter = require("./routes/auth");
+const emailRouter = require("./routes/email");
 const User = require("./models/User");
 
 // app configuration
@@ -69,6 +70,7 @@ mongoose
 // setup routes
 app.use("/users", authRouter);
 app.use(gameRouter);
+app.use(emailRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

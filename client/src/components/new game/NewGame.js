@@ -7,6 +7,7 @@ import {
   useNewGame,
   usePlayers,
   useSpyMaster,
+  useEmails,
 } from "../../contexts/DataContext";
 import {
   Button,
@@ -39,6 +40,9 @@ const useStyles = makeStyles((theme) =>
 const NewGame = (props) => {
   const classes = useStyles();
 
+  // const [openDialog, setOpenDialog] = useState(false);
+  // const [error, setError] = useState("");
+
   //Holds Game ID + Template for Passing Roles to Server
   const [newGame, setNewGame] = useNewGame();
 
@@ -47,6 +51,9 @@ const NewGame = (props) => {
 
   //Holds Selected SpyMaster
   const [spyMaster] = useSpyMaster();
+
+  //Holds Emails to be Invited to Game
+  const [emails, setEmails] = useEmails();
 
   let { id } = useParams();
 
@@ -63,8 +70,25 @@ const NewGame = (props) => {
     }
   };
 
-  const nextStep = () => {
-    setNewGame((prevState) => prevState + 1);
+  const nextStep = async () => {
+    console.log('emails.length', emails.length)
+    try {
+      if (newGame !== 1 || emails.length < 1) {
+        await setNewGame((prevState) => prevState + 1);
+      } else {
+        const getData = await axios.post("/send-email", { emails, gameId: id });
+        if (getData.data.error) {
+          console.log('Error:', getData.data.error)
+          // setError(getData.data.error);
+          // setOpenDialog(true);
+          return null;
+        }
+        await setEmails([]);
+        await setNewGame((prevState) => prevState + 1);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   //Sends Date to Start Game

@@ -8,8 +8,7 @@ import socket from "../socket";
 
 const GameSetup = (props) => {
   const [gameStatus, setGameStatus] = useGameStatus();
-  const [players, setPlayers] = usePlayers();
-  const [hostId, setHostId] = useHostId();
+  const [hostId] = useHostId();
 
   useEffect(() => {
     //Shows players now assigned on teams and roles, ALSO - change gameStatus now === "running"

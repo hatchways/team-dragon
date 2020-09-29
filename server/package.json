@@ -10,6 +10,7 @@
     "lint:fix": "prettier --write '**/*.js'"
   },
   "dependencies": {
+    "@sendgrid/mail": "^7.2.6",
     "bcryptjs": "^2.4.3",
     "connect-mongodb-session": "^2.4.1",
     "cookie-parser": "^1.4.5",
