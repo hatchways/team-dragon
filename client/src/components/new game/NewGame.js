@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import StepOne from "../new game/step 1/StepOne";
 import StepTwo from "../new game/step 2/StepTwo.js";
@@ -40,8 +40,8 @@ const useStyles = makeStyles((theme) =>
 const NewGame = (props) => {
   const classes = useStyles();
 
-  const [openDialog, setOpenDialog] = useState(false);
-  const [error, setError] = useState("");
+  // const [openDialog, setOpenDialog] = useState(false);
+  // const [error, setError] = useState("");
 
   //Holds Game ID + Template for Passing Roles to Server
   const [newGame, setNewGame] = useNewGame();
@@ -78,8 +78,9 @@ const NewGame = (props) => {
       } else {
         const getData = await axios.post("/send-email", { emails, gameId: id });
         if (getData.data.error) {
-          setError(getData.data.error);
-          setOpenDialog(true);
+          console.log('Error:', getData.data.error)
+          // setError(getData.data.error);
+          // setOpenDialog(true);
           return null;
         }
         await setEmails([]);

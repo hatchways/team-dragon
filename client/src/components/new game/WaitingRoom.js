@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import StepTwo from "./step 2/StepTwo";
 import { useHostName } from "../../contexts/DataContext";
-import { useParams } from "react-router-dom";
 import {
   Container,
   Divider,
