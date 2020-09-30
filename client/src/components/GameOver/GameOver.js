@@ -9,10 +9,13 @@ const useStyles = makeStyles((theme) =>
   createStyles({
     popUpWindow: {
       position: "fixed",
-      width: "50%",
+      minWidth: "400px",
+      maxWidth: "500px",
       height: "50%",
-      top: "25%",
-      left: "25%",
+      minHeight: "400px",
+      left: "50%",
+      top: "50%",
+      transform: "translate(-50%, -50%)",
       zIndex: "10",
     },
     container: {
@@ -42,8 +45,8 @@ const useStyles = makeStyles((theme) =>
       color: theme.red.medium,
     },
     newGameButton: {
-        padding: ".7rem 2.4rem"
-    }
+      padding: ".7rem 2.4rem",
+    },
   }),
 );
 
@@ -59,7 +62,7 @@ const GameOver = () => {
     gameOverText,
     redWins,
     blueWins,
-    newGameButton
+    newGameButton,
   } = classes;
 
   const handleNewGame = () => {
@@ -69,7 +72,7 @@ const GameOver = () => {
   const blueScore = "6";
   const redScore = "6";
 
-  let winner = "blue";
+  let winner = "red";
 
   const winnerText = (winner) => {
     switch (winner) {
