@@ -10,20 +10,16 @@ import {
   Grid,
   List,
   ListItem,
-  ListItemText,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   Button,
-  DialogContentText,
   Input,
-  FormControlLabel,
 } from "@material-ui/core";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import axios from "axios";
-
-import EditPhoto from "../components/EditPhoto";
+import { useUser } from "../contexts/UserContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,15 +57,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ProfileSettings = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [user, setUser] = useUser();
   const [userId, setUserId] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
   const [profileImageFile, setProfileImageFile] = useState(null);
   const [profileImageUrlInput, setProfileImageUrlInput] = useState("");
   const [profileImageUrl, setProfileImageUrl] = useState("");
 
-  const handleClose = () => {
+  const handleClose = async() => {
     setOpenDialog(false);
   };
 
@@ -77,9 +72,9 @@ const ProfileSettings = () => {
     setProfileImageFile(e.target.files[0]);
   };
 
+  // Image is uploaded to AWS S3 using form Data
   const handleFileUpload = async () => {
     if (profileImageFile) {
-      console.log(profileImageFile);
       const data = new FormData();
       data.append("profileImage", profileImageFile, profileImageFile.name);
 
@@ -89,7 +84,15 @@ const ProfileSettings = () => {
           data,
         );
         if (result) {
-          setProfileImageUrl(result.location);
+          const { location } = result.data;
+          setProfileImageUrl(location);
+
+          // Updates the UserContext
+          setUser((prevState) => ({
+            ...prevState,
+            profileImageLocation: location,
+          }));
+          setOpenDialog(false);
         }
       } catch (err) {
         console.log(err);
@@ -97,31 +100,17 @@ const ProfileSettings = () => {
     }
   };
 
+  // Input handler using image Url
   const handleImageUrlInput = (e) => {
     setProfileImageUrlInput(e.target.value);
   };
 
+  // Sets the Image location for profile on the page
   useEffect(() => {
-    setName(localStorage.getItem("name"));
-    setEmail(localStorage.getItem("email"));
-    setUserId(localStorage.getItem("id"));
-  }, []);
-
-  useEffect(() => {
-    if (userId) {
-      axios
-        .get(`/profile/${userId}`)
-        .then((result) => {
-          if (result) {
-            const imageUrl = result.data.user.profileImage.imageLocation;
-            setProfileImageUrl(imageUrl);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    if (user) {
+      setProfileImageUrl(user.profileImageLocation);
     }
-  }, [userId, openDialog]);
+  }, [user]);
 
   const classes = useStyles();
   return (
@@ -162,7 +151,7 @@ const ProfileSettings = () => {
                 <List>
                   <ListItem>
                     <Typography>
-                      <strong>Name:</strong> {name ? name : "Not available"}
+                      <strong>Name:</strong> {user ? user.name : "Not available"}
                     </Typography>
                     <Button color="primary">
                       <EditOutlinedIcon className={classes.editIcon} />
@@ -170,7 +159,7 @@ const ProfileSettings = () => {
                   </ListItem>
                   <ListItem>
                     <Typography>
-                      <strong>Email:</strong> {email ? email : "Not available"}
+                      <strong>Email:</strong> {user ? user.email : "Not available"}
                     </Typography>
                   </ListItem>
                 </List>

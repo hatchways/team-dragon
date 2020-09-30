@@ -7,10 +7,12 @@ import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import useStyles from "./styles";
+import { useUser } from "../../contexts/UserContext";
 
 const Login = (props) => {
   const classes = useStyles();
 
+  const [user, setUser] = useUser();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setLoading] = useState(false);
@@ -29,6 +31,8 @@ const Login = (props) => {
         email,
         password,
       });
+
+      setUser(data.user);
 
       axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
       window.localStorage.setItem("id", data.user.id);
@@ -50,7 +54,6 @@ const Login = (props) => {
       setLoading(false);
     }
   };
-
   return (
     <Container className={classes.Login} maxWidth="sm">
       <Card className={classes.FormContainer}>

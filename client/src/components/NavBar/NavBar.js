@@ -1,68 +1,48 @@
 import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
-import {
-  Box,
-  Avatar,
-  Button,
-  Icon,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from "@material-ui/core";
+import { Box, Avatar, Button } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import { useGameStatus } from "../../contexts/GameContext";
+import { useUser } from "../../contexts/UserContext";
 import useStyles from "./styles";
 import axios from "axios";
 
 const NavBar = (props) => {
   const classes = useStyles();
+
+  // Contexts
   const [gameStatus] = useGameStatus();
+  const [user, setUser] = useUser();
+
+  // Local State
   const [profileImageUrl, setProfileImageUrl] = useState("");
-  const [loggedIn, setLoggedIn] = useState(false);
 
   // Toggle Login and Logout
   const handleAuthentication = () => {
-    if (loggedIn) {
+    if (user) {
       localStorage.clear();
-      setLoggedIn(false);
+      axios
+        .post("/users/logout")
+        .then((result) => {
+          setUser(null);
+        })
+        .catch((err) => console.log(err));
       props.history.push("/");
     } else {
-      setLoggedIn(true);
       props.history.push("/login");
     }
   };
 
   const handleAvatarClick = () => {
     props.history.push("/edit-profile");
-    console.log(props)
   };
 
   useEffect(() => {
-    if (localStorage.getItem("id")) {
-      setLoggedIn(true);
-    } else {
-      setLoggedIn(false);
+    if (user) {
+      setProfileImageUrl(user.profileImageLocation);
     }
-  }, [loggedIn]);
-
-  useEffect(() => {
-    const userId = localStorage.getItem("id");
-    if (userId) {
-      axios
-        .get(`/profile/${userId}`)
-        .then((result) => {
-          if (result) {
-            const imageUrl = result.data.user.profileImage.imageLocation;
-            setProfileImageUrl(imageUrl);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [loggedIn]);
+  }, [user]);
 
   if (gameStatus !== "running") {
     return (
@@ -72,18 +52,24 @@ const NavBar = (props) => {
             <Link to="/">Cluewords</Link>
           </Typography>
           <Box className={classes.Profile}>
-            <Avatar
+            {user ? (
+              <Avatar
+                src={profileImageUrl ? profileImageUrl : ""}
+                onClick={handleAvatarClick}
+              ></Avatar>
+            ) : null}
+            {/* <Avatar
               src={profileImageUrl ? profileImageUrl : ""}
               onClick={handleAvatarClick}
-              style={{display: loggedIn ? "block":"none"}}
-            ></Avatar>
+              // style={{ display: loggedIn ? "block" : "none" }}
+            ></Avatar> */}
             <Button
               variant="outlined"
               color="primary"
               className={classes.ProfileItem}
               onClick={handleAuthentication}
             >
-              <Typography>{loggedIn ? "Logout" : "Login"}</Typography>
+              <Typography>{user ? "Logout" : "Login"}</Typography>
             </Button>
           </Box>
         </Box>

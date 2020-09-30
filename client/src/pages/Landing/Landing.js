@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
@@ -11,6 +11,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { useNewGame } from "../../contexts/DataContext";
+import { useUser } from "../../contexts/UserContext";
 import useStyles from "./styles";
 
 const Landing = (props) => {
@@ -18,8 +19,11 @@ const Landing = (props) => {
 
   //Holds Game ID + Template for Passing Roles to Server
   const [newGame, setNewGame] = useNewGame();
+  const [user, setUser] = useUser();
   const [openDialog, setOpenDialog] = useState(false);
   const [error, setError] = useState("");
+
+  const userId = localStorage.getItem("id");
 
   const handleClose = () => {
     setOpenDialog(false);
@@ -33,7 +37,6 @@ const Landing = (props) => {
       if (getData.data.error) {
         setError(getData.data.error);
         setOpenDialog(true);
-        // localStorage.clear();
         return null;
       }
       await setNewGame(1);

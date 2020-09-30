@@ -10,25 +10,19 @@ exports.postAddPhoto = async (req, res, next) => {
     }
 
     // Successful
-    const imageName = req.file.key;
     const imageLocation = req.file.location;
-    const profileImage = {
-      imageName,
-      imageLocation,
-    };
 
     User.findOneAndUpdate(
       { _id: userId },
-      { profileImage: profileImage },
+      { profileImageLocation: imageLocation },
       { upsert: true },
     )
       .then((user) => {
-        console.log(user);
+        
       })
       .catch((err) => console.log(err));
 
     res.json({
-      image: imageName,
       location: imageLocation,
     });
   });
@@ -41,7 +35,8 @@ exports.getProfile = (req, res, next) => {
       if (!user) {
         throw new Error("User does not found!");
       }
-      res.json({ user: user });
+      const {id,name,profileImageLocation} = user;
+      res.json({id,name,profileImageLocation});
     })
     .catch((err) => {
       console.log(err);
