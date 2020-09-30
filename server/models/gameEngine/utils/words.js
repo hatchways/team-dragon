@@ -1,6 +1,4 @@
-const getRandomNumber = require("./randomNumber");
-
-const data = [
+exports.words = [
   "cabbage",
   "scissors",
   "store",
@@ -67,19 +65,3 @@ const data = [
   "Soulmate",
   "Trapezium",
 ];
-
-// Method returns random words in an array
-const getRandomWords = (size) => {
-  let wordArr = [];
-  while (wordArr.length !== size) {
-    let randomIndex = getRandomNumber(data.length);
-    let word = data[randomIndex];
-    if (wordArr.includes(word)) {
-      continue;
-    }
-    wordArr.push(word);
-  }
-  return wordArr;
-};
-
-module.exports = getRandomWords;
