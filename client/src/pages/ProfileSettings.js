@@ -20,6 +20,7 @@ import {
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import axios from "axios";
 import { useUser } from "../contexts/UserContext";
+import EditNameDialog from "../components/EditNameDialog";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,15 +59,19 @@ const useStyles = makeStyles((theme) => ({
 
 const ProfileSettings = () => {
   const [user, setUser] = useUser();
-  const [userId, setUserId] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
+  const [openEditNameDialog, setOpenEditNameDialog] = useState(false);
   const [profileImageFile, setProfileImageFile] = useState(null);
   const [profileImageUrlInput, setProfileImageUrlInput] = useState("");
   const [profileImageUrl, setProfileImageUrl] = useState("");
 
-  const handleClose = async() => {
+  const handleClose = async () => {
     setOpenDialog(false);
   };
+
+  const closeEditNameDialog = () => {
+    setOpenEditNameDialog(false);
+  }
 
   const handleFileInput = async (e) => {
     setProfileImageFile(e.target.files[0]);
@@ -80,7 +85,7 @@ const ProfileSettings = () => {
 
       try {
         const result = await axios.post(
-          `http://localhost:3001/edit-profile/${userId}`,
+          `http://localhost:3001/edit-profile/image/${user.id}`,
           data,
         );
         if (result) {
@@ -151,15 +156,20 @@ const ProfileSettings = () => {
                 <List>
                   <ListItem>
                     <Typography>
-                      <strong>Name:</strong> {user ? user.name : "Not available"}
+                      <strong>Name:</strong>{" "}
+                      {user ? user.name : "Not available"}
                     </Typography>
-                    <Button color="primary">
+                    <Button
+                      color="primary"
+                      onClick={() => setOpenEditNameDialog(true)}
+                    >
                       <EditOutlinedIcon className={classes.editIcon} />
                     </Button>
                   </ListItem>
                   <ListItem>
                     <Typography>
-                      <strong>Email:</strong> {user ? user.email : "Not available"}
+                      <strong>Email:</strong>{" "}
+                      {user ? user.email : "Not available"}
                     </Typography>
                   </ListItem>
                 </List>
@@ -209,6 +219,11 @@ const ProfileSettings = () => {
           </Button>
         </DialogActions>
       </Dialog>
+      <EditNameDialog
+        open={openEditNameDialog}
+        closeDialog={closeEditNameDialog}
+        title="Edit Name"
+      ></EditNameDialog>
     </Container>
   );
 };

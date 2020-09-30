@@ -2,7 +2,7 @@ const uploadImage = require("../middleware/uploadImage");
 const User = require("../models/User");
 const mongoose = require("mongoose");
 
-exports.postAddPhoto = async (req, res, next) => {
+exports.postAddImage = async (req, res, next) => {
   const userId = req.params.id;
   uploadImage(req, res, (err) => {
     if (err) {
@@ -15,17 +15,38 @@ exports.postAddPhoto = async (req, res, next) => {
     User.findOneAndUpdate(
       { _id: userId },
       { profileImageLocation: imageLocation },
-      { upsert: true },
+      { upsert: true, new: true },
     )
       .then((user) => {
-        
+        if (!user) {
+          return res.json({ err: "User not found" });
+        }
+        res.json({
+          location: imageLocation,
+        });
       })
       .catch((err) => console.log(err));
-
-    res.json({
-      location: imageLocation,
-    });
   });
+};
+
+exports.updateName = (req, res, next) => {
+  const userId = req.params.id;
+  const name = req.body.name;
+
+  User.findOneAndUpdate(
+    { _id: userId },
+    { name: name },
+    { upsert: true, new: true },
+  )
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({ err: "User not found" });
+      }
+      res.json({ name: user.name });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 exports.getProfile = (req, res, next) => {
@@ -35,8 +56,8 @@ exports.getProfile = (req, res, next) => {
       if (!user) {
         throw new Error("User does not found!");
       }
-      const {id,name,profileImageLocation} = user;
-      res.json({id,name,profileImageLocation});
+      const { id, name, profileImageLocation } = user;
+      res.json({ id, name, profileImageLocation });
     })
     .catch((err) => {
       console.log(err);
