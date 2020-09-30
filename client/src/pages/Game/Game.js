@@ -17,6 +17,8 @@ const Game = (props) => {
   const [currentTurn, setCurrentTurn] = useState("");
   const [redScore, setRedScore] = useState(1);
   const [blueScore, setBlueScore] = useState(2);
+  const [redTeam, setRedTeam] = useState({ spyMaster: "Nick", guesser: ["Karl", "Jorawar"] });
+  const [blueTeam, setBlueTeam] = useState({ spyMaster: "Nick", guesser: ["Karl", "Jorawar"] });
 
   const [gameStatus, setGameStatus] = useGameStatus();
 
@@ -30,6 +32,28 @@ const Game = (props) => {
     socket.emit("init-game", { gameId, token }, (recv) => {
       console.log("Game State:", recv);
 
+      // let blueTeamList = recv.state.blueTeam.players.reduce((obj, player) => {
+      //   if (player.role === "guesser") {
+      //     obj["guesser"].push(player.name);
+      //     return obj;
+      //   } else {
+      //     obj["spyMaster"] = player.name;
+      //     return obj;
+      //   }
+      // }, {guesser: []});
+
+      // let redTeamList = recv.state.redTeam.players.reduce((obj, player) => {
+      //   if (player.role === "guesser") {
+      //     obj["guesser"].push(player.name);
+      //     return obj;
+      //   } else {
+      //     obj["spyMaster"] = player.name;
+      //     return obj;
+      //   }
+      // }, {guesser:[]});
+
+      // setBlueTeam(blueTeamList);
+      // setRedTeam(redTeamList);
       setName(recv.name);
       setMessages(recv.history);
       setBoard(recv.state.board);
@@ -113,6 +137,8 @@ const Game = (props) => {
         blueScore={blueScore}
         endGame={endGame}
         isSpyMaster={isSpyMaster}
+        blueTeam={blueTeam}
+        redTeam={redTeam}
       />
       <div className={classes.GameArea}>
         <Messenger

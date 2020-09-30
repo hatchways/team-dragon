@@ -14,6 +14,18 @@ const GameBar = (props) => {
   const [hostId] = useHostId();
   const userId = window.localStorage.getItem("id");
 
+  console.log("redTeam", props.redTeam);
+  console.log("blueTeam", props.blueTeam);
+
+  const displayblueTeam = props.blueTeam.guesser.map((player, i) => (
+    <Typography key={i}>{player}</Typography>
+  ));
+
+  const displayRedTeam = props.redTeam.guesser.map((player, i) => (
+    <Typography key={i}>{player}</Typography>
+  ));
+
+
   return (
     <nav className={classes.NavBar}>
       <Box className={classes.NavBarWrap}>
@@ -21,6 +33,14 @@ const GameBar = (props) => {
           <Link to="/">Cluewords</Link>
         </Typography>
         <Box className={classes.Scoreboard}>
+          <Box className={classes.BlueTeam}>
+            <Box>
+              <Typography className={classes.SpyMasterText} variant="body1">
+                SpyMaster - {props.blueTeam.spyMaster}
+              </Typography>
+            </Box>
+            {displayblueTeam}
+          </Box>
           <Box className={classes.BlueScore}>
             <Typography variant="h3">{props.blueScore}</Typography>
             <Typography>Blue Team</Typography>
@@ -31,6 +51,14 @@ const GameBar = (props) => {
           <Box className={classes.RedScore}>
             <Typography variant="h3">{props.redScore}</Typography>
             <Typography>Red Team</Typography>
+          </Box>
+          <Box className={classes.RedTeam}>
+            <Box>
+              <Typography className={classes.SpyMasterText} variant="body1">
+                SpyMaster - {props.redTeam.spyMaster}
+              </Typography>
+            </Box>
+            {displayRedTeam}
           </Box>
         </Box>
         <Box className={classes.BarControls}>

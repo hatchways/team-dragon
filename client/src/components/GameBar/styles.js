@@ -52,6 +52,25 @@ const useStyles = makeStyles((theme) => ({
       fontSize: "1.5rem",
     },
   }),
+  BlueTeam: {
+    color: theme.blue.medium,
+    marginRight: "5px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "flex-end",
+  },
+  RedTeam: {
+    color: theme.red.medium,
+    marginLeft: "5px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "flex-start",
+  },
+  SpyMasterText : {
+    fontWeight: "700",
+  },
   BarControls: {
     display: "flex",
     alignItems: "center",
