@@ -5,8 +5,6 @@ import Board from "../../components/Board";
 import GameOver from "../../components/GameOver/GameOver";
 import socket from "../../socket";
 import useStyles from "./styles";
-
-import { useHostId } from "../../contexts/DataContext";
 import { useGameStatus } from "../../contexts/GameContext";
 
 const Game = (props) => {
@@ -17,13 +15,12 @@ const Game = (props) => {
   const [board, setBoard] = useState([]);
   const [isSpyMaster, setIsSpyMaster] = useState(false);
   const [currentTurn, setCurrentTurn] = useState("");
-  const [redScore, setRedScore] = useState(0);
-  const [blueScore, setBlueScore] = useState(0);
+  const [redScore, setRedScore] = useState(1);
+  const [blueScore, setBlueScore] = useState(2);
 
   const [gameStatus, setGameStatus] = useGameStatus();
-  const [hostId] = useHostId();
 
-  let winner = "red"; // Testing only
+  let winner = "blue"; // Testing only
 
   const gameId = props.match.params.id;
   const token = window.localStorage.getItem("token");
@@ -79,7 +76,7 @@ const Game = (props) => {
       console.log("user not valid");
       // props.history.push("/login");
     });
-  }, [gameId, token, gameStatus]);
+  }, [gameId, token]);
 
   const sendMessage = (msg) => {
     const msgData = {
@@ -100,19 +97,17 @@ const Game = (props) => {
   };
 
   const endGame = () => {
-    // setGameStatus("over")
-
     // send message to the server
     socket.emit("end-game", {
       gameId,
-      score: { red: redScore, blue: blueScore },
-      winner: "red", //hard coded for now
+      winner, //hard coded for now
     });
   };
 
   return (
     <div className={classes.Game}>
       <GameBar
+        gameStatus={gameStatus}
         currentTurn={currentTurn}
         redScore={redScore}
         blueScore={blueScore}

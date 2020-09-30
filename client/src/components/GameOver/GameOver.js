@@ -53,8 +53,8 @@ const useStyles = makeStyles((theme) =>
 );
 
 const GameOver = (props) => {
-  console.log("props", props);
   const [hostId] = useHostId();
+  const userId = window.localStorage.getItem("id");
   const classes = useStyles();
   const {
     popUpWindow,
@@ -70,8 +70,6 @@ const GameOver = (props) => {
   const handleNewGame = () => {
     //Reset Game
   };
-
-  let winner = "red";
 
   const winnerText = (winner) => {
     switch (winner) {
@@ -107,7 +105,7 @@ const GameOver = (props) => {
                 Game over!
               </Typography>
             </Box>
-            <Box>{winnerText(winner)}</Box>
+            <Box>{winnerText(props.winner)}</Box>
             <Box my={3}>
               <Typography variant="h3">
                 <Box variant="span" display="inline" className={blueWins}>
@@ -120,14 +118,14 @@ const GameOver = (props) => {
               </Typography>
             </Box>
             <Box>
-              {localStorage.getItem("id") === hostId && (
+              {userId === hostId && (
                 <Button
                   variant="contained"
                   color="primary"
                   onClick={handleNewGame}
                   className={newGameButton}
                 >
-                  New Game
+                  Play Again
                 </Button>
               )}
             </Box>

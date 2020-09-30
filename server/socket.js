@@ -184,7 +184,7 @@ module.exports = (server) => {
 
     // Listener to end game
     socket.on("end-game", (recv) => {
-      const { gameId, score, winner } = recv;
+      const { gameId, winner } = recv;
 
       const currentGame = allGames.getAllGames().get(parseInt(gameId));
       currentGame.gameOver(winner);

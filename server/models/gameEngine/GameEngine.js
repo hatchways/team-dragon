@@ -14,6 +14,7 @@ class GameEngine {
     this.players = [];
     this.currentUser = null;
     this.gameStatus = "setup";
+    this.winner = "";
     console.log("Game ID:", this.id);
   }
 
@@ -121,8 +122,10 @@ class GameEngine {
   // Any case where game comes to an end
   gameOver(winner) {
     if (winner === this.redTeam.name) {
+      this.winner = this.redTeam.name;
       console.log("Congrats! Red team won the game");
     } else {
+      this.winner = this.blueTeam.name;
       console.log("Congrats! Blue team won the game");
     }
     this.gameStatus = "over";
