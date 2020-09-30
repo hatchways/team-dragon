@@ -121,6 +121,7 @@ const NewGame = (props) => {
       };
       const gameDetails = await setGame(players, spyMaster);
       console.log("Emitting start-game:", gameDetails);
+      localStorage.removeItem("newGame");
       socket.emit("start-game", gameDetails);
     } catch (err) {
       console.log(err);
