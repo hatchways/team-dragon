@@ -5,6 +5,7 @@ const { join } = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
+const redis = require("redis");
 const passport = require("passport");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
@@ -55,6 +56,12 @@ app.use((req, res, next) => {
     })
     .catch((err) => console.log(err));
 });
+
+// redis connection
+redis
+  .createClient(config.redis)
+  .on("connect", () => console.log("Redis connected"))
+  .on("error", (err) => console.log(err));
 
 // database connection using Mongoose
 mongoose
