@@ -26,8 +26,13 @@ const GameSetup = (props) => {
     }
   };
 
+
   return (
-    <div>{gameStatus === "running" ? <Game {...props} /> : gameJourney()}</div>
+    <> 
+      <div>
+        {gameStatus === "setup" ? gameJourney() : <Game {...props} /> }
+      </div>
+    </>
   );
 };
 
