@@ -4,20 +4,64 @@ const Card = require("./Card");
 const getRandomNumber = require("./utils/randomNumber");
 const shuffle = require("./utils/shuffle");
 const { words } = require("./utils/words");
+const Redis = require("ioredis");
+const config = require("../../config");
+
+const redis = new Redis(config.redis);
 
 class GameEngine {
-  constructor() {
-    this.id = getRandomNumber(1000);
-    this.redTeam = new Team("red");
-    this.blueTeam = new Team("blue");
-    this.board = this.createBoard();
-    this.turn = getRandomNumber(2) === 0 ? "blue" : "red";
-    this.cardsFlipped = 0;
-    this.players = [];
-    this.currentUser = null;
-    this.gameStatus = "setup";
-    this.winner = "";
-    console.log("Game ID:", this.id);
+  constructor(data = null) {
+    if (!data) {
+      this.id = getRandomNumber(1000);
+      this.redTeam = new Team("red");
+      this.blueTeam = new Team("blue");
+      this.board = this.createBoard();
+      this.turn = getRandomNumber(2) === 0 ? "blue" : "red";
+      this.cardsFlipped = 0;
+      this.players = [];
+      this.currentUser = null;
+      this.gameStatus = "setup";
+      this.winner = "";
+    } else {
+      this.id = data.id;
+      this.redTeam = new Team(
+        data.redTeam.name,
+        data.redTeam.players,
+        data.redTeam.points,
+      );
+      this.blueTeam = new Team(
+        data.redTeam.name,
+        data.redTeam.players,
+        data.redTeam.points,
+      );
+      this.board = data.board;
+      this.turn = data.turn;
+      this.cardsFlipped = data.cardsFlipped;
+      this.players = data.players;
+      this.currentUser = data.currentUser;
+      this.gameStatus = data.gameStatus;
+      this.winner = data.winner;
+    }
+  }
+
+  static async getGame(id) {
+    try {
+      const res = await redis.get(id);
+      const gameData = JSON.parse(res);
+
+      return new this(gameData);
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
+  }
+
+  async save() {
+    try {
+      await redis.set(this.id, JSON.stringify(this));
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   // Get Board with all cards in an array
@@ -198,10 +242,6 @@ class GameEngine {
   // Updated players in the array for this game
   getCurrentPlayers() {
     return this.players;
-  }
-
-  toJson() {
-    return JSON.stringify(this);
   }
 
   startGame() {

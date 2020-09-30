@@ -1,9 +1,9 @@
 class Player {
-  constructor(id, name, team) {
+  constructor(id, name, team, role = "") {
     this.id = id;
     this.name = name;
-    this.role = "";
     this.team = team;
+    this.role = role;
   }
 
   getTeam() {
