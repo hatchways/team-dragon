@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const config = require("./config");
-const allGames = require("./models/gameModel/allGames");
+const allGames = require("./models/gameEngine/allGames");
 const User = require("./models/User");
 
 module.exports = (server) => {
@@ -48,7 +48,8 @@ module.exports = (server) => {
           });
           throw new Error("Game not created");
         }
-        const currentGame = allGames.getAllGames().get(parseInt(gameId));
+
+        const currentGame = allGames.getGame(parseInt(gameId));
         if (!currentGame) {
           errors.push({
             name: "UndefinedError",
@@ -71,8 +72,7 @@ module.exports = (server) => {
       const { gameId, players } = recv;
 
       try {
-        const currentGame = allGames.getAllGames().get(parseInt(gameId));
-
+        const currentGame = allGames.getGame(parseInt(gameId));
         if (!currentGame) {
           errors.push({
             name: "UndefinedError",
@@ -113,9 +113,9 @@ module.exports = (server) => {
         socket.join(gameId);
 
         // create room details if does not exist
-        if (roomDetails[recv.gameId] === undefined) {
-          roomDetails[recv.gameId] = {
-            state: allGames.getAllGames().get(parseInt(recv.gameId)),
+        if (roomDetails[gameId] === undefined) {
+          roomDetails[gameId] = {
+            state: allGames.getGame(parseInt(gameId)),
             history: [],
           };
         }
@@ -124,7 +124,7 @@ module.exports = (server) => {
         if (clientDetails[socket.id] === undefined) {
           clientDetails[socket.id] = {
             name: decoded.name,
-            rooms: [recv.gameId],
+            rooms: [gameId],
           };
         }
 
@@ -134,14 +134,14 @@ module.exports = (server) => {
           message: `${decoded.name} joined the game`,
         };
 
-        roomDetails[recv.gameId].history.push(alert);
-        socket.to(recv.gameId).broadcast.emit("new-message", alert);
+        roomDetails[gameId].history.push(alert);
+        socket.to(gameId).broadcast.emit("new-message", alert);
 
         // return assigned name and chat history
         fn({
           name: decoded.name,
-          state: roomDetails[recv.gameId].state,
-          history: roomDetails[recv.gameId].history,
+          state: roomDetails[gameId].state,
+          history: roomDetails[gameId].history,
         });
       } catch (err) {
         console.log(err);
@@ -169,14 +169,14 @@ module.exports = (server) => {
     socket.on("move", (recv) => {
       const { gameId, playerId, cardIndex } = recv;
 
-      const currentGame = allGames.getAllGames().get(parseInt(gameId));
+      const currentGame = allGames.getGame(parseInt(gameId));
       currentGame.pickCard(playerId, cardIndex); // Result of the move would be in console for now
     });
 
     socket.on("change-turn", (recv) => {
       const { gameId } = recv;
 
-      const currentGame = allGames.getAllGames().get(parseInt(gameId));
+      const currentGame = allGames.getGame(parseInt(gameId));
       currentGame.changeTurn();
 
       io.to(gameId).emit("update-game", currentGame);

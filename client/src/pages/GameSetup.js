@@ -19,7 +19,6 @@ const GameSetup = (props) => {
   }, [setGameStatus]);
 
   const gameJourney = () => {
-    console.log(hostId);
     if (localStorage.getItem("id") === hostId) {
       return <NewGame value={props} />;
     } else {

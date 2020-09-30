@@ -1,6 +1,6 @@
-const allGames = require("../models/gameModel/allGames");
+const allGames = require("../models/gameEngine/allGames");
 const GameEngine = require("../models/gameEngine/GameEngine");
-const Game = require("../models/gameModel/Game");
+const Game = require("../models/Game");
 const User = require("../models/User");
 
 exports.postCreateGame = async (req, res, next) => {

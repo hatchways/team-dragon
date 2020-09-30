@@ -1,15 +1,17 @@
 const Team = require("./Team");
 const Player = require("./Player");
-const { getData } = require("./gameData");
-const getRandomNumber = require("./util/randomNumber");
+const Card = require("./Card");
+const getRandomNumber = require("./utils/randomNumber");
+const shuffle = require("./utils/shuffle");
+const { words } = require("./utils/words");
 
 class GameEngine {
   constructor() {
     this.id = getRandomNumber(1000);
     this.redTeam = new Team("red");
     this.blueTeam = new Team("blue");
-    this.board = getData();
-    this.turn = "blue";
+    this.board = this.createBoard();
+    this.turn = getRandomNumber(2) === 0 ? "blue" : "red";
     this.cardsFlipped = 0;
     this.players = [];
     this.currentUser = null;
@@ -20,6 +22,30 @@ class GameEngine {
   // Get Board with all cards in an array
   getBoard() {
     return this.board;
+  }
+
+  createBoard() {
+    const randWords = shuffle(words).slice(0, 25);
+    const board = [];
+    let cardType;
+
+    for (let i = 1; i <= 25; i++) {
+      if (i <= 9) {
+        cardType = this.turn === "blue" ? "blue" : "red";
+        board.push(new Card(randWords[i - 1], cardType));
+      } else if (i <= 17) {
+        cardType = this.turn === "blue" ? "red" : "blue";
+        board.push(new Card(randWords[i - 1], cardType));
+      } else if (i <= 24) {
+        cardType = "innocent";
+        board.push(new Card(randWords[i - 1], cardType));
+      } else {
+        cardType = "assassin";
+        board.push(new Card(randWords[i - 1], cardType));
+      }
+    }
+
+    return shuffle(board);
   }
 
   // Team assignment to players
@@ -113,7 +139,7 @@ class GameEngine {
   resetGame() {
     this.redTeam = new Team("red");
     this.blueTeam = new Team("blue");
-    this.board = getData();
+    this.board = this.createBoard();
     this.turn = "blue";
     console.log("Game was reset!!!");
   }
