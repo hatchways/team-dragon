@@ -2,8 +2,12 @@ import React, { useState, useEffect } from "react";
 import GameBar from "../../components/GameBar";
 import Messenger from "../../components/Messenger";
 import Board from "../../components/Board";
+import GameOver from "../../components/GameOver/GameOver";
 import socket from "../../socket";
 import useStyles from "./styles";
+
+import { useHostId } from "../../contexts/DataContext";
+import { useGameStatus } from "../../contexts/GameContext";
 
 const Game = (props) => {
   const classes = useStyles();
@@ -15,6 +19,11 @@ const Game = (props) => {
   const [currentTurn, setCurrentTurn] = useState("");
   const [redScore, setRedScore] = useState(0);
   const [blueScore, setBlueScore] = useState(0);
+
+  const [gameStatus, setGameStatus] = useGameStatus();
+  const [hostId] = useHostId();
+
+  let winner = "red"; // Testing only
 
   const gameId = props.match.params.id;
   const token = window.localStorage.getItem("token");
@@ -57,6 +66,7 @@ const Game = (props) => {
       console.log("Updated Game State:", recv);
 
       // set current state of the game
+      setGameStatus(recv.gameStatus);
       setBoard(recv.board);
       setCurrentTurn(recv.turn);
     });
@@ -69,7 +79,7 @@ const Game = (props) => {
       console.log("user not valid");
       // props.history.push("/login");
     });
-  }, [gameId, token]);
+  }, [gameId, token, gameStatus]);
 
   const sendMessage = (msg) => {
     const msgData = {
@@ -89,12 +99,25 @@ const Game = (props) => {
     socket.emit("change-turn", { gameId });
   };
 
+  const endGame = () => {
+    // setGameStatus("over")
+
+    // send message to the server
+    socket.emit("end-game", {
+      gameId,
+      score: { red: redScore, blue: blueScore },
+      winner: "red", //hard coded for now
+    });
+  };
+
   return (
     <div className={classes.Game}>
       <GameBar
         currentTurn={currentTurn}
         redScore={redScore}
         blueScore={blueScore}
+        endGame={endGame}
+        isSpyMaster={isSpyMaster}
       />
       <div className={classes.GameArea}>
         <Messenger
@@ -105,7 +128,14 @@ const Game = (props) => {
           isTurn={team === currentTurn}
           changeTurn={changeTurn}
         />
-        <Board board={board} isSpyMaster={isSpyMaster} />
+        <Board
+          gameStatus={gameStatus}
+          board={board}
+          isSpyMaster={isSpyMaster}
+          redScore={redScore}
+          blueScore={blueScore}
+          winner={winner}
+        />
       </div>
     </div>
   );

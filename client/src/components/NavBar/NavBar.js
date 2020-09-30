@@ -9,7 +9,7 @@ const NavBar = () => {
   const classes = useStyles();
   const [gameStatus] = useGameStatus();
 
-  if (gameStatus !== "running") {
+  if (gameStatus === "setup") {
     return (
       <nav className={classes.NavBar}>
         <Box className={classes.NavBarWrap}>

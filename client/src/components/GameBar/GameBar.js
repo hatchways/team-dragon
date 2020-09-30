@@ -30,7 +30,16 @@ const GameBar = (props) => {
             <Typography>Red Team</Typography>
           </Box>
         </Box>
+        
         <Box className={classes.BarControls}>
+        <Button
+            className={classes.EndGameButton}
+            variant="contained"
+            size="large"
+            onClick={props.endGame}
+          >
+            End Game
+          </Button>
           <Button
             className={classes.NewGameButton}
             variant="contained"

@@ -182,6 +182,16 @@ module.exports = (server) => {
       io.to(gameId).emit("update-game", currentGame);
     });
 
+    // Listener to end game
+    socket.on("end-game", (recv) => {
+      const { gameId, score, winner } = recv;
+
+      const currentGame = allGames.getAllGames().get(parseInt(gameId));
+      currentGame.gameOver(winner);
+
+      io.to(gameId).emit("update-game", currentGame);
+    });
+
     // Clean up when a user disconnects
     socket.on("disconnect", () => {
       // lookup the disconnecting user and remove

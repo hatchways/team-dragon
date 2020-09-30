@@ -119,11 +119,11 @@ class GameEngine {
   }
 
   // Any case where game comes to an end
-  gameOver(looserTeam) {
-    if (looserTeam === this.redTeam.name) {
-      console.log("Congrats! Blue team won the game");
-    } else {
+  gameOver(winner) {
+    if (winner === this.redTeam.name) {
       console.log("Congrats! Red team won the game");
+    } else {
+      console.log("Congrats! Blue team won the game");
     }
     this.gameStatus = "over";
   }
