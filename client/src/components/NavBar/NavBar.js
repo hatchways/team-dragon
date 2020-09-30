@@ -44,7 +44,7 @@ const NavBar = (props) => {
     }
   }, [user]);
 
-  if (gameStatus !== "running") {
+  if (gameStatus === "setup") {
     return (
       <nav className={classes.NavBar}>
         <Box className={classes.NavBarWrap}>

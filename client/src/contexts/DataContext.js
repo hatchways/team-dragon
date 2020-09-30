@@ -85,7 +85,7 @@ export function DataProvider({ children }) {
 
   const [hostId, setHostId] = useState("");
   const providerHostId = useMemo(() => [hostId, setHostId], [
-    hostName,
+    hostId,
     setHostId,
   ]);
 

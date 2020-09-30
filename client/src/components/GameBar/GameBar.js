@@ -1,4 +1,5 @@
 import React from "react";
+import { useHostId } from "../../contexts/DataContext";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import Avatar from "@material-ui/core/Avatar";
@@ -10,6 +11,8 @@ import useStyles from "./styles";
 
 const GameBar = (props) => {
   const classes = useStyles(props);
+  const [hostId] = useHostId();
+  const userId = window.localStorage.getItem("id");
 
   return (
     <nav className={classes.NavBar}>
@@ -31,6 +34,17 @@ const GameBar = (props) => {
           </Box>
         </Box>
         <Box className={classes.BarControls}>
+          {userId === hostId && (
+            <Button
+              className={classes.EndGameButton}
+              variant="contained"
+              size="large"
+              onClick={props.endGame}
+              disabled={props.gameStatus === "over"}
+            >
+              End Game
+            </Button>
+          )}
           <Button
             className={classes.NewGameButton}
             variant="contained"

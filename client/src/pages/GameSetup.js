@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { useGameStatus } from "../contexts/GameContext";
-import { usePlayers, useHostId } from "../contexts/DataContext";
+import { useHostId } from "../contexts/DataContext";
 import NewGame from "../components/new game/NewGame";
 import WaitingRoom from "../components/new game/WaitingRoom";
-import Game from "../components/Game";
+import Game from "./Game";
 import socket from "../socket";
 
 const GameSetup = (props) => {
@@ -26,8 +26,13 @@ const GameSetup = (props) => {
     }
   };
 
+
   return (
-    <div>{gameStatus === "running" ? <Game {...props} /> : gameJourney()}</div>
+    <> 
+      <div>
+        {gameStatus === "setup" ? gameJourney() : <Game {...props} /> }
+      </div>
+    </>
   );
 };
 

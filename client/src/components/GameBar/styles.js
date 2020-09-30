@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    color: props.urrentTurn === "red" ? theme.white : theme.red.medium,
+    color: props.currentTurn === "red" ? theme.white : theme.red.medium,
     background: props.currentTurn === "red" ? theme.red.medium : "none",
     borderRadius: "5px",
     "& h3": {
@@ -58,6 +58,11 @@ const useStyles = makeStyles((theme) => ({
   },
   NewGameButton: {
     marginRight: "2rem",
+  },
+  EndGameButton: {
+    marginRight: "2rem",
+    backgroundColor: theme.red.medium,
+    color: theme.white
   },
   Profile: {
     display: "flex",

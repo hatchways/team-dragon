@@ -93,7 +93,7 @@ const EmailInvite = () => {
                     className={classes.invite}
                     type="submit"
                   >
-                    Send invite
+                    Add
                   </Button>
                 </InputAdornment>
               ),

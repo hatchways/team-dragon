@@ -71,14 +71,13 @@ const NewGame = (props) => {
   };
 
   const nextStep = async () => {
-    console.log('emails.length', emails.length)
     try {
       if (newGame !== 1 || emails.length < 1) {
         await setNewGame((prevState) => prevState + 1);
       } else {
         const getData = await axios.post("/send-email", { emails, gameId: id });
         if (getData.data.error) {
-          console.log('Error:', getData.data.error)
+          console.log("Error:", getData.data.error);
           // setError(getData.data.error);
           // setOpenDialog(true);
           return null;
@@ -91,8 +90,8 @@ const NewGame = (props) => {
     }
   };
 
-  //Sends Date to Start Game
-  const startGame = async (e) => {
+  //Sends Data to Start Game
+  const startGame = async () => {
     try {
       const setGame = (players, spyMaster) => {
         let spyMasters = [spyMaster.blue, spyMaster.red];
@@ -121,7 +120,7 @@ const NewGame = (props) => {
         };
       };
       const gameDetails = await setGame(players, spyMaster);
-      console.log("emit-start-game", gameDetails);
+      console.log("Emitting start-game:", gameDetails);
       socket.emit("start-game", gameDetails);
     } catch (err) {
       console.log(err);

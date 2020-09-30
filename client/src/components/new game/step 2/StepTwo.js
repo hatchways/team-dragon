@@ -30,7 +30,7 @@ const StepTwo = (props) => {
   const [players, setPlayers] = usePlayers();
   const [hostName, setHostName] = useHostName();
   const [hostId, setHostId] = useHostId();
-  let { id } = useParams();
+  const { id } = useParams();
 
   const classes = useStyles();
 
@@ -45,19 +45,17 @@ const StepTwo = (props) => {
     };
 
     if (id !== "") {
-      console.log("emit-join-match", data);
+      console.log("Emitting join-game:", data);
       socket.emit("join-game", data);
     }
-  }, []);
 
-  useEffect(() => {
     socket.on("update-players", ({ game, errors }) => {
-      console.log("updated players", game.players);
+      console.log("Updated players:", game.players);
       setPlayers(game.players);
       setHostId(game.currentUser._id);
       setHostName(game.currentUser.name);
     });
-  }, [players]);
+  }, [id, setHostId, setHostName, setPlayers]);
 
   const showPlayers = () => {
     return players.map((player, i) => {
