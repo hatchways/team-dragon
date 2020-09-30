@@ -17,7 +17,7 @@ function App() {
       <GameProvider>
         <MuiThemeProvider theme={theme}>
           <BrowserRouter>
-            <NavBar />
+            <NavBar/>
             <Switch>
               <Route exact path="/edit-profile" component={ProfileSettings} />
               <Route exact path="/register" component={Register} />

@@ -8,4 +8,6 @@ module.exports = {
       ? process.env.TEST_DB_URI
       : process.env.DB_URI,
   secret: process.env.SECRET_KEY || "shh",
+  awsAccessKey: process.env.AWS_ACCESS_KEY,
+  awsSecret: process.env.AWS_SECRET
 };

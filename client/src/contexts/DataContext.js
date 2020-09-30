@@ -1,4 +1,4 @@
-import React, { useContext, useState, useMemo} from "react";
+import React, { useContext, useState, useMemo } from "react";
 
 const EmailContext = React.createContext();
 

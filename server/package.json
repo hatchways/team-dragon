@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@sendgrid/mail": "^7.2.6",
+    "aws-sdk": "^2.763.0",
     "bcryptjs": "^2.4.3",
     "connect-mongodb-session": "^2.4.1",
     "cookie-parser": "^1.4.5",
@@ -25,6 +26,8 @@
     "lodash": "^4.17.20",
     "mongoose": "^5.10.6",
     "morgan": "~1.9.1",
+    "multer": "^1.4.2",
+    "multer-s3": "^2.9.0",
     "nodemon": "^1.19.4",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",

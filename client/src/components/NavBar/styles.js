@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     margin: "0 auto",
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
   },
   Brand: {
@@ -20,6 +20,15 @@ const useStyles = makeStyles((theme) => ({
     "& a": {
       textDecoration: "none",
       color: "black",
+    },
+  },
+  ProfileItem: {
+    margin: "0 .5rem",
+  },
+  Profile: {
+    display: "flex",
+    "&:hover": {
+      cursor: "pointer",
     },
   },
 }));

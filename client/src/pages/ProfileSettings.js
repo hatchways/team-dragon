@@ -21,6 +21,7 @@ import {
   FormControlLabel,
 } from "@material-ui/core";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
+import axios from "axios";
 
 import EditPhoto from "../components/EditPhoto";
 
@@ -62,26 +63,65 @@ const useStyles = makeStyles((theme) => ({
 const ProfileSettings = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [userId, setUserId] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
-  const [profileImageFile, setProfileImageFile] = useState("");
+  const [profileImageFile, setProfileImageFile] = useState(null);
+  const [profileImageUrlInput, setProfileImageUrlInput] = useState("");
   const [profileImageUrl, setProfileImageUrl] = useState("");
 
   const handleClose = () => {
     setOpenDialog(false);
   };
 
-  const handleFileInput = (e) => {
-    console.log(e.target.files[0]);
+  const handleFileInput = async (e) => {
+    setProfileImageFile(e.target.files[0]);
   };
 
-  const handleImageUrl = (e) => {
-    setProfileImageUrl(e.target.value);
+  const handleFileUpload = async () => {
+    if (profileImageFile) {
+      console.log(profileImageFile);
+      const data = new FormData();
+      data.append("profileImage", profileImageFile, profileImageFile.name);
+
+      try {
+        const result = await axios.post(
+          `http://localhost:3001/edit-profile/${userId}`,
+          data,
+        );
+        if (result) {
+          setProfileImageUrl(result.location);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+
+  const handleImageUrlInput = (e) => {
+    setProfileImageUrlInput(e.target.value);
   };
 
   useEffect(() => {
     setName(localStorage.getItem("name"));
     setEmail(localStorage.getItem("email"));
+    setUserId(localStorage.getItem("id"));
   }, []);
+
+  useEffect(() => {
+    if (userId) {
+      axios
+        .get(`/profile/${userId}`)
+        .then((result) => {
+          if (result) {
+            const imageUrl = result.data.user.profileImage.imageLocation;
+            setProfileImageUrl(imageUrl);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [userId, openDialog]);
 
   const classes = useStyles();
   return (
@@ -125,9 +165,7 @@ const ProfileSettings = () => {
                       <strong>Name:</strong> {name ? name : "Not available"}
                     </Typography>
                     <Button color="primary">
-                      <EditOutlinedIcon
-                        className={classes.editIcon}
-                      />
+                      <EditOutlinedIcon className={classes.editIcon} />
                     </Button>
                   </ListItem>
                   <ListItem>
@@ -147,13 +185,21 @@ const ProfileSettings = () => {
           <form>
             <Input
               type="file"
-              name="file"
+              name="profileImage"
               id="input-file"
               onChange={handleFileInput}
               className={classes.fileInput}
             />
-            <Button htmlFor="input-file" component="label" color="primary">
-              Upload from computer
+            <Button htmlFor="input-file" component="label" color="secondary">
+              {profileImageFile ? profileImageFile.name : "Select File"}
+            </Button>
+            <Button
+              variant="contained"
+              component="button"
+              color="primary"
+              onClick={handleFileUpload}
+            >
+              Upload
             </Button>
           </form>
           <Typography>OR</Typography>
@@ -162,9 +208,9 @@ const ProfileSettings = () => {
               type="text"
               name="file"
               id="image-url"
-              value={profileImageUrl}
+              value={profileImageUrlInput}
               placeholder="Enter url of image"
-              onChange={handleImageUrl}
+              onChange={handleImageUrlInput}
             />
           </form>
         </DialogContent>
@@ -174,7 +220,6 @@ const ProfileSettings = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      {/* <EditPhoto/> */}
     </Container>
   );
 };
