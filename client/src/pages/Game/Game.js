@@ -17,14 +17,7 @@ const Game = (props) => {
   const [currentTurn, setCurrentTurn] = useState("");
   const [redScore, setRedScore] = useState(1);
   const [blueScore, setBlueScore] = useState(2);
-  const [teamList, setTeamList] = useState({
-    red: {
-      guesser: [],
-    },
-    blue: {
-      guesser: [],
-    },
-  });
+  const [teamList, setTeamList] = useState(undefined);
   const [gameStatus, setGameStatus] = useGameStatus();
 
   let winner = "red"; // Testing only
