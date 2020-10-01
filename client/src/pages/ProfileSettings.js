@@ -85,7 +85,7 @@ const ProfileSettings = () => {
 
       try {
         const result = await axios.post(
-          `http://localhost:3001/edit-profile/image/${user.id}`,
+          `/edit-profile/image/${user.id}`,
           data,
         );
         if (result) {
