@@ -13,6 +13,7 @@ const config = require("./config");
 const gameRouter = require("./routes/game");
 const authRouter = require("./routes/auth");
 const emailRouter = require("./routes/email");
+const profileRouter = require('./routes/profile');
 const User = require("./models/User");
 
 // app configuration
@@ -71,6 +72,7 @@ mongoose
 app.use("/users", authRouter);
 app.use(gameRouter);
 app.use(emailRouter);
+app.use(profileRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
