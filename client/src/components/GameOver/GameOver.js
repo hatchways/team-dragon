@@ -37,14 +37,19 @@ const useStyles = makeStyles((theme) =>
     skullIcon: {
       width: "15%",
     },
-    gameOverText: {
+    gameOver: {
       fontSize: "1.5rem",
+      marginBottom: ".8rem"
     },
-    blueWins: {
-      color: theme.blue.medium,
-    },
-    redWins: {
+    gameOverText: (props) => ({
+      color:
+        props.endGame.winner === "Blue" ? theme.blue.medium : theme.red.medium,
+    }),
+    redScore: {
       color: theme.red.medium,
+    },
+    blueScore: {
+      color: theme.blue.medium,
     },
     newGameButton: {
       padding: ".7rem 2.4rem",
@@ -55,18 +60,19 @@ const useStyles = makeStyles((theme) =>
 const GameOver = (props) => {
   const [hostId] = useHostId();
   const userId = window.localStorage.getItem("id");
-  const classes = useStyles();
+  const classes = useStyles(props);
   const {
     popUpWindow,
     container,
     content,
     skullIcon,
+    gameOver,
     gameOverText,
-    redWins,
-    blueWins,
+    redScore,
+    blueScore,
     newGameButton,
   } = classes;
-
+console.log('props.endGame.winner', props.endGame.winner)
   const handleNewGame = () => {
     //Reset Game
   };
@@ -82,25 +88,30 @@ const GameOver = (props) => {
               alt="game-over-icon"
             />
             <Box my={3}>
-              <Typography className={gameOverText} variant="h3">
+              <Typography className={gameOver} variant="h3" align="center">
                 Game over!
+              </Typography>
+              <Typography variant="body1"  align="center">
+              {props.endGame.gameOverText}
               </Typography>
             </Box>
             <Box>
               <Typography
                 variant="h3"
-                className={props.endGame.winner === "red" ? redWins : blueWins}
+                className={
+                  props.endGame.winner !== "none" ? gameOverText : null
+                }
               >
-                {props.endGame.gameOverText}
+                {props.endGame.winner} team wins
               </Typography>
             </Box>
             <Box my={3}>
               <Typography variant="h3">
-                <Box variant="span" display="inline" className={blueWins}>
+                <Box variant="span" display="inline" className={blueScore}>
                   {props.blueScore.toString()}
                 </Box>{" "}
                 :{" "}
-                <Box variant="span" display="inline" className={redWins}>
+                <Box variant="span" display="inline" className={redScore}>
                   {props.redScore.toString()}
                 </Box>
               </Typography>
@@ -124,7 +135,6 @@ const GameOver = (props) => {
   );
 };
 GameOver.propTypes = {
-  winner: PropTypes.string.isRequired,
   redScore: PropTypes.number.isRequired,
   blueScore: PropTypes.number.isRequired,
 };

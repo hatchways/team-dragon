@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Card from "@material-ui/core/Card";
 import Typography from "@material-ui/core/Typography";
@@ -6,6 +6,7 @@ import useStyles from "./styles";
 
 const BoardCard = (props) => {
   const classes = useStyles(props);
+  
 
   let styles = [`${classes.Card}`];
   if (props.type === "red") {
@@ -23,9 +24,9 @@ const BoardCard = (props) => {
   }
 
   return (
-    <Card className={styles.join(" ")}>
-      <Typography variant="h3">{props.word}</Typography>
-    </Card>
+      <Card onClick={() => props.selectCard(props.type)} className={styles.join(" ")}>
+        <Typography variant="h3">{props.word}</Typography>
+      </Card>
   );
 };
 

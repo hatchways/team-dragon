@@ -59,7 +59,7 @@ const GameBar = (props) => {
               className={classes.EndGameButton}
               variant="contained"
               size="large"
-              onClick={props.endGame}
+              onClick={props.stopGame}
               disabled={props.gameStatus === "over"}
             >
               End Game

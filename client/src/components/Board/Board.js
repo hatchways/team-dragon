@@ -10,11 +10,11 @@ const Board = (props) => {
   return (
     <>
       <div className={classes.Board}>
-        {props.gameStatus === "over" && (
+        {(props.gameStatus === "over" && props.endGame) && (
           <GameOver
             redScore={props.redScore}
             blueScore={props.blueScore}
-            winner={props.winner}
+            endGame={props.endGame}
           />
         )}
         {props.board.map((card, idx) => (
@@ -24,6 +24,7 @@ const Board = (props) => {
             word={card.word}
             type={card.type}
             clicked={card.clicked}
+            selectCard={props.selectCard}
           />
         ))}
       </div>

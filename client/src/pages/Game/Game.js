@@ -19,6 +19,7 @@ const Game = (props) => {
   const [blueScore, setBlueScore] = useState(2);
   const [teamList, setTeamList] = useState(undefined);
   const [gameStatus, setGameStatus] = useGameStatus();
+  const [endGame, setEndGame] = useState(undefined);
   const gameId = props.match.params.id;
   const token = window.localStorage.getItem("token");
 
@@ -64,6 +65,9 @@ const Game = (props) => {
       setGameStatus(recv.gameStatus);
       setBoard(recv.board);
       setCurrentTurn(recv.turn);
+      if (recv.gameStatus === "over") {
+        setEndGame(recv.endGame);
+      }
     });
 
     socket.on("new-message", (recv) => {
@@ -90,14 +94,28 @@ const Game = (props) => {
     });
   };
 
+  const selectCard = (card) => {
+    console.log("clicked card:", card);
+
+    if(card === "assassin") {
+      socket.emit("end-game", {
+        gameId,
+        winner: currentTurn === "red" ? "blue" : "red",
+        method: "assassin",
+      });
+    }
+  };
+
   const changeTurn = () => {
     socket.emit("change-turn", { gameId });
   };
 
-  const endGame = () => {
+  const stopGame = () => {
     // send message to the server
     socket.emit("end-game", {
-      gameId
+      gameId,
+      winner: "none",
+      method: "manual",
     });
   };
 
@@ -108,7 +126,7 @@ const Game = (props) => {
         currentTurn={currentTurn}
         redScore={redScore}
         blueScore={blueScore}
-        endGame={endGame}
+        stopGame={stopGame}
         isSpyMaster={isSpyMaster}
         teamList={teamList}
       />
@@ -128,6 +146,7 @@ const Game = (props) => {
           redScore={redScore}
           blueScore={blueScore}
           endGame={endGame}
+          selectCard={selectCard}
         />
       </div>
     </div>

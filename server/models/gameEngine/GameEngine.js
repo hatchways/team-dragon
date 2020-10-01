@@ -261,18 +261,19 @@ class GameEngine {
 
   // Any case where game comes to an end
   gameOver(winner, method) {
-    this.winner = winner.name;
+    this.winner = winner === "red" ? "Red" : "Blue";
+
     switch (method) {
       case "assassin":
-        if (winner.name === this.redTeam.name) {
-          this.endGame.winner = this.blueTeam.name;
-          this.endGame.gameOverText = `${this.blueTeam.name} team picked assassin. ${this.redTeam.name} team wins`;
+        if (winner === "red") {
+          this.endGame.winner = this.redTeam.name;
+          this.endGame.gameOverText = "Red team picked the assassin";
           console.log(
             `${this.blueTeam.name} team picked assassin. ${this.redTeam.name} team wins`,
           );
         } else {
-          this.endGame.winner = this.redTeam.name;
-          this.endGame.gameOverText = `${this.redTeam.name} team picked assassin. ${this.blueTeam.name} team wins`;
+          this.endGame.winner = this.blueTeam.name;
+          this.endGame.gameOverText = "Blue team picked the asssassin";
           console.log(
             `${this.redTeam.name} team picked assassin. ${this.blueTeam.name} team wins`,
           );
@@ -282,7 +283,7 @@ class GameEngine {
         // something
         break;
       case "manual":
-        this.endGame.winner = "red";
+        this.endGame.winner = "none";
         this.endGame.gameOverText = "Host has ended game early";
         break;
       default:
