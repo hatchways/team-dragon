@@ -4,6 +4,28 @@ const mongoose = require("mongoose");
 
 exports.postAddImage = async (req, res, next) => {
   const userId = req.params.id;
+
+  // If name update request is sent
+  if (req.body.name) {
+    const name = req.body.name;
+
+    User.findOneAndUpdate(
+      { _id: userId },
+      { name: name },
+      { upsert: true, new: true },
+    )
+      .then((user) => {
+        if (!user) {
+          return res.status(404).json({ err: "User not found" });
+        }
+        res.json({ name: user.name });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  // If profile picture request is sent
   uploadImage(req, res, (err) => {
     if (err) {
       return res.json(err);
