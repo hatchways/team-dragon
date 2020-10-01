@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   }),
   BlueTeam: {
     color: theme.blue.medium,
-    marginRight: "7px",
+    marginRight: "1.5rem",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
   },
   RedTeam: {
     color: theme.red.medium,
-    marginLeft: "7px",
+    marginLeft: "1.5rem",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",

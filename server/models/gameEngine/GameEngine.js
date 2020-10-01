@@ -10,6 +10,7 @@ class GameEngine {
     this.id = getRandomNumber(1000);
     this.redTeam = new Team("red");
     this.blueTeam = new Team("blue");
+    this.teamList = {};
     this.board = this.createBoard();
     this.turn = getRandomNumber(2) === 0 ? "blue" : "red";
     this.cardsFlipped = 0;
@@ -78,6 +79,39 @@ class GameEngine {
     });
   }
 
+  createTeamList(redTeam, blueTeam) {
+    let blueList = blueTeam.reduce(
+      (obj, player) => {
+        if (player.role === "guesser") {
+          obj["guesser"].push(player.name);
+          return obj;
+        } else {
+          obj["spyMaster"] = player.name;
+          return obj;
+        }
+      },
+      { guesser: [] },
+    );
+
+    let redList = redTeam.reduce(
+      (obj, player) => {
+        if (player.role === "guesser") {
+          obj["guesser"].push(player.name);
+          return obj;
+        } else {
+          obj["spyMaster"] = player.name;
+          return obj;
+        }
+      },
+      { guesser: [] },
+    );
+
+    this.teamList = {
+      blue: blueList,
+      red: redList,
+    };
+  }
+
   // Any Team member picks a card
   pickCard(playerId, cardIndex) {
     let team;
@@ -97,7 +131,7 @@ class GameEngine {
     console.log(`${team} team picks a card and gets : ${cardType} card`);
     switch (cardType) {
       case "assasin":
-        this.gameOver(team);
+        this.gameOver(team === this.redTeam ? this.blueTeam : this.redTeam);
         break;
 
       case "innocent":

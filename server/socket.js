@@ -83,7 +83,7 @@ module.exports = (server) => {
 
         players.forEach(({ id, name, team, spyMaster }) => {
           // Assign team to each player
-          currentGame.assignTeam({ id, name }, team);
+          currentGame.assignTeathm({ id, name }, team);
 
           // Assign role to each player
           if (!spyMaster) {
@@ -92,6 +92,12 @@ module.exports = (server) => {
             currentGame.assignRole(id, "spy-master");
           }
         });
+
+        // Team List for Display
+        currentGame.createTeamList(
+          currentGame.redTeam.players,
+          currentGame.blueTeam.players,
+        );
 
         currentGame.startGame();
         io.to(gameRoom).emit("update-roles", currentGame);

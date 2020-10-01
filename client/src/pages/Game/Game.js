@@ -22,7 +22,7 @@ const Game = (props) => {
 
   const [gameStatus, setGameStatus] = useGameStatus();
 
-  let winner = "blue"; // Testing only
+  let winner = "red"; // Testing only
 
   const gameId = props.match.params.id;
   const token = window.localStorage.getItem("token");
@@ -31,26 +31,6 @@ const Game = (props) => {
     // join the match
     socket.emit("init-game", { gameId, token }, (recv) => {
       console.log("Game State:", recv);
-
-      // let blueTeamList = recv.state.blueTeam.players.reduce((obj, player) => {
-      //   if (player.role === "guesser") {
-      //     obj["guesser"].push(player.name);
-      //     return obj;
-      //   } else {
-      //     obj["spyMaster"] = player.name;
-      //     return obj;
-      //   }
-      // }, {guesser: []});
-
-      // let redTeamList = recv.state.redTeam.players.reduce((obj, player) => {
-      //   if (player.role === "guesser") {
-      //     obj["guesser"].push(player.name);
-      //     return obj;
-      //   } else {
-      //     obj["spyMaster"] = player.name;
-      //     return obj;
-      //   }
-      // }, {guesser:[]});
 
       // setBlueTeam(blueTeamList);
       // setRedTeam(redTeamList);
@@ -85,6 +65,8 @@ const Game = (props) => {
 
     socket.on("update-game", (recv) => {
       console.log("Updated Game State:", recv);
+
+
 
       // set current state of the game
       setGameStatus(recv.gameStatus);
