@@ -46,12 +46,10 @@ class GameEngine {
 
   static async getGame(id) {
     try {
-      const res = await redis.get(id);
-      const gameData = JSON.parse(res);
-
-      return new this(gameData);
+      const response = await redis.get(id);
+      return new this(JSON.parse(response));
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return null;
     }
   }
@@ -59,8 +57,10 @@ class GameEngine {
   async save() {
     try {
       await redis.set(this.id, JSON.stringify(this));
+      return true;
     } catch (err) {
-      console.log(err);
+      console.error(err);
+      return false;
     }
   }
 
@@ -122,6 +122,59 @@ class GameEngine {
     });
   }
 
+  // Sets the current user
+  setCurrentUser(user) {
+    this.currentUser = user;
+  }
+
+  // Updated players in the array for this game
+  getCurrentPlayers() {
+    return this.players;
+  }
+
+  // New user joins the game and gets added to players array of the game
+  joinGame(user) {
+    if (this.players.length === 0) {
+      this.players.push(user);
+      return this.players;
+    }
+
+    // To avoid duplication
+    const result = this.players.find(
+      (player) => player.id.toString() === user.id.toString(),
+    );
+    if (!result) {
+      this.players.push(user);
+    }
+
+    return this.players;
+  }
+
+  startGame() {
+    this.gameStatus = "running";
+  }
+
+  //Reset the game to initial state
+  resetGame() {
+    this.redTeam = new Team("red");
+    this.blueTeam = new Team("blue");
+    this.board = this.createBoard();
+    this.turn = "blue";
+
+    console.log("Game was reset!!!");
+  }
+
+  //change Turn
+  changeTurn() {
+    if (this.turn == "blue") {
+      this.turn = "red";
+      console.log(`${this.turn} team's turn!`);
+    } else {
+      this.turn = "blue";
+      console.log(`${this.turn} team's turn!`);
+    }
+  }
+
   // Any Team member picks a card
   pickCard(playerId, cardIndex) {
     let team;
@@ -169,26 +222,6 @@ class GameEngine {
     this.gameDecision();
   }
 
-  //change Turn
-  changeTurn() {
-    if (this.turn == "blue") {
-      this.turn = "red";
-      console.log(`${this.turn} team's turn!`);
-    } else {
-      this.turn = "blue";
-      console.log(`${this.turn} team's turn!`);
-    }
-  }
-
-  //Reset the game to initial state
-  resetGame() {
-    this.redTeam = new Team("red");
-    this.blueTeam = new Team("blue");
-    this.board = this.createBoard();
-    this.turn = "blue";
-    console.log("Game was reset!!!");
-  }
-
   // Any case where game comes to an end
   gameOver(winner) {
     if (winner === this.redTeam.name) {
@@ -214,38 +247,6 @@ class GameEngine {
     } else {
       console.log("Next Move Please!");
     }
-  }
-
-  // New user joins the game and gets added to players array of the game
-  joinGame(user) {
-    if (this.players.length === 0) {
-      this.players.push(user);
-      return this.players;
-    }
-
-    // To avoid duplication
-    const result = this.players.find(
-      (player) => player.id.toString() === user.id.toString(),
-    );
-    if (!result) {
-      this.players.push(user);
-    }
-
-    return this.players;
-  }
-
-  // Sets the current user
-  setCurrentUser(user) {
-    this.currentUser = user;
-  }
-
-  // Updated players in the array for this game
-  getCurrentPlayers() {
-    return this.players;
-  }
-
-  startGame() {
-    this.gameStatus = "running";
   }
 }
 

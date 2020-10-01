@@ -22,7 +22,7 @@ const Messenger = (props) => {
     event.preventDefault();
 
     // if no input, do not send
-    if(!messageInput || !messageInput.trim()) {
+    if (!messageInput || !messageInput.trim()) {
       return;
     }
 

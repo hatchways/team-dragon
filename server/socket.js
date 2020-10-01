@@ -59,9 +59,8 @@ module.exports = (server) => {
         }
 
         currentGame.joinGame(newPlayer);
-        game = currentGame;
-
         await currentGame.save();
+        game = currentGame;
 
         io.to(gameRoom).emit("update-players", { game, errors });
       } catch (err) {
@@ -175,6 +174,7 @@ module.exports = (server) => {
 
       const currentGame = await GameEngine.getGame(gameId);
       currentGame.pickCard(playerId, cardIndex); // Result of the move would be in console for now
+      await currentGame.save();
     });
 
     socket.on("change-turn", async (recv) => {
@@ -182,7 +182,6 @@ module.exports = (server) => {
 
       const currentGame = await GameEngine.getGame(gameId);
       currentGame.changeTurn();
-
       await currentGame.save();
 
       io.to(gameId).emit("update-game", currentGame);
@@ -194,7 +193,6 @@ module.exports = (server) => {
 
       const currentGame = await GameEngine.getGame(gameId);
       currentGame.gameOver(winner);
-
       await currentGame.save();
 
       io.to(gameId).emit("update-game", currentGame);

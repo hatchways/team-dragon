@@ -60,8 +60,12 @@ app.use((req, res, next) => {
 // redis connection
 redis
   .createClient(config.redis)
-  .on("connect", () => console.log("Redis connected"))
-  .on("error", (err) => console.log(err));
+  .on("connect", () => {
+    console.log("Redis connected");
+  })
+  .on("error", (err) => {
+    throw err;
+  });
 
 // database connection using Mongoose
 mongoose

@@ -5,13 +5,20 @@ const User = require("../models/User");
 exports.postCreateGame = async (req, res, next) => {
   try {
     if (!req.user) {
-      return res.json({ success: false, error: "Please Sign in !" });
+      return res.json({
+        success: false,
+        error: "Please Sign in !",
+      });
     }
-    const hostId = req.user._id;
+
     // User id coming from request
+    const hostId = req.user._id;
     const user = await User.findOne({ _id: hostId });
     if (!user) {
-      return res.status(404).json({ success: false, error: "User not found" });
+      return res.status(404).json({
+        success: false,
+        error: "User not found",
+      });
     }
 
     // Initializing the game
@@ -19,6 +26,9 @@ exports.postCreateGame = async (req, res, next) => {
 
     // Add userId to gameEngine for current user
     gameEngine.setCurrentUser(user);
+
+    // save gameEngine to redis
+    await gameEngine.save();
 
     const players = [
       {
@@ -36,10 +46,11 @@ exports.postCreateGame = async (req, res, next) => {
 
     const result = await game.save();
     if (!result) {
-      return res.status(404).json({ success: false, error: "Game not saved" });
+      return res.status(404).json({
+        success: false,
+        error: "Game not saved",
+      });
     }
-
-    await gameEngine.save();
 
     res.status(202).send({
       game: gameEngine,
