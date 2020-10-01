@@ -17,9 +17,14 @@ const Game = (props) => {
   const [currentTurn, setCurrentTurn] = useState("");
   const [redScore, setRedScore] = useState(1);
   const [blueScore, setBlueScore] = useState(2);
-  const [redTeam, setRedTeam] = useState({ spyMaster: "Nicholas", guesser: ["Karl", "Jorawar"] });
-  const [blueTeam, setBlueTeam] = useState({ spyMaster: "Bonnie", guesser: ["Andy"] });
-
+  const [teamList, setTeamList] = useState({
+    red: {
+      guesser: [],
+    },
+    blue: {
+      guesser: [],
+    },
+  });
   const [gameStatus, setGameStatus] = useGameStatus();
 
   let winner = "red"; // Testing only
@@ -32,8 +37,7 @@ const Game = (props) => {
     socket.emit("init-game", { gameId, token }, (recv) => {
       console.log("Game State:", recv);
 
-      // setBlueTeam(blueTeamList);
-      // setRedTeam(redTeamList);
+      setTeamList(recv.state.teamList)
       setName(recv.name);
       setMessages(recv.history);
       setBoard(recv.state.board);
@@ -66,9 +70,8 @@ const Game = (props) => {
     socket.on("update-game", (recv) => {
       console.log("Updated Game State:", recv);
 
-
-
       // set current state of the game
+
       setGameStatus(recv.gameStatus);
       setBoard(recv.board);
       setCurrentTurn(recv.turn);
@@ -119,8 +122,7 @@ const Game = (props) => {
         blueScore={blueScore}
         endGame={endGame}
         isSpyMaster={isSpyMaster}
-        blueTeam={blueTeam}
-        redTeam={redTeam}
+        teamList={teamList}
       />
       <div className={classes.GameArea}>
         <Messenger

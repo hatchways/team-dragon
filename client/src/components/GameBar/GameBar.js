@@ -14,18 +14,6 @@ const GameBar = (props) => {
   const [hostId] = useHostId();
   const userId = window.localStorage.getItem("id");
 
-  console.log("redTeam", props.redTeam);
-  console.log("blueTeam", props.blueTeam);
-
-  const displayblueTeam = props.blueTeam.guesser.map((player, i) => (
-    <Typography key={i}>{player}</Typography>
-  ));
-
-  const displayRedTeam = props.redTeam.guesser.map((player, i) => (
-    <Typography key={i}>{player}</Typography>
-  ));
-
-
   return (
     <nav className={classes.NavBar}>
       <Box className={classes.NavBarWrap}>
@@ -36,10 +24,12 @@ const GameBar = (props) => {
           <Box className={classes.BlueTeam}>
             <Box>
               <Typography className={classes.SpyMasterText} variant="body1">
-                SpyMaster - {props.blueTeam.spyMaster}
+                SpyMaster - {props.teamList.blue.spyMaster}
               </Typography>
             </Box>
-            {displayblueTeam}
+            {props.teamList.blue.guesser.map((player, i) => (
+              <Typography key={i}>{player}</Typography>
+            ))}
           </Box>
           <Box className={classes.BlueScore}>
             <Typography variant="h3">{props.blueScore}</Typography>
@@ -55,10 +45,12 @@ const GameBar = (props) => {
           <Box className={classes.RedTeam}>
             <Box>
               <Typography className={classes.SpyMasterText} variant="body1">
-                SpyMaster - {props.redTeam.spyMaster}
+                SpyMaster - {props.teamList.red.spyMaster}
               </Typography>
             </Box>
-            {displayRedTeam}
+            {props.teamList.red.guesser.map((player, i) => (
+              <Typography key={i}>{player}</Typography>
+            ))}
           </Box>
         </Box>
         <Box className={classes.BarControls}>

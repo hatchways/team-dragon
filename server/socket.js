@@ -83,7 +83,7 @@ module.exports = (server) => {
 
         players.forEach(({ id, name, team, spyMaster }) => {
           // Assign team to each player
-          currentGame.assignTeathm({ id, name }, team);
+          currentGame.assignTeam({ id, name }, team);
 
           // Assign role to each player
           if (!spyMaster) {
