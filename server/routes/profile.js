@@ -6,6 +6,6 @@ router.post("/edit-profile/:id", profileController.postUpdateProfile);
 
 // router.post("/edit-profile/name/:id",profileController.updateName);
 
-// router.get("/profile/:id", profileController.getProfile);
+router.get("/profile/:id", profileController.getProfile);
 
 module.exports = router;

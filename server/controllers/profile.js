@@ -2,9 +2,11 @@ const uploadImage = require("../middleware/uploadImage");
 const User = require("../models/User");
 const mongoose = require("mongoose");
 
-exports.postAddImage = async (req, res, next) => {
+exports.postUpdateProfile = async (req, res, next) => {
   const userId = req.params.id;
-
+  if(!userId){
+    return res.status(404).json({err: "Please Sign in!"})
+  }
   // If name update request is sent
   if (req.body.name) {
     const name = req.body.name;
