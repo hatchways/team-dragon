@@ -25,7 +25,7 @@ const App = () => {
                 <PrivateRoute exact path="/edit-profile" component={ProfileSettings} />
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/login" component={Login} />
-                <PrivateRoute exact path="/:id" component={GameSetup} />
+                <Route exact path="/:id" component={GameSetup} />
                 <Route path="/" component={Landing} />
               </Switch>
             </BrowserRouter>

@@ -109,13 +109,13 @@ module.exports = {
     req.session.destroy((err) => {
       if (err) {
         console.log(err)
-        return res.json({
+        return res.status(400).json({
           success: false,
           errors: { message: "User session not found"},
         });
       }
-      res.clearCookie("connect.sid");
-      res.json({ message: "Successfully logged Out!" });
+      res.clearCookie(config.sessionName);
+      res.status(200).json({ message: "Successfully logged Out!" });
     });
   },
 };

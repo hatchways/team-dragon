@@ -53,28 +53,11 @@ exports.postUpdateProfile = async (req, res, next) => {
   });
 };
 
-exports.updateName = (req, res, next) => {
-  const userId = req.params.id;
-  const name = req.body.name;
-
-  User.findOneAndUpdate(
-    { _id: userId },
-    { name: name },
-    { upsert: true, new: true },
-  )
-    .then((user) => {
-      if (!user) {
-        return res.status(404).json({ err: "User not found" });
-      }
-      res.json({ name: user.name });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
 exports.getProfile = (req, res, next) => {
   const userId = req.params.id;
+  if(!userId){
+    return res.status(404).json({err: "Please Sign in!"})
+  }
   User.findOne({ _id: userId })
     .then((user) => {
       if (!user) {

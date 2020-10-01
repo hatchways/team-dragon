@@ -6,7 +6,7 @@ const User = require("../models/User");
 exports.postCreateGame = async (req, res, next) => {
   try {
     if (!req.user) {
-      return res.json({ success: false, error: "Please Sign in !" });
+      return res.status(401).json({ success: false, error: "Please Sign in !" });
     }
     const hostId = req.user._id;
     // User id coming from request
@@ -19,7 +19,7 @@ exports.postCreateGame = async (req, res, next) => {
     const gameEngine = new GameEngine();
 
     // Add userId to gameEngine for current user
-    gameEngine.setCurrentUser(user);
+    gameEngine.setHost(user);
 
     const players = [
       {
