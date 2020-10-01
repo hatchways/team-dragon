@@ -17,8 +17,8 @@ const Game = (props) => {
   const [currentTurn, setCurrentTurn] = useState("");
   const [redScore, setRedScore] = useState(1);
   const [blueScore, setBlueScore] = useState(2);
-  const [redTeam, setRedTeam] = useState({ spyMaster: "Nick", guesser: ["Karl", "Jorawar"] });
-  const [blueTeam, setBlueTeam] = useState({ spyMaster: "Nick", guesser: ["Karl", "Jorawar"] });
+  const [redTeam, setRedTeam] = useState({ spyMaster: "Nicholas", guesser: ["Karl", "Jorawar"] });
+  const [blueTeam, setBlueTeam] = useState({ spyMaster: "Bonnie", guesser: ["Andy"] });
 
   const [gameStatus, setGameStatus] = useGameStatus();
 
