@@ -107,8 +107,15 @@ module.exports = {
   // Logout
   async logout(req, res, next) {
     req.session.destroy((err) => {
-      console.log(err);
-      res.redirect("/");
+      if (err) {
+        console.log(err)
+        return res.json({
+          success: false,
+          errors: { message: "User session not found"},
+        });
+      }
+      res.clearCookie("connect.sid");
+      res.json({ message: "Successfully logged Out!" });
     });
   },
 };
