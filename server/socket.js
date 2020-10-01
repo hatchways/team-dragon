@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const config = require("./config");
-const allGames = require("./models/gameEngine/allGames");
 const User = require("./models/User");
+const GameEngine = require("./models/gameEngine/GameEngine");
 
 module.exports = (server) => {
   const io = require("socket.io")(server);
@@ -49,7 +49,7 @@ module.exports = (server) => {
           throw new Error("Game not created");
         }
 
-        const currentGame = allGames.getGame(parseInt(gameId));
+        const currentGame = await GameEngine.getGame(gameId);
         if (!currentGame) {
           errors.push({
             name: "UndefinedError",
@@ -59,6 +59,7 @@ module.exports = (server) => {
         }
 
         currentGame.joinGame(newPlayer);
+        await currentGame.save();
         game = currentGame;
 
         io.to(gameRoom).emit("update-players", { game, errors });
@@ -68,11 +69,11 @@ module.exports = (server) => {
     });
 
     // Receive assigned roles emitted from FE
-    socket.on("start-game", (recv) => {
+    socket.on("start-game", async (recv) => {
       const { gameId, players } = recv;
 
       try {
-        const currentGame = allGames.getGame(parseInt(gameId));
+        const currentGame = await GameEngine.getGame(gameId);
         if (!currentGame) {
           errors.push({
             name: "UndefinedError",
@@ -94,13 +95,15 @@ module.exports = (server) => {
         });
 
         currentGame.startGame();
+        await currentGame.save();
+
         io.to(gameRoom).emit("update-roles", currentGame);
       } catch (err) {
         console.log(err);
       }
     });
 
-    socket.on("init-game", (recv, fn) => {
+    socket.on("init-game", async (recv, fn) => {
       const { gameId, token } = recv;
 
       try {
@@ -115,7 +118,7 @@ module.exports = (server) => {
         // create room details if does not exist
         if (roomDetails[gameId] === undefined) {
           roomDetails[gameId] = {
-            state: allGames.getGame(parseInt(gameId)),
+            state: await GameEngine.getGame(gameId),
             history: [],
           };
         }
@@ -166,28 +169,31 @@ module.exports = (server) => {
     });
 
     // Socket listener for next move
-    socket.on("move", (recv) => {
+    socket.on("move", async (recv) => {
       const { gameId, playerId, cardIndex } = recv;
 
-      const currentGame = allGames.getGame(parseInt(gameId));
+      const currentGame = await GameEngine.getGame(gameId);
       currentGame.pickCard(playerId, cardIndex); // Result of the move would be in console for now
+      await currentGame.save();
     });
 
-    socket.on("change-turn", (recv) => {
+    socket.on("change-turn", async (recv) => {
       const { gameId } = recv;
 
-      const currentGame = allGames.getGame(parseInt(gameId));
+      const currentGame = await GameEngine.getGame(gameId);
       currentGame.changeTurn();
+      await currentGame.save();
 
       io.to(gameId).emit("update-game", currentGame);
     });
 
     // Listener to end game
-    socket.on("end-game", (recv) => {
+    socket.on("end-game", async (recv) => {
       const { gameId, winner } = recv;
 
-      const currentGame = allGames.getAllGames().get(parseInt(gameId));
+      const currentGame = await GameEngine.getGame(gameId);
       currentGame.gameOver(winner);
+      await currentGame.save();
 
       io.to(gameId).emit("update-game", currentGame);
     });

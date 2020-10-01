@@ -21,6 +21,7 @@
     "express": "~4.16.1",
     "express-session": "^1.17.1",
     "http-errors": "~1.6.3",
+    "ioredis": "^4.17.3",
     "is-empty": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.20",
@@ -32,6 +33,7 @@
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "random-words": "^1.1.1",
+    "redis": "^3.0.2",
     "socket.io": "^2.3.0",
     "validator": "^13.1.17"
   },

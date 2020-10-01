@@ -1,8 +1,8 @@
 class Team {
-  constructor(name) {
+  constructor(name, players = [], points = 0) {
     this.name = name;
-    this.players = [];
-    this.points = 0;
+    this.players = players;
+    this.points = points;
   }
 
   addPoint() {
