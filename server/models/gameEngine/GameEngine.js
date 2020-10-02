@@ -285,8 +285,20 @@ class GameEngine {
           );
         }
         break;
-      case "last-card":
-        // something
+      case "lastCard":
+        if (winner === "red") {
+          this.endGame.winner = capitalizeWinner(this.redTeam.name);
+          this.endGame.gameOverText = `${capitalizeWinner(
+            this.redTeam.name,
+          )} found all of their cards`;
+          console.log(`${this.redTeam.name} team wins - all cards found`);
+        } else {
+          this.endGame.winner = capitalizeWinner(this.blueTeam.name);
+          this.endGame.gameOverText = `${capitalizeWinner(
+            this.blueTeam.name,
+          )} found all of their cards`;
+          console.log(`${this.blueTeam.name}team wins - all cards found`);
+        }
         break;
       case "manual":
         this.endGame.winner = "none";
@@ -301,14 +313,15 @@ class GameEngine {
 
   // Decision whether blue or red wins
   gameDecision() {
-    if (this.redTeam.points + this.blueTeam.points === 16) {
-      if (this.redTeam.points > this.blueTeam.points) {
-        console.log(`${this.redTeam.name} wins the game`);
-      } else if (this.redTeam.points === this.blueTeam.points) {
-        console.log("Game was a DRAW");
-      } else {
-        console.log(`${this.blueTeam.name} wins the game`);
-      }
+    const winningScoreRed = this.startingTeam === "red" ? 9 : 8;
+    const winningScoreBlue = this.startingTeam === "red" ? 9 : 8;
+
+    if (this.redTeam.points === winningScoreRed) {
+      this.gameOver(this.redTeam.name, "lastCard");
+      console.log(`${this.redTeam.name} wins the game`);
+    } else if (this.blueTeam.points === winningScoreBlue) {
+      this.gameOver(this.blueTeam.name, "lastCard");
+      console.log(`${this.blueTeam.name} wins the game`);
     } else {
       console.log("Next Move Please!");
     }
