@@ -71,7 +71,7 @@ const ProfileSettings = () => {
 
   const closeEditNameDialog = () => {
     setOpenEditNameDialog(false);
-  }
+  };
 
   const handleFileInput = async (e) => {
     setProfileImageFile(e.target.files[0]);
@@ -84,10 +84,7 @@ const ProfileSettings = () => {
       data.append("profileImage", profileImageFile, profileImageFile.name);
 
       try {
-        const result = await axios.post(
-          `/edit-profile/image/${user.id}`,
-          data,
-        );
+        const result = await axios.post(`/edit-profile/image/${user.id}`, data);
         if (result) {
           const { location } = result.data;
           setProfileImageUrl(location);

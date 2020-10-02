@@ -14,7 +14,7 @@ const config = require("./config");
 const gameRouter = require("./routes/game");
 const authRouter = require("./routes/auth");
 const emailRouter = require("./routes/email");
-const profileRouter = require('./routes/profile');
+const profileRouter = require("./routes/profile");
 const User = require("./models/User");
 
 // app configuration

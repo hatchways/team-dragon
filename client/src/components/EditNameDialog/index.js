@@ -1,1 +1,1 @@
-export {default} from './EditNameDialog';
+export { default } from "./EditNameDialog";
