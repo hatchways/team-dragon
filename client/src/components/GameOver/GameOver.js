@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) =>
     },
     gameOver: {
       fontSize: "1.5rem",
-      marginBottom: ".8rem"
+      marginBottom: ".8rem",
     },
     gameOverText: (props) => ({
       color:
@@ -72,10 +72,11 @@ const GameOver = (props) => {
     blueScore,
     newGameButton,
   } = classes;
-  
+
   const handleNewGame = () => {
     //Reset Game
   };
+  console.log("props.endGame.winner", props.endGame.winner);
 
   return (
     <>
@@ -91,18 +92,18 @@ const GameOver = (props) => {
               <Typography className={gameOver} variant="h3" align="center">
                 Game over!
               </Typography>
-              <Typography variant="body1"  align="center">
-              {props.endGame.gameOverText}
-              </Typography>
+              {props.endGame.winner !== "No" && (
+                <Typography variant="body1" align="center">
+                  {props.endGame.gameOverText}
+                </Typography>
+              )}
             </Box>
             <Box>
               <Typography
                 variant="h3"
-                className={
-                  props.endGame.winner !== "none" ? gameOverText : null
-                }
+                className={props.endGame.winner !== "No" ? gameOverText : null}
               >
-                {props.endGame.winner} team wins
+                {props.endGame.gameOverText}
               </Typography>
             </Box>
             <Box my={3}>

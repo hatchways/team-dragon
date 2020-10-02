@@ -16,9 +16,18 @@ const Game = (props) => {
   const [currentTurn, setCurrentTurn] = useState("");
   const [redScore, setRedScore] = useState(0);
   const [blueScore, setBlueScore] = useState(0);
-  const [teamList, setTeamList] = useState(undefined);
+  const [teamList, setTeamList] = useState({
+    blue: {
+      spyMaster: "",
+      guesser: [],
+    },
+    red: {
+      spyMaster: "",
+      guesser: [],
+    },
+  });
   const [gameStatus, setGameStatus] = useGameStatus();
-  const [endGame, setEndGame] = useState(undefined);
+  const [endGame, setEndGame] = useState({ winner: "", gameOverTest: "" });
   const gameId = props.match.params.id;
   const token = window.localStorage.getItem("token");
 
@@ -26,7 +35,7 @@ const Game = (props) => {
     // join the match
     socket.emit("init-game", { gameId, token }, (recv) => {
       console.log("Game State:", recv);
-      setTeamList(recv.state.teamList)
+      setTeamList(recv.state.teamList);
       setName(recv.name);
       setMessages(recv.history);
       setBoard(recv.state.board);
@@ -64,8 +73,8 @@ const Game = (props) => {
       setGameStatus(recv.gameStatus);
       setBoard(recv.board);
       setCurrentTurn(recv.turn);
-      setRedScore(recv.redTeam.points)
-      setBlueScore(recv.blueTeam.points)
+      setRedScore(recv.redTeam.points);
+      setBlueScore(recv.blueTeam.points);
       if (recv.gameStatus === "over") {
         setEndGame(recv.endGame);
       }
@@ -97,7 +106,6 @@ const Game = (props) => {
 
   const selectCard = (cardIndex) => {
     socket.emit("move", { gameId, currentTurn, cardIndex });
-   
   };
 
   const changeTurn = () => {
@@ -112,7 +120,6 @@ const Game = (props) => {
       method: "manual",
     });
   };
-
 
   return (
     <div className={classes.Game}>

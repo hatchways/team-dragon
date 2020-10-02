@@ -24,10 +24,10 @@ const GameBar = (props) => {
           <Box className={classes.BlueTeam}>
             <Box>
               <Typography className={classes.SpyMasterText} variant="body1">
-                SpyMaster - {props.teamList && props.teamList.blue.spyMaster}
+                SpyMaster - {props.teamList.blue.spyMaster}
               </Typography>
             </Box>
-            {props.teamList && props.teamList.blue.guesser.map((player, i) => (
+            {props.teamList.blue.guesser.map((player, i) => (
               <Typography key={i}>{player}</Typography>
             ))}
           </Box>
@@ -45,10 +45,10 @@ const GameBar = (props) => {
           <Box className={classes.RedTeam}>
             <Box>
               <Typography className={classes.SpyMasterText} variant="body1">
-                SpyMaster - {props.teamList && props.teamList.red.spyMaster}
+                SpyMaster - {props.teamList.red.spyMaster}
               </Typography>
             </Box>
-            {props.teamList && props.teamList.red.guesser.map((player, i) => (
+            {props.teamList.red.guesser.map((player, i) => (
               <Typography key={i}>{player}</Typography>
             ))}
           </Box>

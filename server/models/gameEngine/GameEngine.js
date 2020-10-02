@@ -213,25 +213,12 @@ class GameEngine {
 
   // Any Team member picks a card
   pickCard(team, cardIndex) {
-    // let team;
-    // this.redTeam.players.forEach((item) => {
-    //   if (item.id === playerId) {
-    //     team = item.getTeam();
-    //   }
-    // });
-
-    // this.blueTeam.players.forEach((item) => {
-    //   if (item.id === playerId) {
-    //     team = item.getTeam();
-    //   }
-    // });
-
     let cardType = this.board[cardIndex].type;
     console.log(`${team} team picks a card and gets : ${cardType} card`);
     switch (cardType) {
       case "assassin":
         this.gameOver(
-          (team = this.redTeam.name ? this.blueTeam.name : this.redTeam.name),
+          team === this.redTeam.name ? this.blueTeam.name : this.redTeam.name,
           "assassin",
         );
         break;
