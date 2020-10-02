@@ -20,7 +20,7 @@ class GameEngine {
       this.turn = getRandomNumber(2) === 0 ? "blue" : "red";
       this.cardsFlipped = 0;
       this.players = [];
-      this.currentUser = null;
+      this.host = null;
       this.gameStatus = "setup";
       this.winner = "";
     } else {
@@ -40,7 +40,7 @@ class GameEngine {
       this.teamList = data.teamList;
       this.cardsFlipped = data.cardsFlipped;
       this.players = data.players;
-      this.currentUser = data.currentUser;
+      this.host = data.host;
       this.gameStatus = data.gameStatus;
       this.winner = data.winner;
     }
@@ -157,8 +157,8 @@ class GameEngine {
     };
   }
   // Sets the current user
-  setCurrentUser(user) {
-    this.currentUser = user;
+  setHost(user) {
+    this.host = user;
   }
 
   // Updated players in the array for this game
