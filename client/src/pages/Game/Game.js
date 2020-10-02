@@ -29,7 +29,6 @@ const Game = (props) => {
     // join the match
     socket.emit("init-game", { gameId, token }, (recv) => {
       console.log("Game State:", recv);
-
       setTeamList(recv.state.teamList)
       setName(recv.name);
       setMessages(recv.history);

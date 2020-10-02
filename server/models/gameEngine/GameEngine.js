@@ -10,7 +10,6 @@ const config = require("../../config");
 const redis = new Redis(config.redis);
 
 class GameEngine {
-
   constructor(data = null) {
     if (!data) {
       this.id = getRandomNumber(1000);
@@ -32,12 +31,13 @@ class GameEngine {
         data.redTeam.points,
       );
       this.blueTeam = new Team(
-        data.redTeam.name,
-        data.redTeam.players,
-        data.redTeam.points,
+        data.blueTeam.name,
+        data.blueTeam.players,
+        data.blueTeam.points,
       );
       this.board = data.board;
       this.turn = data.turn;
+      this.teamList = data.teamList;
       this.cardsFlipped = data.cardsFlipped;
       this.players = data.players;
       this.currentUser = data.currentUser;
