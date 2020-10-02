@@ -23,11 +23,10 @@ const Game = (props) => {
   let winner = "red"; // Testing only
 
   const gameId = props.match.params.id;
-  const token = window.localStorage.getItem("token");
 
   useEffect(() => {
     // join the match
-    socket.emit("init-game", { gameId, token }, (recv) => {
+    socket.emit("init-game", { gameId }, (recv) => {
       console.log("Game State:", recv);
       setTeamList(recv.state.teamList)
       setName(recv.name);
@@ -72,7 +71,7 @@ const Game = (props) => {
     socket.on("new-message", (recv) => {
       setMessages((prevMessages) => [...prevMessages, recv]);
     });
-  }, [gameId, token]);
+  }, [gameId]);
 
   const sendMessage = (msg) => {
     const msgData = {
