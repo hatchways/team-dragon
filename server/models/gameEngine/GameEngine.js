@@ -19,7 +19,6 @@ class GameEngine {
       this.board = this.createBoard();
       this.startingTeam = getRandomNumber(2) === 0 ? "blue" : "red";
       this.turn = this.startingTeam;
-      this.cardsFlipped = "";
       this.players = [];
       this.host = null;
       this.gameStatus = "setup";
@@ -40,7 +39,6 @@ class GameEngine {
       this.turn = data.turn;
       this.startingTeam = data.startingTeam;
       this.teamList = data.teamList;
-      this.cardsFlipped = data.cardsFlipped;
       this.players = data.players;
       this.host = data.host;
       this.gameStatus = data.gameStatus;
@@ -80,10 +78,10 @@ class GameEngine {
 
     for (let i = 1; i <= 25; i++) {
       if (i <= 9) {
-        cardType = this.turn === "blue" ? "blue" : "red";
+        cardType = this.startingTeam === "blue" ? "blue" : "red";
         board.push(new Card(randWords[i - 1], cardType));
       } else if (i <= 17) {
-        cardType = this.turn === "blue" ? "red" : "blue";
+        cardType = this.startingTeam === "blue" ? "red" : "blue";
         board.push(new Card(randWords[i - 1], cardType));
       } else if (i <= 24) {
         cardType = "innocent";
@@ -214,7 +212,10 @@ class GameEngine {
   // Any Team member picks a card
   pickCard(team, cardIndex) {
     let cardType = this.board[cardIndex].type;
-    console.log(`${team} team picks a card and gets : ${cardType} card`);
+    console.log(`${team} team picks a: ${cardType} card`);
+
+    this.board[cardIndex].clicked = true;
+
     switch (cardType) {
       case "assassin":
         this.gameOver(
@@ -228,22 +229,25 @@ class GameEngine {
       case "red":
         if (team === this.redTeam.name) {
           this.redTeam.addPoint();
+          console.log(`${team} gets 1 point`);
         } else {
           this.changeTurn();
+          console.log(`${team} turn over`);
         }
         break;
       case "blue":
         if (team === this.blueTeam.name) {
           this.blueTeam.addPoint();
+          console.log(`${team} gets 1 point`);
         } else {
           this.changeTurn();
+          console.log(`${team} turn over`);
         }
         break;
       default:
         return false;
     }
 
-    this.cardsFlipped += 1;
     this.gameDecision();
   }
 
