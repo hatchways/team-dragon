@@ -98,6 +98,7 @@ const Game = (props) => {
   };
 
   const selectCard = (cardIndex) => {
+    if (board[cardIndex].clicked === true) return;
     socket.emit("move", { gameId, currentTurn, cardIndex });
   };
 

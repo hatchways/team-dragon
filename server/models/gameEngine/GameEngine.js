@@ -19,7 +19,6 @@ class GameEngine {
       this.board = this.createBoard();
       this.startingTeam = getRandomNumber(2) === 0 ? "blue" : "red";
       this.turn = this.startingTeam;
-      this.cardsFlipped = "";
       this.players = [];
       this.host = null;
       this.gameStatus = "setup";
@@ -40,7 +39,6 @@ class GameEngine {
       this.turn = data.turn;
       this.startingTeam = data.startingTeam;
       this.teamList = data.teamList;
-      this.cardsFlipped = data.cardsFlipped;
       this.players = data.players;
       this.host = data.host;
       this.gameStatus = data.gameStatus;
@@ -215,6 +213,9 @@ class GameEngine {
   pickCard(team, cardIndex) {
     let cardType = this.board[cardIndex].type;
     console.log(`${team} team picks a card and gets : ${cardType} card`);
+
+    this.board[cardIndex].clicked = true;
+
     switch (cardType) {
       case "assassin":
         this.gameOver(
@@ -243,7 +244,6 @@ class GameEngine {
         return false;
     }
 
-    this.cardsFlipped += 1;
     this.gameDecision();
   }
 
