@@ -17,8 +17,9 @@ class GameEngine {
       this.blueTeam = new Team("blue");
       this.teamList = {};
       this.board = this.createBoard();
-      this.turn = getRandomNumber(2) === 0 ? "blue" : "red";
-      this.cardsFlipped = 0;
+      this.startingTeam = getRandomNumber(2) === 0 ? "blue" : "red";
+      this.turn = this.startingTeam;
+      this.cardsFlipped = "";
       this.players = [];
       this.currentUser = null;
       this.gameStatus = "setup";
@@ -37,6 +38,7 @@ class GameEngine {
       );
       this.board = data.board;
       this.turn = data.turn;
+      this.startingTeam = data.startingTeam;
       this.teamList = data.teamList;
       this.cardsFlipped = data.cardsFlipped;
       this.players = data.players;
