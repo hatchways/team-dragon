@@ -98,6 +98,8 @@ const Game = (props) => {
   };
 
   const selectCard = (cardIndex) => {
+    if (team !== currentTurn) return;
+    if (isSpyMaster === false) return;
     if (board[cardIndex].clicked === true) return;
     socket.emit("move", { gameId, currentTurn, cardIndex });
   };

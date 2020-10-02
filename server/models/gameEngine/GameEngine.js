@@ -78,10 +78,10 @@ class GameEngine {
 
     for (let i = 1; i <= 25; i++) {
       if (i <= 9) {
-        cardType = this.turn === "blue" ? "blue" : "red";
+        cardType = this.startingTeam === "blue" ? "blue" : "red";
         board.push(new Card(randWords[i - 1], cardType));
       } else if (i <= 17) {
-        cardType = this.turn === "blue" ? "red" : "blue";
+        cardType = this.startingTeam === "blue" ? "red" : "blue";
         board.push(new Card(randWords[i - 1], cardType));
       } else if (i <= 24) {
         cardType = "innocent";
@@ -212,7 +212,7 @@ class GameEngine {
   // Any Team member picks a card
   pickCard(team, cardIndex) {
     let cardType = this.board[cardIndex].type;
-    console.log(`${team} team picks a card and gets : ${cardType} card`);
+    console.log(`${team} team picks a: ${cardType} card`);
 
     this.board[cardIndex].clicked = true;
 
@@ -229,15 +229,19 @@ class GameEngine {
       case "red":
         if (team === this.redTeam.name) {
           this.redTeam.addPoint();
+          console.log(`${team} gets 1 point`);
         } else {
           this.changeTurn();
+          console.log(`${team} turn over`);
         }
         break;
       case "blue":
         if (team === this.blueTeam.name) {
           this.blueTeam.addPoint();
+          console.log(`${team} gets 1 point`);
         } else {
           this.changeTurn();
+          console.log(`${team} turn over`);
         }
         break;
       default:
