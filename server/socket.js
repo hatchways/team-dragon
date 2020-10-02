@@ -195,10 +195,10 @@ module.exports = (server) => {
 
     // Listener to end game
     socket.on("end-game", async (recv) => {
-      const { gameId, winner } = recv;
+      const { gameId } = recv;
 
       const currentGame = await GameEngine.getGame(gameId);
-      currentGame.gameOver(winner);
+      currentGame.gameOver("Draw", "manual");
       await currentGame.save();
 
       io.to(gameId).emit("update-game", currentGame);

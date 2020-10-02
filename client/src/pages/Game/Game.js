@@ -19,9 +19,6 @@ const Game = (props) => {
   const [blueScore, setBlueScore] = useState(2);
   const [teamList, setTeamList] = useState(undefined);
   const [gameStatus, setGameStatus] = useGameStatus();
-
-  let winner = "red"; // Testing only
-
   const gameId = props.match.params.id;
   const token = window.localStorage.getItem("token");
 
@@ -100,8 +97,7 @@ const Game = (props) => {
   const endGame = () => {
     // send message to the server
     socket.emit("end-game", {
-      gameId,
-      winner, //hard coded for now
+      gameId
     });
   };
 
@@ -131,7 +127,7 @@ const Game = (props) => {
           isSpyMaster={isSpyMaster}
           redScore={redScore}
           blueScore={blueScore}
-          winner={winner}
+          endGame={endGame}
         />
       </div>
     </div>

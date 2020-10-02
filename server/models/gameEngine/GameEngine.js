@@ -227,8 +227,11 @@ class GameEngine {
     let cardType = this.board[cardIndex].type;
     console.log(`${team} team picks a card and gets : ${cardType} card`);
     switch (cardType) {
-      case "assasin":
-        this.gameOver(team === this.redTeam ? this.blueTeam : this.redTeam);
+      case "assassin":
+        this.gameOver(
+          team === this.redTeam ? this.blueTeam : this.redTeam,
+          "assassin",
+        );
         break;
 
       case "innocent":
@@ -257,14 +260,35 @@ class GameEngine {
   }
 
   // Any case where game comes to an end
-  gameOver(winner) {
-    if (winner === this.redTeam.name) {
-      this.winner = this.redTeam.name;
-      console.log("Congrats! Red team won the game");
-    } else {
-      this.winner = this.blueTeam.name;
-      console.log("Congrats! Blue team won the game");
+  gameOver(winner, method) {
+    this.winner = winner.name;
+    switch (method) {
+      case "assassin":
+        if (winner.name === this.redTeam.name) {
+          this.endGame.winner = this.blueTeam.name;
+          this.endGame.gameOverText = `${this.blueTeam.name} team picked assassin. ${this.redTeam.name} team wins`;
+          console.log(
+            `${this.blueTeam.name} team picked assassin. ${this.redTeam.name} team wins`,
+          );
+        } else {
+          this.endGame.winner = this.redTeam.name;
+          this.endGame.gameOverText = `${this.redTeam.name} team picked assassin. ${this.blueTeam.name} team wins`;
+          console.log(
+            `${this.redTeam.name} team picked assassin. ${this.blueTeam.name} team wins`,
+          );
+        }
+        break;
+      case "last-card":
+        // something
+        break;
+      case "manual":
+        this.endGame.winner = "red";
+        this.endGame.gameOverText = "Host has ended game early";
+        break;
+      default:
+        return null;
     }
+
     this.gameStatus = "over";
   }
 

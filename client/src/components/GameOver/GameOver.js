@@ -71,25 +71,6 @@ const GameOver = (props) => {
     //Reset Game
   };
 
-  const winnerText = (winner) => {
-    switch (winner) {
-      case "red":
-        return (
-          <Typography variant="h3" className={redWins}>
-            Red wins
-          </Typography>
-        );
-      case "blue":
-        return (
-          <Typography variant="h3" className={blueWins}>
-            Blue wins
-          </Typography>
-        );
-      default:
-        return;
-    }
-  };
-
   return (
     <>
       <Box className={container}>
@@ -105,7 +86,14 @@ const GameOver = (props) => {
                 Game over!
               </Typography>
             </Box>
-            <Box>{winnerText(props.winner)}</Box>
+            <Box>
+              <Typography
+                variant="h3"
+                className={props.endGame.winner === "red" ? redWins : blueWins}
+              >
+                {props.endGame.gameOverText}
+              </Typography>
+            </Box>
             <Box my={3}>
               <Typography variant="h3">
                 <Box variant="span" display="inline" className={blueWins}>
