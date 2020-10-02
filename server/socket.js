@@ -176,11 +176,13 @@ module.exports = (server) => {
 
     // Socket listener for next move
     socket.on("move", async (recv) => {
-      const { gameId, playerId, cardIndex } = recv;
+      const { gameId, currentTurn, cardIndex } = recv;
 
       const currentGame = await GameEngine.getGame(gameId);
-      currentGame.pickCard(playerId, cardIndex); // Result of the move would be in console for now
+      currentGame.pickCard(currentTurn, cardIndex); // Result of the move would be in console for now
       await currentGame.save();
+
+      io.to(gameId).emit("update-game", currentGame);
     });
 
     socket.on("change-turn", async (recv) => {

@@ -21,6 +21,7 @@ const Board = (props) => {
           <BoardCard
             isSpyMaster={props.isSpyMaster}
             key={idx}
+            cardIndex={idx}
             word={card.word}
             type={card.type}
             clicked={card.clicked}

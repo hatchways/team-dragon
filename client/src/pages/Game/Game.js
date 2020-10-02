@@ -94,16 +94,9 @@ const Game = (props) => {
     });
   };
 
-  const selectCard = (card) => {
-    console.log("clicked card:", card);
-
-    if(card === "assassin") {
-      socket.emit("end-game", {
-        gameId,
-        winner: currentTurn === "red" ? "blue" : "red",
-        method: "assassin",
-      });
-    }
+  const selectCard = (cardIndex) => {
+    socket.emit("move", { gameId, currentTurn, cardIndex });
+   
   };
 
   const changeTurn = () => {
@@ -118,6 +111,7 @@ const Game = (props) => {
       method: "manual",
     });
   };
+
 
   return (
     <div className={classes.Game}>

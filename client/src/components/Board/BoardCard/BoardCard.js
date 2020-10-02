@@ -24,7 +24,7 @@ const BoardCard = (props) => {
   }
 
   return (
-      <Card onClick={() => props.selectCard(props.type)} className={styles.join(" ")}>
+      <Card onClick={() => props.selectCard(props.cardIndex)} className={styles.join(" ")}>
         <Typography variant="h3">{props.word}</Typography>
       </Card>
   );

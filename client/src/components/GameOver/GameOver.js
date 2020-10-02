@@ -72,7 +72,7 @@ const GameOver = (props) => {
     blueScore,
     newGameButton,
   } = classes;
-console.log('props.endGame.winner', props.endGame.winner)
+  
   const handleNewGame = () => {
     //Reset Game
   };
