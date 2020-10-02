@@ -76,6 +76,7 @@ const GameOver = (props) => {
   const handleNewGame = () => {
     //Reset Game
   };
+
   console.log("props.endGame.winner", props.endGame.winner);
 
   return (
@@ -99,12 +100,15 @@ const GameOver = (props) => {
               )}
             </Box>
             <Box>
-              <Typography
-                variant="h3"
-                className={props.endGame.winner !== "No" ? gameOverText : null}
-              >
-                {props.endGame.gameOverText}
-              </Typography>
+              {props.endGame.winner !== "No" ? (
+                <Typography variant="h3" className={gameOverText}>
+                  {props.endGame.winner} wins
+                </Typography>
+              ) : (
+                <Typography variant="h3">
+                  {props.endGame.gameOverText}
+                </Typography>
+              )}
             </Box>
             <Box my={3}>
               <Typography variant="h3">
