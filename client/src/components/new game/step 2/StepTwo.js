@@ -49,8 +49,8 @@ const StepTwo = (props) => {
     socket.on("update-players", (game) => {
       console.log("Updated players:", game.players);
       setPlayers(game.players);
-      setHostId(game.currentUser._id);
-      setHostName(game.currentUser.name);
+      setHostId(game.host._id);
+      setHostName(game.host.name);
     });
   }, [id, setHostId, setHostName, setPlayers]);
 

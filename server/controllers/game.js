@@ -5,10 +5,7 @@ const User = require("../models/User");
 exports.postCreateGame = async (req, res, next) => {
   try {
     if (!req.user) {
-      return res.json({
-        success: false,
-        error: "Please Sign in !",
-      });
+      return res.status(401).json({ success: false, error: "Please Sign in !" });
     }
 
     // User id coming from request
@@ -25,7 +22,7 @@ exports.postCreateGame = async (req, res, next) => {
     const gameEngine = new GameEngine();
 
     // Add userId to gameEngine for current user
-    gameEngine.setCurrentUser(user);
+    gameEngine.setHost(user);
 
     // save gameEngine to redis
     await gameEngine.save();

@@ -38,7 +38,8 @@ passport.use(passportStrategy);
 // Session for the user
 app.use(
   session({
-    secret: "my secret",
+    name: config.sessionName,
+    secret: config.sessionSecret,
     resave: false,
     saveUninitialized: false,
     store: store,

@@ -18,7 +18,7 @@ const EditNameDialog = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const result = await axios.post(`/edit-profile/name/${user.id}`, {
+      const result = await axios.post(`/edit-profile/${user.id}`, {
         name,
       });
       if (result) {

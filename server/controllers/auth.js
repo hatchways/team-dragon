@@ -105,10 +105,17 @@ module.exports = {
   },
 
   // Logout
-  async logout(req, res, next) {
+  logout(req, res, next) {
     req.session.destroy((err) => {
-      console.log(err);
-      res.redirect("/");
+      if (err) {
+        console.log(err)
+        return res.status(400).json({
+          success: false,
+          errors: { message: "User session not found"},
+        });
+      }
+      res.clearCookie(config.sessionName);
+      res.status(200).json({ message: "Successfully logged Out!" });
     });
   },
 };
