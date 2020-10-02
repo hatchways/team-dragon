@@ -12,5 +12,9 @@ module.exports = {
   awsAccessKey: process.env.AWS_ACCESS_KEY,
   awsSecret: process.env.AWS_SECRET,
   // sessionName: process.env.SESSION_NAME,
+<<<<<<< HEAD
   // sessionSecret: process.env.SESSION_SECRET
+=======
+  // sessionSecret: process.env.SESSION_SECRET,
+>>>>>>> index fix
 };
