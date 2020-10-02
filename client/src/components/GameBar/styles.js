@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "flex-start",
   },
-  SpyMasterText : {
+  SpyMasterText: {
     fontWeight: 900,
   },
   BarControls: {

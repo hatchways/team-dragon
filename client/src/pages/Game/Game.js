@@ -28,7 +28,7 @@ const Game = (props) => {
     // join the match
     socket.emit("init-game", { gameId }, (recv) => {
       console.log("Game State:", recv);
-      setTeamList(recv.state.teamList)
+      setTeamList(recv.state.teamList);
       setName(recv.name);
       setMessages(recv.history);
       setBoard(recv.state.board);
@@ -87,8 +87,8 @@ const Game = (props) => {
   };
 
   const changeTurn = () => {
-    socket.emit("change-turn", { 
-      gameId 
+    socket.emit("change-turn", {
+      gameId,
     });
   };
 
