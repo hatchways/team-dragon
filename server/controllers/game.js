@@ -1,4 +1,3 @@
-const allGames = require("../models/gameEngine/allGames");
 const GameEngine = require("../models/gameEngine/GameEngine");
 const Game = require("../models/Game");
 const User = require("../models/User");
@@ -8,11 +7,15 @@ exports.postCreateGame = async (req, res, next) => {
     if (!req.user) {
       return res.status(401).json({ success: false, error: "Please Sign in !" });
     }
-    const hostId = req.user._id;
+
     // User id coming from request
+    const hostId = req.user._id;
     const user = await User.findOne({ _id: hostId });
     if (!user) {
-      return res.status(404).json({ success: false, error: "User not found" });
+      return res.status(404).json({
+        success: false,
+        error: "User not found",
+      });
     }
 
     // Initializing the game
@@ -20,6 +23,9 @@ exports.postCreateGame = async (req, res, next) => {
 
     // Add userId to gameEngine for current user
     gameEngine.setHost(user);
+
+    // save gameEngine to redis
+    await gameEngine.save();
 
     const players = [
       {
@@ -34,16 +40,14 @@ exports.postCreateGame = async (req, res, next) => {
       hostId: user._id,
       players: players,
     });
+
     const result = await game.save();
-
     if (!result) {
-      return res.status(404).json({ success: false, error: "Game not saved" });
+      return res.status(404).json({
+        success: false,
+        error: "Game not saved",
+      });
     }
-
-    // // Test JSON method
-    // console.log("JSON", gameEngine.toJson());
-
-    allGames.addGame(gameEngine.id, gameEngine);
 
     res.status(202).send({
       game: gameEngine,

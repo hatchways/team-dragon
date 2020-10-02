@@ -17,19 +17,18 @@ const Game = (props) => {
   const [currentTurn, setCurrentTurn] = useState("");
   const [redScore, setRedScore] = useState(1);
   const [blueScore, setBlueScore] = useState(2);
-
+  const [teamList, setTeamList] = useState(undefined);
   const [gameStatus, setGameStatus] = useGameStatus();
 
-  let winner = "blue"; // Testing only
+  let winner = "red"; // Testing only
 
   const gameId = props.match.params.id;
-  const token = window.localStorage.getItem("token");
 
   useEffect(() => {
     // join the match
-    socket.emit("init-game", { gameId, token }, (recv) => {
+    socket.emit("init-game", { gameId }, (recv) => {
       console.log("Game State:", recv);
-
+      setTeamList(recv.state.teamList);
       setName(recv.name);
       setMessages(recv.history);
       setBoard(recv.state.board);
@@ -63,6 +62,7 @@ const Game = (props) => {
       console.log("Updated Game State:", recv);
 
       // set current state of the game
+
       setGameStatus(recv.gameStatus);
       setBoard(recv.board);
       setCurrentTurn(recv.turn);
@@ -71,12 +71,7 @@ const Game = (props) => {
     socket.on("new-message", (recv) => {
       setMessages((prevMessages) => [...prevMessages, recv]);
     });
-
-    socket.on("redirect", () => {
-      console.log("user not valid");
-      // props.history.push("/login");
-    });
-  }, [gameId, token]);
+  }, [gameId]);
 
   const sendMessage = (msg) => {
     const msgData = {
@@ -87,13 +82,14 @@ const Game = (props) => {
     // send message to the server
     socket.emit("message", {
       gameId,
-      token,
       msgData,
     });
   };
 
   const changeTurn = () => {
-    socket.emit("change-turn", { gameId });
+    socket.emit("change-turn", {
+      gameId,
+    });
   };
 
   const endGame = () => {
@@ -113,6 +109,7 @@ const Game = (props) => {
         blueScore={blueScore}
         endGame={endGame}
         isSpyMaster={isSpyMaster}
+        teamList={teamList}
       />
       <div className={classes.GameArea}>
         <Messenger

@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const config = require("./config");
-const allGames = require("./models/gameEngine/allGames");
 const User = require("./models/User");
+const GameEngine = require("./models/gameEngine/GameEngine");
 
 module.exports = (server) => {
   const io = require("socket.io")(server);
@@ -9,23 +9,21 @@ module.exports = (server) => {
   const roomDetails = {};
 
   io.on("connection", (socket) => {
-    const errors = [];
-    let gameRoom;
-
     // Socket listener for game rooms
     socket.on("join-game", async (recv) => {
-      const { room, gameId, token } = recv;
+      const { gameId, token } = recv;
+      const errors = [];
 
       try {
-        let game;
         const decoded = jwt.verify(token, config.secret);
         if (!decoded) {
+          errors.push({
+            name: "InvalidToken",
+            message: "Token not valid",
+          });
+          socket.emit("error", errors);
           throw new Error("Token not valid");
         }
-
-        // Joining room
-        gameRoom = room;
-        socket.join(gameRoom);
 
         const user = await User.findOne({ email: decoded.email });
         if (!user) {
@@ -33,7 +31,26 @@ module.exports = (server) => {
             name: "NotFoundError",
             message: "Email id does not exist!",
           });
+          socket.emit("error", errors);
           throw new Error("Email id does not exist in database");
+        }
+
+        // Joining room
+        socket.join(gameId);
+
+        // create room details if does not exist
+        if (roomDetails[gameId] === undefined) {
+          roomDetails[gameId] = {
+            history: [],
+          };
+        }
+
+        // assign user a name and store user details
+        if (clientDetails[socket.id] === undefined) {
+          clientDetails[socket.id] = {
+            name: decoded.name,
+            rooms: [gameId],
+          };
         }
 
         const newPlayer = {
@@ -46,38 +63,42 @@ module.exports = (server) => {
             name: "UndefinedError",
             message: "Game not created yet",
           });
+          socket.emit("error", errors);
           throw new Error("Game not created");
         }
 
-        const currentGame = allGames.getGame(parseInt(gameId));
+        const currentGame = await GameEngine.getGame(gameId);
         if (!currentGame) {
           errors.push({
             name: "UndefinedError",
             message: "Game not found",
           });
+          socket.emit("error", errors);
           throw new Error("Game does not Exist");
         }
 
         currentGame.joinGame(newPlayer);
-        game = currentGame;
+        await currentGame.save();
 
-        io.to(gameRoom).emit("update-players", { game, errors });
+        io.to(gameId).emit("update-players", currentGame);
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     });
 
     // Receive assigned roles emitted from FE
-    socket.on("start-game", (recv) => {
+    socket.on("start-game", async (recv) => {
       const { gameId, players } = recv;
+      const errors = {};
 
       try {
-        const currentGame = allGames.getGame(parseInt(gameId));
+        const currentGame = await GameEngine.getGame(gameId);
         if (!currentGame) {
           errors.push({
             name: "UndefinedError",
             message: "Game not found",
           });
+          socket.emit("error", errors);
           throw new Error("Game does not exist!");
         }
 
@@ -93,70 +114,44 @@ module.exports = (server) => {
           }
         });
 
+        // Team List for Display
+        currentGame.createTeamList(
+          currentGame.redTeam.players,
+          currentGame.blueTeam.players,
+        );
+
         currentGame.startGame();
-        io.to(gameRoom).emit("update-roles", currentGame);
+        await currentGame.save();
+
+        io.to(gameId).emit("update-roles", currentGame);
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     });
 
-    socket.on("init-game", (recv, fn) => {
-      const { gameId, token } = recv;
+    socket.on("init-game", async (recv, fn) => {
+      const { gameId } = recv;
 
-      try {
-        const decoded = jwt.verify(token, config.secret);
-        if (!decoded) {
-          throw new Error("Token not valid");
-        }
+      // update room of joining client
+      const alert = {
+        sender: "alert",
+        message: `${clientDetails[socket.id].name} joined the game`,
+      };
 
-        // join a game room
-        socket.join(gameId);
+      roomDetails[gameId].history.push(alert);
+      socket.to(gameId).broadcast.emit("new-message", alert);
 
-        // create room details if does not exist
-        if (roomDetails[gameId] === undefined) {
-          roomDetails[gameId] = {
-            state: allGames.getGame(parseInt(gameId)),
-            history: [],
-          };
-        }
-
-        // assign user a name and store user details
-        if (clientDetails[socket.id] === undefined) {
-          clientDetails[socket.id] = {
-            name: decoded.name,
-            rooms: [gameId],
-          };
-        }
-
-        // update room of joining client
-        const alert = {
-          sender: "alert",
-          message: `${decoded.name} joined the game`,
-        };
-
-        roomDetails[gameId].history.push(alert);
-        socket.to(gameId).broadcast.emit("new-message", alert);
-
-        // return assigned name and chat history
-        fn({
-          name: decoded.name,
-          state: roomDetails[gameId].state,
-          history: roomDetails[gameId].history,
-        });
-      } catch (err) {
-        console.log(err);
-        socket.emit("redirect");
-      }
+      // return assigned name and chat history
+      fn({
+        name: clientDetails[socket.id].name,
+        state: await GameEngine.getGame(gameId),
+        history: roomDetails[gameId].history,
+      });
     });
 
     // Socket listener for messenger
     socket.on("message", (recv) => {
-      const { gameId, token, msgData } = recv;
-
-      const decoded = jwt.verify(token, config.secret);
-      if (!decoded) {
-        throw new Error("Token not valid");
-      }
+      const { gameId, msgData } = recv;
 
       // save message into history
       roomDetails[gameId].history.push(msgData);
@@ -166,28 +161,31 @@ module.exports = (server) => {
     });
 
     // Socket listener for next move
-    socket.on("move", (recv) => {
+    socket.on("move", async (recv) => {
       const { gameId, playerId, cardIndex } = recv;
 
-      const currentGame = allGames.getGame(parseInt(gameId));
+      const currentGame = await GameEngine.getGame(gameId);
       currentGame.pickCard(playerId, cardIndex); // Result of the move would be in console for now
+      await currentGame.save();
     });
 
-    socket.on("change-turn", (recv) => {
+    socket.on("change-turn", async (recv) => {
       const { gameId } = recv;
 
-      const currentGame = allGames.getGame(parseInt(gameId));
+      const currentGame = await GameEngine.getGame(gameId);
       currentGame.changeTurn();
+      await currentGame.save();
 
       io.to(gameId).emit("update-game", currentGame);
     });
 
     // Listener to end game
-    socket.on("end-game", (recv) => {
+    socket.on("end-game", async (recv) => {
       const { gameId, winner } = recv;
 
-      const currentGame = allGames.getAllGames().get(parseInt(gameId));
+      const currentGame = await GameEngine.getGame(gameId);
       currentGame.gameOver(winner);
+      await currentGame.save();
 
       io.to(gameId).emit("update-game", currentGame);
     });
@@ -204,7 +202,7 @@ module.exports = (server) => {
           };
 
           roomDetails[room].history.push(alert);
-          io.to(room).emit("alert", alert);
+          io.to(room).emit("new-message", alert);
         });
 
         delete clientDetails[socket.id];

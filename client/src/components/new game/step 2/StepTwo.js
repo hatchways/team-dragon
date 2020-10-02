@@ -36,20 +36,17 @@ const StepTwo = (props) => {
 
   useEffect(() => {
     // User joins the room
-    let room = "game-" + id;
-    let token = localStorage.getItem("token");
-    let data = {
-      room: room,
-      gameId: id,
-      token: token,
-    };
+    const token = localStorage.getItem("token");
 
     if (id !== "") {
-      console.log("Emitting join-game:", data);
-      socket.emit("join-game", data);
+      console.log("joining game", id);
+      socket.emit("join-game", {
+        gameId: id,
+        token: token,
+      });
     }
 
-    socket.on("update-players", ({ game, errors }) => {
+    socket.on("update-players", (game) => {
       console.log("Updated players:", game.players);
       setPlayers(game.players);
       setHostId(game.host._id);
