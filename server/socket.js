@@ -25,9 +25,6 @@ module.exports = (server) => {
           throw new Error("Token not valid");
         }
 
-        // Joining room
-        socket.join(gameId);
-
         const user = await User.findOne({ email: decoded.email });
         if (!user) {
           errors.push({
@@ -37,6 +34,9 @@ module.exports = (server) => {
           socket.emit("error", errors);
           throw new Error("Email id does not exist in database");
         }
+
+        // Joining room
+        socket.join(gameId);
 
         const newPlayer = {
           id: user.id,
@@ -123,14 +123,11 @@ module.exports = (server) => {
         if (!decoded) {
           errors.push({
             name: "InvalidToken",
-            message: "Game not found",
+            message: "Token is not valid",
           });
           socket.emit("error", errors);
           throw new Error("Token not valid");
         }
-
-        // join a game room
-        socket.join(gameId);
 
         // create room details if does not exist
         if (roomDetails[gameId] === undefined) {
