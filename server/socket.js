@@ -38,6 +38,21 @@ module.exports = (server) => {
         // Joining room
         socket.join(gameId);
 
+        // create room details if does not exist
+        if (roomDetails[gameId] === undefined) {
+          roomDetails[gameId] = {
+            history: [],
+          };
+        }
+
+        // assign user a name and store user details
+        if (clientDetails[socket.id] === undefined) {
+          clientDetails[socket.id] = {
+            name: decoded.name,
+            rooms: [gameId],
+          };
+        }
+
         const newPlayer = {
           id: user.id,
           name: user.name,
@@ -115,54 +130,23 @@ module.exports = (server) => {
     });
 
     socket.on("init-game", async (recv, fn) => {
-      const { gameId, token } = recv;
-      const errors = {};
+      const { gameId } = recv;
 
-      try {
-        const decoded = jwt.verify(token, config.secret);
-        if (!decoded) {
-          errors.push({
-            name: "InvalidToken",
-            message: "Token is not valid",
-          });
-          socket.emit("error", errors);
-          throw new Error("Token not valid");
-        }
+      // update room of joining client
+      const alert = {
+        sender: "alert",
+        message: `${clientDetails[socket.id].name} joined the game`,
+      };
 
-        // create room details if does not exist
-        if (roomDetails[gameId] === undefined) {
-          roomDetails[gameId] = {
-            state: await GameEngine.getGame(gameId),
-            history: [],
-          };
-        }
+      roomDetails[gameId].history.push(alert);
+      socket.to(gameId).broadcast.emit("new-message", alert);
 
-        // assign user a name and store user details
-        if (clientDetails[socket.id] === undefined) {
-          clientDetails[socket.id] = {
-            name: decoded.name,
-            rooms: [gameId],
-          };
-        }
-
-        // update room of joining client
-        const alert = {
-          sender: "alert",
-          message: `${decoded.name} joined the game`,
-        };
-
-        roomDetails[gameId].history.push(alert);
-        socket.to(gameId).broadcast.emit("new-message", alert);
-
-        // return assigned name and chat history
-        fn({
-          name: decoded.name,
-          state: roomDetails[gameId].state,
-          history: roomDetails[gameId].history,
-        });
-      } catch (err) {
-        console.error(err);
-      }
+      // return assigned name and chat history
+      fn({
+        name: clientDetails[socket.id].name,
+        state: await GameEngine.getGame(gameId),
+        history: roomDetails[gameId].history,
+      });
     });
 
     // Socket listener for messenger
@@ -218,7 +202,7 @@ module.exports = (server) => {
           };
 
           roomDetails[room].history.push(alert);
-          io.to(room).emit("alert", alert);
+          io.to(room).emit("new-message", alert);
         });
 
         delete clientDetails[socket.id];
