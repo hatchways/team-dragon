@@ -301,7 +301,7 @@ class GameEngine {
         }
         break;
       case "manual":
-        this.endGame.winner = "none";
+        this.endGame.winner = "No";
         this.endGame.gameOverText = "Host has ended game early";
         break;
       default:
