@@ -10,6 +10,6 @@ router.post("/login", authController.login);
 
 // router.post("/logout",isAuth, authController.logout);
 
-router.post("/logout",passport.authenticate('jwt',{session:false}), authController.logout);
+// router.post("/logout",passport.authenticate('jwt',{session:false}), authController.logout);
 
 module.exports = router;
