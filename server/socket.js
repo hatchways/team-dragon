@@ -9,23 +9,24 @@ module.exports = (server) => {
   const roomDetails = {};
 
   io.on("connection", (socket) => {
-    const errors = [];
-    let gameRoom;
-
     // Socket listener for game rooms
     socket.on("join-game", async (recv) => {
-      const { room, gameId, token } = recv;
+      const { gameId, token } = recv;
+      const errors = [];
 
       try {
-        let game;
         const decoded = jwt.verify(token, config.secret);
         if (!decoded) {
+          errors.push({
+            name: "InvalidToken",
+            message: "Token not valid",
+          });
+          socket.emit("error", errors);
           throw new Error("Token not valid");
         }
 
         // Joining room
-        gameRoom = room;
-        socket.join(gameRoom);
+        socket.join(gameId);
 
         const user = await User.findOne({ email: decoded.email });
         if (!user) {
@@ -33,6 +34,7 @@ module.exports = (server) => {
             name: "NotFoundError",
             message: "Email id does not exist!",
           });
+          socket.emit("error", errors);
           throw new Error("Email id does not exist in database");
         }
 
@@ -46,6 +48,7 @@ module.exports = (server) => {
             name: "UndefinedError",
             message: "Game not created yet",
           });
+          socket.emit("error", errors);
           throw new Error("Game not created");
         }
 
@@ -55,22 +58,23 @@ module.exports = (server) => {
             name: "UndefinedError",
             message: "Game not found",
           });
+          socket.emit("error", errors);
           throw new Error("Game does not Exist");
         }
 
         currentGame.joinGame(newPlayer);
         await currentGame.save();
-        game = currentGame;
 
-        io.to(gameRoom).emit("update-players", { game, errors });
+        io.to(gameId).emit("update-players", currentGame);
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     });
 
     // Receive assigned roles emitted from FE
     socket.on("start-game", async (recv) => {
       const { gameId, players } = recv;
+      const errors = {};
 
       try {
         const currentGame = await GameEngine.getGame(gameId);
@@ -79,6 +83,7 @@ module.exports = (server) => {
             name: "UndefinedError",
             message: "Game not found",
           });
+          socket.emit("error", errors);
           throw new Error("Game does not exist!");
         }
 
@@ -103,18 +108,24 @@ module.exports = (server) => {
         currentGame.startGame();
         await currentGame.save();
 
-        io.to(gameRoom).emit("update-roles", currentGame);
+        io.to(gameId).emit("update-roles", currentGame);
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     });
 
     socket.on("init-game", async (recv, fn) => {
       const { gameId, token } = recv;
+      const errors = {};
 
       try {
         const decoded = jwt.verify(token, config.secret);
         if (!decoded) {
+          errors.push({
+            name: "InvalidToken",
+            message: "Game not found",
+          });
+          socket.emit("error", errors);
           throw new Error("Token not valid");
         }
 
@@ -153,19 +164,13 @@ module.exports = (server) => {
           history: roomDetails[gameId].history,
         });
       } catch (err) {
-        console.log(err);
-        socket.emit("redirect");
+        console.error(err);
       }
     });
 
     // Socket listener for messenger
     socket.on("message", (recv) => {
-      const { gameId, token, msgData } = recv;
-
-      const decoded = jwt.verify(token, config.secret);
-      if (!decoded) {
-        throw new Error("Token not valid");
-      }
+      const { gameId, msgData } = recv;
 
       // save message into history
       roomDetails[gameId].history.push(msgData);

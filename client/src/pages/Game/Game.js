@@ -72,11 +72,6 @@ const Game = (props) => {
     socket.on("new-message", (recv) => {
       setMessages((prevMessages) => [...prevMessages, recv]);
     });
-
-    socket.on("redirect", () => {
-      console.log("user not valid");
-      // props.history.push("/login");
-    });
   }, [gameId, token]);
 
   const sendMessage = (msg) => {
@@ -88,13 +83,14 @@ const Game = (props) => {
     // send message to the server
     socket.emit("message", {
       gameId,
-      token,
       msgData,
     });
   };
 
   const changeTurn = () => {
-    socket.emit("change-turn", { gameId });
+    socket.emit("change-turn", { 
+      gameId 
+    });
   };
 
   const endGame = () => {
