@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import GameBar from "../../components/GameBar";
 import Messenger from "../../components/Messenger";
 import Board from "../../components/Board";
-import GameOver from "../../components/GameOver/GameOver";
 import socket from "../../socket";
 import useStyles from "./styles";
 import { useGameStatus } from "../../contexts/GameContext";
@@ -15,8 +14,8 @@ const Game = (props) => {
   const [board, setBoard] = useState([]);
   const [isSpyMaster, setIsSpyMaster] = useState(false);
   const [currentTurn, setCurrentTurn] = useState("");
-  const [redScore, setRedScore] = useState(1);
-  const [blueScore, setBlueScore] = useState(2);
+  const [redScore, setRedScore] = useState(0);
+  const [blueScore, setBlueScore] = useState(0);
   const [teamList, setTeamList] = useState(undefined);
   const [gameStatus, setGameStatus] = useGameStatus();
   const [endGame, setEndGame] = useState(undefined);
@@ -65,6 +64,8 @@ const Game = (props) => {
       setGameStatus(recv.gameStatus);
       setBoard(recv.board);
       setCurrentTurn(recv.turn);
+      setRedScore(recv.redTeam.points)
+      setBlueScore(recv.blueTeam.points)
       if (recv.gameStatus === "over") {
         setEndGame(recv.endGame);
       }
