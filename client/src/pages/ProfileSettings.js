@@ -71,7 +71,7 @@ const ProfileSettings = () => {
 
   const closeEditNameDialog = () => {
     setOpenEditNameDialog(false);
-  }
+  };
 
   const handleFileInput = async (e) => {
     setProfileImageFile(e.target.files[0]);

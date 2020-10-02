@@ -2,7 +2,7 @@ const uploadImage = require("../middleware/uploadImage");
 const User = require("../models/User");
 const mongoose = require("mongoose");
 
-exports.postUpdateProfile = async (req, res, next) => {
+exports.postUpdateProfile = (req, res, next) => {
   const userId = req.params.id;
   if(!userId){
     return res.status(404).json({err: "Please Sign in!"})

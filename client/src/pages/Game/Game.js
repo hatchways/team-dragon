@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import GameBar from "../../components/GameBar";
 import Messenger from "../../components/Messenger";
 import Board from "../../components/Board";
-import GameOver from "../../components/GameOver/GameOver";
 import socket from "../../socket";
 import useStyles from "./styles";
 import { useGameStatus } from "../../contexts/GameContext";
@@ -15,21 +14,27 @@ const Game = (props) => {
   const [board, setBoard] = useState([]);
   const [isSpyMaster, setIsSpyMaster] = useState(false);
   const [currentTurn, setCurrentTurn] = useState("");
-  const [redScore, setRedScore] = useState(1);
-  const [blueScore, setBlueScore] = useState(2);
-
+  const [redScore, setRedScore] = useState(0);
+  const [blueScore, setBlueScore] = useState(0);
+  const [teamList, setTeamList] = useState({
+    blue: {
+      spyMaster: "",
+      guesser: [],
+    },
+    red: {
+      spyMaster: "",
+      guesser: [],
+    },
+  });
   const [gameStatus, setGameStatus] = useGameStatus();
-
-  let winner = "blue"; // Testing only
-
+  const [endGame, setEndGame] = useState({ winner: "", gameOverTest: "" });
   const gameId = props.match.params.id;
-  const token = window.localStorage.getItem("token");
 
   useEffect(() => {
     // join the match
-    socket.emit("init-game", { gameId, token }, (recv) => {
+    socket.emit("init-game", { gameId }, (recv) => {
       console.log("Game State:", recv);
-
+      setTeamList(recv.state.teamList);
       setName(recv.name);
       setMessages(recv.history);
       setBoard(recv.state.board);
@@ -63,20 +68,21 @@ const Game = (props) => {
       console.log("Updated Game State:", recv);
 
       // set current state of the game
+
       setGameStatus(recv.gameStatus);
       setBoard(recv.board);
       setCurrentTurn(recv.turn);
+      setRedScore(recv.redTeam.points);
+      setBlueScore(recv.blueTeam.points);
+      if (recv.gameStatus === "over") {
+        setEndGame(recv.endGame);
+      }
     });
 
     socket.on("new-message", (recv) => {
       setMessages((prevMessages) => [...prevMessages, recv]);
     });
-
-    socket.on("redirect", () => {
-      console.log("user not valid");
-      // props.history.push("/login");
-    });
-  }, [gameId, token]);
+  }, [gameId]);
 
   const sendMessage = (msg) => {
     const msgData = {
@@ -87,20 +93,26 @@ const Game = (props) => {
     // send message to the server
     socket.emit("message", {
       gameId,
-      token,
       msgData,
     });
   };
 
-  const changeTurn = () => {
-    socket.emit("change-turn", { gameId });
+  const selectCard = (cardIndex) => {
+    socket.emit("move", { gameId, currentTurn, cardIndex });
   };
 
-  const endGame = () => {
+  const changeTurn = () => {
+    socket.emit("change-turn", {
+      gameId,
+    });
+  };
+
+  const stopGame = () => {
     // send message to the server
     socket.emit("end-game", {
       gameId,
-      winner, //hard coded for now
+      winner: "none",
+      method: "manual",
     });
   };
 
@@ -111,8 +123,9 @@ const Game = (props) => {
         currentTurn={currentTurn}
         redScore={redScore}
         blueScore={blueScore}
-        endGame={endGame}
+        stopGame={stopGame}
         isSpyMaster={isSpyMaster}
+        teamList={teamList}
       />
       <div className={classes.GameArea}>
         <Messenger
@@ -129,7 +142,8 @@ const Game = (props) => {
           isSpyMaster={isSpyMaster}
           redScore={redScore}
           blueScore={blueScore}
-          winner={winner}
+          endGame={endGame}
+          selectCard={selectCard}
         />
       </div>
     </div>

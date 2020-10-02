@@ -1,8 +1,8 @@
 const multer = require("multer");
 const aws = require("aws-sdk");
 const multerS3 = require("multer-s3");
-const path = require('path');
-const config = require('../config')
+const path = require("path");
+const config = require("../config");
 
 const s3 = new aws.S3({
   accessKeyId: config.awsAccessKey,
@@ -25,6 +25,6 @@ const uploadImage = multer({
       );
     },
   }),
-}).single('profileImage');
+}).single("profileImage");
 
 module.exports = uploadImage;
