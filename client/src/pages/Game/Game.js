@@ -17,10 +17,10 @@ const Game = (props) => {
   const [currentTurn, setCurrentTurn] = useState("");
   const [redScore, setRedScore] = useState(1);
   const [blueScore, setBlueScore] = useState(2);
-
+  const [teamList, setTeamList] = useState(undefined);
   const [gameStatus, setGameStatus] = useGameStatus();
 
-  let winner = "blue"; // Testing only
+  let winner = "red"; // Testing only
 
   const gameId = props.match.params.id;
   const token = window.localStorage.getItem("token");
@@ -29,7 +29,7 @@ const Game = (props) => {
     // join the match
     socket.emit("init-game", { gameId, token }, (recv) => {
       console.log("Game State:", recv);
-
+      setTeamList(recv.state.teamList)
       setName(recv.name);
       setMessages(recv.history);
       setBoard(recv.state.board);
@@ -63,6 +63,7 @@ const Game = (props) => {
       console.log("Updated Game State:", recv);
 
       // set current state of the game
+
       setGameStatus(recv.gameStatus);
       setBoard(recv.board);
       setCurrentTurn(recv.turn);
@@ -113,6 +114,7 @@ const Game = (props) => {
         blueScore={blueScore}
         endGame={endGame}
         isSpyMaster={isSpyMaster}
+        teamList={teamList}
       />
       <div className={classes.GameArea}>
         <Messenger

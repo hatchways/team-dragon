@@ -94,6 +94,12 @@ module.exports = (server) => {
           }
         });
 
+        // Team List for Display
+        currentGame.createTeamList(
+          currentGame.redTeam.players,
+          currentGame.blueTeam.players,
+        );
+
         currentGame.startGame();
         await currentGame.save();
 

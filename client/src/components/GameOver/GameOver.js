@@ -125,7 +125,7 @@ const GameOver = (props) => {
                   onClick={handleNewGame}
                   className={newGameButton}
                 >
-                  Play Again
+                  Play again
                 </Button>
               )}
             </Box>

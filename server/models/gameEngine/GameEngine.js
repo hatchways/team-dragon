@@ -15,6 +15,7 @@ class GameEngine {
       this.id = getRandomNumber(1000);
       this.redTeam = new Team("red");
       this.blueTeam = new Team("blue");
+      this.teamList = {};
       this.board = this.createBoard();
       this.turn = getRandomNumber(2) === 0 ? "blue" : "red";
       this.cardsFlipped = 0;
@@ -30,12 +31,13 @@ class GameEngine {
         data.redTeam.points,
       );
       this.blueTeam = new Team(
-        data.redTeam.name,
-        data.redTeam.players,
-        data.redTeam.points,
+        data.blueTeam.name,
+        data.blueTeam.players,
+        data.blueTeam.points,
       );
       this.board = data.board;
       this.turn = data.turn;
+      this.teamList = data.teamList;
       this.cardsFlipped = data.cardsFlipped;
       this.players = data.players;
       this.currentUser = data.currentUser;
@@ -122,6 +124,38 @@ class GameEngine {
     });
   }
 
+  createTeamList(redTeam, blueTeam) {
+    let blueList = blueTeam.reduce(
+      (obj, player) => {
+        if (player.role === "guesser") {
+          obj["guesser"].push(player.name);
+          return obj;
+        } else {
+          obj["spyMaster"] = player.name;
+          return obj;
+        }
+      },
+      { guesser: [] },
+    );
+
+    let redList = redTeam.reduce(
+      (obj, player) => {
+        if (player.role === "guesser") {
+          obj["guesser"].push(player.name);
+          return obj;
+        } else {
+          obj["spyMaster"] = player.name;
+          return obj;
+        }
+      },
+      { guesser: [] },
+    );
+
+    this.teamList = {
+      blue: blueList,
+      red: redList,
+    };
+  }
   // Sets the current user
   setCurrentUser(user) {
     this.currentUser = user;
@@ -194,7 +228,7 @@ class GameEngine {
     console.log(`${team} team picks a card and gets : ${cardType} card`);
     switch (cardType) {
       case "assasin":
-        this.gameOver(team);
+        this.gameOver(team === this.redTeam ? this.blueTeam : this.redTeam);
         break;
 
       case "innocent":
