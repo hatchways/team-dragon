@@ -23,13 +23,12 @@ const Game = (props) => {
   let winner = "red"; // Testing only
 
   const gameId = props.match.params.id;
-  const token = window.localStorage.getItem("token");
 
   useEffect(() => {
     // join the match
-    socket.emit("init-game", { gameId, token }, (recv) => {
+    socket.emit("init-game", { gameId }, (recv) => {
       console.log("Game State:", recv);
-      setTeamList(recv.state.teamList)
+      setTeamList(recv.state.teamList);
       setName(recv.name);
       setMessages(recv.history);
       setBoard(recv.state.board);
@@ -72,12 +71,7 @@ const Game = (props) => {
     socket.on("new-message", (recv) => {
       setMessages((prevMessages) => [...prevMessages, recv]);
     });
-
-    socket.on("redirect", () => {
-      console.log("user not valid");
-      // props.history.push("/login");
-    });
-  }, [gameId, token]);
+  }, [gameId]);
 
   const sendMessage = (msg) => {
     const msgData = {
@@ -88,13 +82,14 @@ const Game = (props) => {
     // send message to the server
     socket.emit("message", {
       gameId,
-      token,
       msgData,
     });
   };
 
   const changeTurn = () => {
-    socket.emit("change-turn", { gameId });
+    socket.emit("change-turn", {
+      gameId,
+    });
   };
 
   const endGame = () => {

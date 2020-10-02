@@ -33,6 +33,6 @@ const App = () => {
       </GameProvider>
     </DataProvider>
   );
-}
+};
 
 export default App;

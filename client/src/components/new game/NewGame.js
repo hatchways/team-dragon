@@ -119,6 +119,7 @@ const NewGame = (props) => {
           players: playerAssign,
         };
       };
+
       const gameDetails = await setGame(players, spyMaster);
       console.log("Emitting start-game:", gameDetails);
       localStorage.removeItem("newGame");
