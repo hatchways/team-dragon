@@ -5,6 +5,7 @@ const { join } = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
+const redis = require("redis");
 const passport = require("passport");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
@@ -13,6 +14,7 @@ const config = require("./config");
 const gameRouter = require("./routes/game");
 const authRouter = require("./routes/auth");
 const emailRouter = require("./routes/email");
+const profileRouter = require('./routes/profile');
 const User = require("./models/User");
 
 // app configuration
@@ -55,6 +57,16 @@ app.use((req, res, next) => {
     .catch((err) => console.log(err));
 });
 
+// redis connection
+redis
+  .createClient(config.redis)
+  .on("connect", () => {
+    console.log("Redis connected");
+  })
+  .on("error", (err) => {
+    throw err;
+  });
+
 // database connection using Mongoose
 mongoose
   .connect(config.db, {
@@ -71,6 +83,7 @@ mongoose
 app.use("/users", authRouter);
 app.use(gameRouter);
 app.use(emailRouter);
+app.use(profileRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

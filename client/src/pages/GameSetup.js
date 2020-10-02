@@ -26,12 +26,9 @@ const GameSetup = (props) => {
     }
   };
 
-
   return (
-    <> 
-      <div>
-        {gameStatus === "setup" ? gameJourney() : <Game {...props} /> }
-      </div>
+    <>
+      <div>{gameStatus === "setup" ? gameJourney() : <Game {...props} />}</div>
     </>
   );
 };

@@ -77,6 +77,7 @@ module.exports = {
           id: user.id,
           email: user.email,
           name: user.name,
+          profileImageLocation: user.profileImageLocation,
         };
         const token = jwt.sign(payload, config.secret);
 
@@ -101,5 +102,13 @@ module.exports = {
     } catch (e) {
       return next(e);
     }
+  },
+
+  // Logout
+  async logout(req, res, next) {
+    req.session.destroy((err) => {
+      console.log(err);
+      res.redirect("/");
+    });
   },
 };

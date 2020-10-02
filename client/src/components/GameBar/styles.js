@@ -81,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
   EndGameButton: {
     marginRight: "2rem",
     backgroundColor: theme.red.medium,
-    color: theme.white
+    color: theme.white,
   },
   Profile: {
     display: "flex",
