@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import GameBar from "../../components/GameBar";
 import Messenger from "../../components/Messenger";
 import Board from "../../components/Board";
-import GameOver from "../../components/GameOver/GameOver";
 import socket from "../../socket";
 import useStyles from "./styles";
 import { useGameStatus } from "../../contexts/GameContext";
@@ -15,13 +14,20 @@ const Game = (props) => {
   const [board, setBoard] = useState([]);
   const [isSpyMaster, setIsSpyMaster] = useState(false);
   const [currentTurn, setCurrentTurn] = useState("");
-  const [redScore, setRedScore] = useState(1);
-  const [blueScore, setBlueScore] = useState(2);
-  const [teamList, setTeamList] = useState(undefined);
+  const [redScore, setRedScore] = useState(0);
+  const [blueScore, setBlueScore] = useState(0);
+  const [teamList, setTeamList] = useState({
+    blue: {
+      spyMaster: "",
+      guesser: [],
+    },
+    red: {
+      spyMaster: "",
+      guesser: [],
+    },
+  });
   const [gameStatus, setGameStatus] = useGameStatus();
-
-  let winner = "red"; // Testing only
-
+  const [endGame, setEndGame] = useState({ winner: "", gameOverTest: "" });
   const gameId = props.match.params.id;
 
   useEffect(() => {
@@ -66,6 +72,11 @@ const Game = (props) => {
       setGameStatus(recv.gameStatus);
       setBoard(recv.board);
       setCurrentTurn(recv.turn);
+      setRedScore(recv.redTeam.points);
+      setBlueScore(recv.blueTeam.points);
+      if (recv.gameStatus === "over") {
+        setEndGame(recv.endGame);
+      }
     });
 
     socket.on("new-message", (recv) => {
@@ -86,17 +97,22 @@ const Game = (props) => {
     });
   };
 
+  const selectCard = (cardIndex) => {
+    socket.emit("move", { gameId, currentTurn, cardIndex });
+  };
+
   const changeTurn = () => {
     socket.emit("change-turn", {
       gameId,
     });
   };
 
-  const endGame = () => {
+  const stopGame = () => {
     // send message to the server
     socket.emit("end-game", {
       gameId,
-      winner, //hard coded for now
+      winner: "none",
+      method: "manual",
     });
   };
 
@@ -107,7 +123,7 @@ const Game = (props) => {
         currentTurn={currentTurn}
         redScore={redScore}
         blueScore={blueScore}
-        endGame={endGame}
+        stopGame={stopGame}
         isSpyMaster={isSpyMaster}
         teamList={teamList}
       />
@@ -126,7 +142,8 @@ const Game = (props) => {
           isSpyMaster={isSpyMaster}
           redScore={redScore}
           blueScore={blueScore}
-          winner={winner}
+          endGame={endGame}
+          selectCard={selectCard}
         />
       </div>
     </div>

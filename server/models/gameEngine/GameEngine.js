@@ -17,12 +17,13 @@ class GameEngine {
       this.blueTeam = new Team("blue");
       this.teamList = {};
       this.board = this.createBoard();
-      this.turn = getRandomNumber(2) === 0 ? "blue" : "red";
-      this.cardsFlipped = 0;
+      this.startingTeam = getRandomNumber(2) === 0 ? "blue" : "red";
+      this.turn = this.startingTeam;
+      this.cardsFlipped = "";
       this.players = [];
       this.currentUser = null;
       this.gameStatus = "setup";
-      this.winner = "";
+      this.endGame = {};
     } else {
       this.id = data.id;
       this.redTeam = new Team(
@@ -37,12 +38,13 @@ class GameEngine {
       );
       this.board = data.board;
       this.turn = data.turn;
+      this.startingTeam = data.startingTeam;
       this.teamList = data.teamList;
       this.cardsFlipped = data.cardsFlipped;
       this.players = data.players;
       this.currentUser = data.currentUser;
       this.gameStatus = data.gameStatus;
-      this.winner = data.winner;
+      this.endGame = {};
     }
   }
 
@@ -210,27 +212,16 @@ class GameEngine {
   }
 
   // Any Team member picks a card
-  pickCard(playerId, cardIndex) {
-    let team;
-    this.redTeam.players.forEach((item) => {
-      if (item.id === playerId) {
-        team = item.getTeam();
-      }
-    });
-
-    this.blueTeam.players.forEach((item) => {
-      if (item.id === playerId) {
-        team = item.getTeam();
-      }
-    });
-
+  pickCard(team, cardIndex) {
     let cardType = this.board[cardIndex].type;
     console.log(`${team} team picks a card and gets : ${cardType} card`);
     switch (cardType) {
-      case "assasin":
-        this.gameOver(team === this.redTeam ? this.blueTeam : this.redTeam);
+      case "assassin":
+        this.gameOver(
+          team === this.redTeam.name ? this.blueTeam.name : this.redTeam.name,
+          "assassin",
+        );
         break;
-
       case "innocent":
         this.changeTurn();
         break;
@@ -257,27 +248,67 @@ class GameEngine {
   }
 
   // Any case where game comes to an end
-  gameOver(winner) {
-    if (winner === this.redTeam.name) {
-      this.winner = this.redTeam.name;
-      console.log("Congrats! Red team won the game");
-    } else {
-      this.winner = this.blueTeam.name;
-      console.log("Congrats! Blue team won the game");
+  gameOver(winner, method) {
+    const capitalizeWinner = (name) => {
+      return name.charAt(0).toUpperCase() + name.slice(1);
+    };
+    switch (method) {
+      case "assassin":
+        if (winner === "red") {
+          this.endGame.winner = capitalizeWinner(this.redTeam.name);
+          this.endGame.gameOverText = `${capitalizeWinner(
+            this.blueTeam.name,
+          )} team picked the asssassin`;
+          console.log(
+            `${this.blueTeam.name} team picked assassin. ${this.redTeam.name} team wins`,
+          );
+        } else {
+          this.endGame.winner = capitalizeWinner(this.blueTeam.name);
+          this.endGame.gameOverText = `${capitalizeWinner(
+            this.redTeam.name,
+          )} team picked the asssassin`;
+          console.log(
+            `${this.redTeam.name} team picked assassin. ${this.blueTeam.name} team wins`,
+          );
+        }
+        break;
+      case "lastCard":
+        if (winner === "red") {
+          this.endGame.winner = capitalizeWinner(this.redTeam.name);
+          this.endGame.gameOverText = `${capitalizeWinner(
+            this.redTeam.name,
+          )} found all of their cards`;
+          console.log(`${this.redTeam.name} team wins - all cards found`);
+        } else {
+          this.endGame.winner = capitalizeWinner(this.blueTeam.name);
+          this.endGame.gameOverText = `${capitalizeWinner(
+            this.blueTeam.name,
+          )} found all of their cards`;
+          console.log(`${this.blueTeam.name}team wins - all cards found`);
+        }
+        break;
+      case "manual":
+        this.endGame.winner = "No";
+        this.endGame.gameOverText = "Host has ended game early";
+        break;
+      default:
+        return null;
     }
+
     this.gameStatus = "over";
   }
 
   // Decision whether blue or red wins
   gameDecision() {
-    if (this.redTeam.points + this.blueTeam.points === 16) {
-      if (this.redTeam.points > this.blueTeam.points) {
-        console.log(`${this.redTeam.name} wins the game`);
-      } else if (this.redTeam.points === this.blueTeam.points) {
-        console.log("Game was a DRAW");
-      } else {
-        console.log(`${this.blueTeam.name} wins the game`);
-      }
+    const winningScoreRed = this.startingTeam === "red" ? 9 : 8;
+    const winningScoreBlue = this.startingTeam === "red" ? 9 : 8;
+
+    if (this.redTeam.points === winningScoreRed) {
+      this.gameOver(this.redTeam.name, "lastCard");
+      console.log(`${this.redTeam.name} wins the game`);
+    } else if (this.blueTeam.points === winningScoreBlue) {
+      this.gameOver(this.blueTeam.name, "lastCard");
+      console.log(`${this.blueTeam.name} wins the game`);
     } else {
       console.log("Next Move Please!");
     }
