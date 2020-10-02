@@ -29,13 +29,13 @@ module.exports = {
         password: req.body.password,
       });
 
-      // Creating user session
-      if (req.session) {
-        req.session.isLoggedIn = true;
-        req.session.user = newUser;
-        await req.session.save();
-        console.log(req.session.user.name, " logged in");
-      }
+      // // Creating user session
+      // if (req.session) {
+      //   req.session.isLoggedIn = true;
+      //   req.session.user = newUser;
+      //   await req.session.save();
+      //   console.log(req.session.user.name, " logged in");
+      // }
 
       const payload = {
         id: newUser.id,
@@ -81,13 +81,13 @@ module.exports = {
         };
         const token = jwt.sign(payload, config.secret);
 
-        // Creating user session
-        if (req.session) {
-          req.session.isLoggedIn = true;
-          req.session.user = user;
-          await req.session.save();
-          console.log(req.session.user.name, " logged in");
-        }
+        // // Creating user session
+        // if (req.session) {
+        //   req.session.isLoggedIn = true;
+        //   req.session.user = user;
+        //   await req.session.save();
+        //   console.log(req.session.user.name, " logged in");
+        // }
 
         return res.status(200).json({
           user: payload,
