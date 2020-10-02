@@ -4,8 +4,8 @@ const mongoose = require("mongoose");
 
 exports.postUpdateProfile = (req, res, next) => {
   const userId = req.params.id;
-  if(!userId){
-    return res.status(404).json({err: "Please Sign in!"})
+  if (!userId) {
+    return res.status(404).json({ err: "Please Sign in!" });
   }
   // If name update request is sent
   if (req.body.name) {
@@ -20,43 +20,44 @@ exports.postUpdateProfile = (req, res, next) => {
         if (!user) {
           return res.status(404).json({ err: "User not found" });
         }
-        res.json({ name: user.name });
+        return res.status(200).json({ name: user.name });
       })
       .catch((err) => {
         console.log(err);
       });
+  } else {
+    
+    // If profile picture request is sent
+    uploadImage(req, res, (err) => {
+      if (err) {
+        return res.json(err);
+      }
+
+      // Successful
+      const imageLocation = req.file.location;
+
+      User.findOneAndUpdate(
+        { _id: userId },
+        { profileImageLocation: imageLocation },
+        { upsert: true, new: true },
+      )
+        .then((user) => {
+          if (!user) {
+            return res.json({ err: "User not found" });
+          }
+          res.json({
+            location: imageLocation,
+          });
+        })
+        .catch((err) => console.log(err));
+    });
   }
-
-  // If profile picture request is sent
-  uploadImage(req, res, (err) => {
-    if (err) {
-      return res.json(err);
-    }
-
-    // Successful
-    const imageLocation = req.file.location;
-
-    User.findOneAndUpdate(
-      { _id: userId },
-      { profileImageLocation: imageLocation },
-      { upsert: true, new: true },
-    )
-      .then((user) => {
-        if (!user) {
-          return res.json({ err: "User not found" });
-        }
-        res.json({
-          location: imageLocation,
-        });
-      })
-      .catch((err) => console.log(err));
-  });
 };
 
 exports.getProfile = (req, res, next) => {
   const userId = req.params.id;
-  if(!userId){
-    return res.status(404).json({err: "Please Sign in!"})
+  if (!userId) {
+    return res.status(404).json({ err: "Please Sign in!" });
   }
   User.findOne({ _id: userId })
     .then((user) => {

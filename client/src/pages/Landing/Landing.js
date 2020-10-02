@@ -24,7 +24,7 @@ const Landing = (props) => {
   const [error, setError] = useState("");
 
   const userId = localStorage.getItem("id");
-
+  
   const handleClose = () => {
     setOpenDialog(false);
     // If the error is: User not signed in

@@ -18,16 +18,19 @@ const NavBar = (props) => {
   // Local State
   const [profileImageUrl, setProfileImageUrl] = useState("");
 
+  const userId = localStorage.getItem("id");
+
   // Toggle Login and Logout
   const handleAuthentication = () => {
-    if (user) {
+    if (userId) {
       localStorage.clear();
-      axios
-        .post("/users/logout")
-        .then((result) => {
-          setUser(null);
-        })
-        .catch((err) => console.log(err));
+      setUser(null);
+      // axios
+      //   .post("/users/logout")
+      //   .then((result) => {
+      //     setUser(null);
+      //   })
+      //   .catch((err) => console.log(err));
       props.history.push("/");
     } else {
       props.history.push("/login");
@@ -69,7 +72,7 @@ const NavBar = (props) => {
               className={classes.ProfileItem}
               onClick={handleAuthentication}
             >
-              <Typography>{user ? "Logout" : "Login"}</Typography>
+              <Typography>{userId ? "Logout" : "Login"}</Typography>
             </Button>
           </Box>
         </Box>
