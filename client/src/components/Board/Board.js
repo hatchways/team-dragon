@@ -10,7 +10,7 @@ const Board = (props) => {
   return (
     <>
       <div className={classes.Board}>
-        {(props.gameStatus === "over" && props.endGame) && (
+        {props.gameStatus === "over" && props.endGame && (
           <GameOver
             redScore={props.redScore}
             blueScore={props.blueScore}

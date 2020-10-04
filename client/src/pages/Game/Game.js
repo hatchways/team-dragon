@@ -36,7 +36,7 @@ const Game = (props) => {
       console.log("Game State:", recv);
       setTeamList(recv.state.teamList);
       setName(recv.name);
-      setMessages(recv.history);
+      setMessages(recv.messages);
       setBoard(recv.state.board);
       setBlueScore(recv.state.blueTeam.points);
       setRedScore(recv.state.redTeam.points);
@@ -85,6 +85,24 @@ const Game = (props) => {
       setMessages((prevMessages) => [...prevMessages, recv]);
     });
   }, [gameId, setGameStatus]);
+
+    socket.on("tick", (recv) => {
+      console.log(`Time left: ${recv}`);
+    });
+
+    socket.on("time-over", (recv) => {
+      console.log("time expired");
+
+      setGameStatus(recv.gameStatus);
+      setBoard(recv.board);
+      setCurrentTurn(recv.turn);
+      setRedScore(recv.redTeam.points);
+      setBlueScore(recv.blueTeam.points);
+      if (recv.gameStatus === "over") {
+        setEndGame(recv.endGame);
+      }
+    });
+  }, [gameId]);
 
   const sendMessage = (msg) => {
     const msgData = {
