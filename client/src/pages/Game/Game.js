@@ -82,7 +82,7 @@ const Game = (props) => {
     socket.on("new-message", (recv) => {
       setMessages((prevMessages) => [...prevMessages, recv]);
     });
-  }, [gameId]);
+  }, [gameId, setGameStatus]);
 
   const sendMessage = (msg) => {
     const msgData = {
