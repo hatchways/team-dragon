@@ -6,7 +6,6 @@ import Typography from "@material-ui/core/Typography";
 import { useGameStatus } from "../../contexts/GameContext";
 import { useUser } from "../../contexts/UserContext";
 import useStyles from "./styles";
-import axios from "axios";
 
 const NavBar = (props) => {
   const classes = useStyles();

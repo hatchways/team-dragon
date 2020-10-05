@@ -12,7 +12,7 @@ import { useUser } from "../../contexts/UserContext";
 const Login = (props) => {
   const classes = useStyles();
 
-  const [user, setUser] = useUser();
+  const [, setUser] = useUser();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setLoading] = useState(false);

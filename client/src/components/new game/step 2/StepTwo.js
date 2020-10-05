@@ -28,8 +28,8 @@ const useStyles = makeStyles((theme) =>
 
 const StepTwo = (props) => {
   const [players, setPlayers] = usePlayers();
-  const [hostName, setHostName] = useHostName();
-  const [hostId, setHostId] = useHostId();
+  const [, setHostName] = useHostName();
+  const [, setHostId] = useHostId();
   const { id } = useParams();
 
   const classes = useStyles();
