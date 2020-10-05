@@ -33,6 +33,10 @@ const Landing = (props) => {
 
   const createNewGame = async () => {
     try {
+      // Probably,in future we could make a separate function to set the headers for all requests
+      const token = localStorage.getItem("token");
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
       const getData = await axios.post("/create-game");
       if (getData.data.error) {
         setError(getData.data.error);
