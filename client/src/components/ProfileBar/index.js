@@ -16,17 +16,13 @@ const ProfileBar = (props) => {
   // Local State
   const [profileImageUrl, setProfileImageUrl] = useState("");
 
+  const userId = localStorage.getItem("id");
+
   // Toggle Login and Logout
   const handleAuthentication = () => {
-    if (user) {
+    if (userId) {
       localStorage.clear();
-      axios
-        .post("/users/logout")
-        .then((result) => {
-          setUser(null);
-        })
-        .catch((err) => console.log(err));
-      setGameStatus("setup");
+      setUser(null);
       props.history.push("/");
     } else {
       props.history.push("/login");
@@ -50,8 +46,9 @@ const ProfileBar = (props) => {
           <Avatar
             src={profileImageUrl ? profileImageUrl : ""}
             onClick={handleAvatarClick}
+            className={classes.ProfileItem}
           ></Avatar>
-          <Typography>{user.name}</Typography>
+          <Typography color="secondary" className={classes.ProfileItem}>{user.name}</Typography>
         </>
       ) : null}
       <Button
@@ -60,7 +57,7 @@ const ProfileBar = (props) => {
         className={classes.ProfileItem}
         onClick={handleAuthentication}
       >
-        <Typography>{user ? "Logout" : "Login"}</Typography>
+        <Typography>{userId ? "Logout" : "Login"}</Typography>
       </Button>
     </Box>
   );
