@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Snackbar from "@material-ui/core/Snackbar";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 import GameBar from "../../components/GameBar";
 import Messenger from "../../components/Messenger";
 import Board from "../../components/Board";
@@ -30,6 +32,7 @@ const Game = (props) => {
   const [gameStatus, setGameStatus] = useGameStatus();
   const [endGame, setEndGame] = useState({ winner: "", gameOverTest: "" });
   const [timer, setTimer] = useState(60);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const gameId = props.match.params.id;
 
@@ -92,15 +95,8 @@ const Game = (props) => {
       setTimer(recv);
     });
 
-    socket.on("time-out", (recv) => {
-      setGameStatus(recv.gameStatus);
-      setBoard(recv.board);
-      setCurrentTurn(recv.turn);
-      setRedScore(recv.redTeam.points);
-      setBlueScore(recv.blueTeam.points);
-      if (recv.gameStatus === "over") {
-        setEndGame(recv.endGame);
-      }
+    socket.on("time-out", () => {
+      setOpenSnackbar(true);
     });
   }, [gameId]);
 
@@ -175,6 +171,22 @@ const Game = (props) => {
           timer={timer}
         />
       </div>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setOpenSnackbar(false)}
+        message={`Time out! ${currentTurn} team's turn`.toUpperCase()}
+        action={
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={() => setOpenSnackbar(false)}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        }
+      />
     </div>
   );
 };

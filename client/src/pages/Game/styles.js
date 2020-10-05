@@ -21,6 +21,9 @@ const useStyles = makeStyles(() => ({
   Board: {
     gridArea: "Board",
   },
+  Snackbar: {
+    fontSize: "2rem",
+  },
 }));
 
 export default useStyles;

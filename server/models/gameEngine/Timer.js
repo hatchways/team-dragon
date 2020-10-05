@@ -15,12 +15,15 @@ class Timer {
     this.timeRemaining = TURN_TIME;
     this.timerId = setInterval(async () => {
       if (this.timeRemaining < 0) {
+        this.io.to(this.gameId).emit("time-out");
+        this.stop();
+
         let currentGame = await GameEngine.getGame(this.gameId);
         currentGame.changeTurn();
         await currentGame.save();
 
-        this.io.to(this.gameId).emit("time-out", currentGame);
-        this.timeRemaining = TURN_TIME;
+        this.io.to(this.gameId).emit("update-game", currentGame);
+        this.start();
       } else {
         this.io.to(this.gameId).emit("tick", this.timeRemaining);
         this.timeRemaining--;
@@ -30,6 +33,7 @@ class Timer {
 
   stop() {
     clearInterval(this.timerId);
+    this.timeRemaining = TURN_TIME;
   }
 }
 
