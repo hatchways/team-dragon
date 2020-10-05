@@ -130,12 +130,15 @@ module.exports = (server) => {
         await currentGame.save();
 
         // set time to expire until next turn is called
-        roomDetails[gameId].timerValue = 5;
-        roomDetails[gameId].timer = setInterval(() => {
-          if (roomDetails[gameId].timerValue === 0) {
+        roomDetails[gameId].timerValue = 60;
+        roomDetails[gameId].timer = setInterval(async () => {
+          if (roomDetails[gameId].timerValue < 0) {
+            let currentGame = await GameEngine.getGame(gameId);
             currentGame.changeTurn();
+            await currentGame.save();
+
             io.to(gameId).emit("time-over", currentGame);
-            roomDetails[gameId].timerValue = 5;
+            roomDetails[gameId].timerValue = 60;
           } else {
             console.log("Time left: ", roomDetails[gameId].timerValue);
             io.to(gameId).emit("tick", roomDetails[gameId].timerValue);

@@ -28,6 +28,8 @@ const Game = (props) => {
   });
   const [gameStatus, setGameStatus] = useGameStatus();
   const [endGame, setEndGame] = useState({ winner: "", gameOverTest: "" });
+  const [timer, setTimer] = useState(60);
+
   const gameId = props.match.params.id;
 
   useEffect(() => {
@@ -70,7 +72,6 @@ const Game = (props) => {
       console.log("Updated Game State:", recv);
 
       // set current state of the game
-
       setGameStatus(recv.gameStatus);
       setBoard(recv.board);
       setCurrentTurn(recv.turn);
@@ -87,7 +88,7 @@ const Game = (props) => {
   }, [gameId, setGameStatus]);
 
     socket.on("tick", (recv) => {
-      console.log(`Time left: ${recv}`);
+      setTimer(recv);
     });
 
     socket.on("time-over", (recv) => {
@@ -141,16 +142,18 @@ const Game = (props) => {
 
   return (
     <div className={classes.Game}>
-      <GameBar
-        gameStatus={gameStatus}
-        currentTurn={currentTurn}
-        redScore={redScore}
-        blueScore={blueScore}
-        stopGame={stopGame}
-        isSpyMaster={isSpyMaster}
-        teamList={teamList}
-      />
-      <div className={classes.GameArea}>
+      <div className={classes.Gamebar}>
+        <GameBar
+          gameStatus={gameStatus}
+          currentTurn={currentTurn}
+          redScore={redScore}
+          blueScore={blueScore}
+          stopGame={stopGame}
+          isSpyMaster={isSpyMaster}
+          teamList={teamList}
+        />
+      </div>
+      <div className={classes.Messenger}>
         <Messenger
           messages={messages}
           sendMessage={sendMessage}
@@ -159,6 +162,8 @@ const Game = (props) => {
           isTurn={team === currentTurn}
           changeTurn={changeTurn}
         />
+      </div>
+      <div className={classes.Board}>
         <Board
           gameStatus={gameStatus}
           board={board}
@@ -167,6 +172,7 @@ const Game = (props) => {
           blueScore={blueScore}
           endGame={endGame}
           selectCard={selectCard}
+          timer={timer}
         />
       </div>
     </div>

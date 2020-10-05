@@ -5,15 +5,21 @@ const useStyles = makeStyles(() => ({
     width: "100vw",
     height: "100vh",
     display: "grid",
-    gridTemplateColumns: "auto",
+    gridTemplateAreas: `
+      'Gamebar Gamebar'
+      'Messenger Board'
+    `,
+    gridTemplateColumns: "400px 1fr",
     gridTemplateRows: "12vh 88vh",
   },
-  GameArea: {
-    width: "100%",
-    height: "100%",
-    display: "grid",
-    gridTemplateColumns: "400px 1fr",
-    gridTemplateRows: "auto",
+  Gamebar: {
+    gridArea: "Gamebar",
+  },
+  Messenger: {
+    gridArea: "Messenger",
+  },
+  Board: {
+    gridArea: "Board",
   },
 }));
 
