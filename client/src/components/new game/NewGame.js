@@ -163,13 +163,7 @@ const NewGame = (props) => {
               )}
             </Box>
             <Box mx={2}>
-              {newGame === 1 ? (
-                <Link to="/">
-                  <Button variant="contained" color="secondary">
-                    Back
-                  </Button>
-                </Link>
-              ) : (
+              {newGame !== 1 && (
                 <Button
                   variant="contained"
                   color="secondary"
