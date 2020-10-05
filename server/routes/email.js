@@ -6,6 +6,10 @@ const passport = require("passport");
 
 // router.post("/send-email",isAuth, emailController.sendEmail);
 
-router.post("/send-email",passport.authenticate('jwt',{session:false}), emailController.sendEmail);
+router.post(
+  "/send-email",
+  passport.authenticate("jwt", { session: false }),
+  emailController.sendEmail,
+);
 
 module.exports = router;

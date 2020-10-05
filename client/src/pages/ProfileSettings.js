@@ -84,10 +84,7 @@ const ProfileSettings = () => {
       data.append("profileImage", profileImageFile, profileImageFile.name);
 
       try {
-        const result = await axios.post(
-          `/edit-profile/${user.id}`,
-          data,
-        );
+        const result = await axios.post(`/edit-profile/${user.id}`, data);
         if (result) {
           const { location } = result.data;
           setProfileImageUrl(location);

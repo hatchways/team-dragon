@@ -33,6 +33,7 @@ const Game = (props) => {
   const [endGame, setEndGame] = useState({ winner: "", gameOverTest: "" });
   const [timer, setTimer] = useState(60);
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const gameId = props.match.params.id;
 
@@ -89,16 +90,16 @@ const Game = (props) => {
     socket.on("new-message", (recv) => {
       setMessages((prevMessages) => [...prevMessages, recv]);
     });
-  }, [gameId, setGameStatus]);
 
     socket.on("tick", (recv) => {
       setTimer(recv);
     });
 
     socket.on("time-out", () => {
+      setSnackbarMessage("Time out! Swapping turns...");
       setOpenSnackbar(true);
     });
-  }, [gameId]);
+  }, [gameId, setGameStatus]);
 
   const sendMessage = (msg) => {
     const msgData = {
@@ -175,7 +176,7 @@ const Game = (props) => {
         open={openSnackbar}
         autoHideDuration={6000}
         onClose={() => setOpenSnackbar(false)}
-        message={`Time out! ${currentTurn} team's turn`.toUpperCase()}
+        message={snackbarMessage}
         action={
           <IconButton
             size="small"

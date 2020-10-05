@@ -179,6 +179,11 @@ module.exports = (server) => {
       currentGame.pickCard(currentTurn, cardIndex); // Result of the move would be in console for now
       await currentGame.save();
 
+      // reset timer if turn changed
+      if (currentGame.turn !== currentTurn) {
+        roomDetails[gameId].timer.start();
+      }
+
       io.to(gameId).emit("update-game", currentGame);
     });
 
