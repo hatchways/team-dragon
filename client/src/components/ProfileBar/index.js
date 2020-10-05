@@ -28,6 +28,20 @@ const ProfileBar = (props) => {
       props.history.push("/login");
     }
   };
+  
+  const getProfile = async () => {
+    try{
+      const token = localStorage.getItem("token");
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      const result = await axios.get(`/profile/${userId}`);
+      setUser(result.data)
+    }
+    catch(err){
+      console.log(err);
+    }
+    
+    
+  }
 
   const handleAvatarClick = () => {
     props.history.push("/edit-profile");
@@ -37,7 +51,10 @@ const ProfileBar = (props) => {
     if (user) {
       setProfileImageUrl(user.profileImageLocation);
     }
-  }, [user]);
+    else if(userId){
+      getProfile();
+    }
+  }, [user,userId]);
 
   return (
     <Box className={classes.Profile}>
@@ -48,7 +65,9 @@ const ProfileBar = (props) => {
             onClick={handleAvatarClick}
             className={classes.ProfileItem}
           ></Avatar>
-          <Typography color="secondary" className={classes.ProfileItem}>{user.name}</Typography>
+          <Typography color="secondary" className={classes.UserName}>
+            {user.name}
+          </Typography>
         </>
       ) : null}
       <Button

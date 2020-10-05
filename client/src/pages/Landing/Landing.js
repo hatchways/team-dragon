@@ -24,7 +24,7 @@ const Landing = (props) => {
   const [error, setError] = useState("");
 
   const userId = localStorage.getItem("id");
-  
+
   const handleClose = () => {
     setOpenDialog(false);
     // If the error is: User not signed in
@@ -34,6 +34,7 @@ const Landing = (props) => {
   const createNewGame = async () => {
     try {
       const getData = await axios.post("/create-game");
+      console.log(getData)
       if (getData.data.error) {
         setError(getData.data.error);
         setOpenDialog(true);
@@ -54,28 +55,16 @@ const Landing = (props) => {
         </Typography>
 
         {!localStorage.id ? (
-          <>
-            <Button
-              className={classes.Button}
-              component={Link}
-              to="/register"
-              variant="contained"
-              color="primary"
-              size="large"
-            >
-              Sign Up
-            </Button>
-            <Button
-              className={classes.Button}
-              component={Link}
-              to="/login"
-              variant="contained"
-              color="primary"
-              size="large"
-            >
-              Sign In
-            </Button>
-          </>
+          <Button
+            className={classes.Button}
+            component={Link}
+            to="/register"
+            variant="contained"
+            color="primary"
+            size="large"
+          >
+            Sign Up
+          </Button>
         ) : (
           <Button
             className={classes.Button}
