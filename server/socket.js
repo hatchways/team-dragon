@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const config = require("./config");
 const User = require("./models/User");
 const GameEngine = require("./models/gameEngine/GameEngine");
+const Timer = require("./models/gameEngine/Timer");
 
 module.exports = (server) => {
   const io = require("socket.io")(server);
@@ -52,6 +53,7 @@ module.exports = (server) => {
           roomDetails[gameId] = {
             messages: [],
             clients: [socket.id],
+            timer: new Timer(io, gameId),
           };
         } else {
           const isClient = (el) => el === socket.id;
@@ -129,22 +131,8 @@ module.exports = (server) => {
         currentGame.startGame();
         await currentGame.save();
 
-        // set time to expire until next turn is called
-        roomDetails[gameId].timerValue = 60;
-        roomDetails[gameId].timer = setInterval(async () => {
-          if (roomDetails[gameId].timerValue < 0) {
-            let currentGame = await GameEngine.getGame(gameId);
-            currentGame.changeTurn();
-            await currentGame.save();
-
-            io.to(gameId).emit("time-over", currentGame);
-            roomDetails[gameId].timerValue = 60;
-          } else {
-            console.log("Time left: ", roomDetails[gameId].timerValue);
-            io.to(gameId).emit("tick", roomDetails[gameId].timerValue);
-            roomDetails[gameId].timerValue--;
-          }
-        }, 1000);
+        // start the turn timer
+        roomDetails[gameId].timer.start();
 
         io.to(gameId).emit("update-roles", currentGame);
       } catch (err) {
@@ -197,9 +185,15 @@ module.exports = (server) => {
     socket.on("change-turn", async (recv) => {
       const { gameId } = recv;
 
+      // Stop the timer
+      roomDetails[gameId].timer.stop();
+
       const currentGame = await GameEngine.getGame(gameId);
       currentGame.changeTurn();
       await currentGame.save();
+
+      // Restart the timer
+      roomDetails[gameId].timer.start();
 
       io.to(gameId).emit("update-game", currentGame);
     });
@@ -215,7 +209,7 @@ module.exports = (server) => {
       await currentGame.save();
 
       // Stop the timer
-      clearInterval(roomDetails[gameId].timer);
+      roomDetails[gameId].timer.stop();
 
       io.to(gameId).emit("update-game", currentGame);
     });
@@ -251,7 +245,7 @@ module.exports = (server) => {
 
           // delete the room if all clients are gone
           if (!roomDetails[room].clients.length) {
-            clearInterval(roomDetails[room].timer);
+            roomDetails[room].timer.stop();
             delete roomDetails[room];
           }
 

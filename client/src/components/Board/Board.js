@@ -34,7 +34,7 @@ const Board = (props) => {
         </Box>
         <Box className={classes.BoardBottom}>
           <Typography variant="h1" className={classes.Timer}>
-            {props.timer}
+            Time Left: {props.timer}
           </Typography>
         </Box>
       </Box>

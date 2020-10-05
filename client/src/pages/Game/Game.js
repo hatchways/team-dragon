@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Snackbar from "@material-ui/core/Snackbar";
 import GameBar from "../../components/GameBar";
 import Messenger from "../../components/Messenger";
 import Board from "../../components/Board";
@@ -91,9 +92,7 @@ const Game = (props) => {
       setTimer(recv);
     });
 
-    socket.on("time-over", (recv) => {
-      console.log("time expired");
-
+    socket.on("time-out", (recv) => {
       setGameStatus(recv.gameStatus);
       setBoard(recv.board);
       setCurrentTurn(recv.turn);
@@ -161,6 +160,7 @@ const Game = (props) => {
           isSpyMaster={isSpyMaster}
           isTurn={team === currentTurn}
           changeTurn={changeTurn}
+          timeOut={timer === 0}
         />
       </div>
       <div className={classes.Board}>

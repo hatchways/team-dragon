@@ -11,7 +11,6 @@ const useStyles = makeStyles((theme) => ({
     padding: "4rem",
     display: "flex",
     flexFlow: "column",
-    flexBasis: "90% 10%",
   },
   BoardCards: {
     width: "100%",
@@ -22,9 +21,9 @@ const useStyles = makeStyles((theme) => ({
     gap: "1rem",
   },
   BoardBottom: {
-    paddingTop: "10px",
+    paddingTop: "20px",
     display: "flex",
-    justifyContent: "flex-end",
+    justifyContent: "center",
   },
   Timer: (props) => ({
     color: props.timer <= 10 ? theme.red.medium : theme.palette.primary.main,
