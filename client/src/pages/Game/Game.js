@@ -31,6 +31,8 @@ const Game = (props) => {
   const gameId = props.match.params.id;
 
   useEffect(() => {
+
+    
     // join the match
     socket.emit("init-game", { gameId }, (recv) => {
       console.log("Game State:", recv);

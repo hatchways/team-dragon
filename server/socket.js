@@ -194,6 +194,19 @@ module.exports = (server) => {
       io.to(gameId).emit("update-game", currentGame);
     });
 
+    // Listener to regulary update game
+    socket.on("fetch-game", async (recv) => {
+      console.log("recv", recv);
+      const { gameId} = recv;
+      console.log("Update game");
+
+      const currentGame = await GameEngine.getGame(gameId);
+
+      io.to(gameId).emit("update-game", currentGame);
+    });
+
+    
+
     // Clean up when a user disconnects
     socket.on("disconnect", () => {
       // lookup the disconnecting user and remove
