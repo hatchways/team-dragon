@@ -9,24 +9,22 @@ import {
   Card,
   Box,
 } from "@material-ui/core";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) =>
-  createStyles({
-    card: {
-      padding: "2rem",
-      marginTop: "2rem",
-    },
-    titleDivider: {
-      borderTop: `7px solid ${theme.palette.primary.main}`,
-      width: "5rem",
-      marginTop: "1rem",
-    },
-    host: {
-      color: theme.palette.primary.main,
-    },
-  }),
-);
+const useStyles = makeStyles((theme) => ({
+  card: {
+    padding: "2rem",
+    marginTop: "2rem",
+  },
+  titleDivider: {
+    borderTop: `7px solid ${theme.palette.primary.main}`,
+    width: "5rem",
+    marginTop: "1rem",
+  },
+  host: {
+    color: theme.palette.primary.main,
+  },
+}));
 
 const WaitingRoom = (props) => {
   const classes = useStyles();

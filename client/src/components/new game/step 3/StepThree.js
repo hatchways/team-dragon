@@ -1,16 +1,26 @@
-import React, { useCallback, useEffect } from "react";
-import { usePlayers, useSpyMaster } from "../../../contexts/DataContext";
-//import { useAxios } from "../../../hooks/useAxios";
-import { Grid, Box, Typography } from "@material-ui/core";
+import React, { useCallback } from "react";
 import PlayerSelect from "./PlayerSelect";
 import RoleSelect from "./RoleSelect";
+import {
+  usePlayers,
+  useSpyMaster,
+  useNewGame,
+} from "../../../contexts/DataContext";
+import { Grid, Box, Typography } from "@material-ui/core";
 import Pulse from "react-reveal/Pulse";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  disabledTitle: {
+    color: theme.grey.mediumDark,
+  },
+}));
 
 const StepThree = () => {
   const [players, setPlayers] = usePlayers();
-
-  //Holds ID of spyMaster
   const [spyMaster, setSpyMaster] = useSpyMaster();
+  const [newGame] = useNewGame();
+  const classes = useStyles();
 
   const displayPlayers = useCallback(() => {
     return players.map((player, i) => {
@@ -23,10 +33,11 @@ const StepThree = () => {
           setPlayers={setPlayers}
           spyMaster={spyMaster}
           setSpyMaster={setSpyMaster}
+          newGame={newGame}
         />
       );
     });
-  }, [players, setPlayers, spyMaster, setSpyMaster]);
+  }, [players, setPlayers, spyMaster, setSpyMaster, newGame]);
 
   const displayBlueRoles = useCallback(() => {
     const bluePlayers = players.filter((player) => player.team === "blue");
@@ -36,9 +47,10 @@ const StepThree = () => {
         color={"blue"}
         spyMaster={spyMaster}
         setSpyMaster={setSpyMaster}
+        newGame={newGame}
       />
     );
-  }, [players, spyMaster, setSpyMaster]);
+  }, [players, spyMaster, setSpyMaster, newGame]);
 
   const displayRedRoles = useCallback(() => {
     const redPlayers = players.filter((player) => player.team === "red");
@@ -49,34 +61,11 @@ const StepThree = () => {
           color={"red"}
           spyMaster={spyMaster}
           setSpyMaster={setSpyMaster}
+          newGame={newGame}
         />
       </Grid>
     );
-  }, [players, spyMaster, setSpyMaster]);
-
-  useEffect(() => {
-    //Fixes bug where player is selected as spymaster, but than allocated to the other team. Solution could likely be improved.
-
-    //Check Blue Team
-    for (let i = 0; i < players.length; i++) {
-      if (players[i].id === spyMaster.blue && players[i].team !== "blue") {
-        setSpyMaster((prevState) => ({
-          ...prevState,
-          blue: "",
-        }));
-      }
-    }
-
-    //Check Red Team
-    for (let i = 0; i < players.length; i++) {
-      if (players[i].id === spyMaster.red && players[i].team !== "red") {
-        setSpyMaster((prevState) => ({
-          ...prevState,
-          red: "",
-        }));
-      }
-    }
-  }, [players, setSpyMaster, spyMaster]);
+  }, [players, spyMaster, setSpyMaster, newGame]);
 
   return (
     <>
@@ -89,7 +78,7 @@ const StepThree = () => {
             alignItems="center"
           >
             <Box mb="1.5rem">
-              <Typography variant="h3">Assign Teams</Typography>
+              <Typography className={newGame !== 3 ? classes.disabledTitle : null} variant="h3">Assign Teams</Typography>
             </Box>
             <Grid
               container
@@ -109,7 +98,7 @@ const StepThree = () => {
             alignItems="center"
           >
             <Box mb="1.5rem">
-              <Typography variant="h3">Assign SpyMaster</Typography>
+              <Typography className={newGame !== 4 ? classes.disabledTitle : null} variant="h3">Assign SpyMaster</Typography>
             </Box>
             <Grid
               container
