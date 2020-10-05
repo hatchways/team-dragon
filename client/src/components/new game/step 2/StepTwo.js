@@ -14,17 +14,15 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Flip from "react-reveal/Flip";
 import socket from "../../../socket";
 
-const useStyles = makeStyles((theme) =>
-  createStyles({
-    item: {
-      padding: 0,
-    },
-  }),
-);
+const useStyles = makeStyles((theme) => ({
+  item: {
+    padding: 0,
+  },
+}));
 
 const StepTwo = (props) => {
   const [players, setPlayers] = usePlayers();
