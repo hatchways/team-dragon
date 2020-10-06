@@ -3,7 +3,7 @@
 ClueWords is a board game for 4-8 players. Two teams compete by having a spymaster give one word clue that can point to multiple words on the board. The other players on the team attempt to guess their team’s words while avoiding the words of the other team.
 
 ## Contributors
-
+- [Bonnie Li](https://github.com/bonnieli) (Project Lead)
 - [Karl Secen](https://github.com/karlkristopher)
 - [Nicholas Chumney](https://github.com/chumnend)
 - [Jorawar Singh](https://github.com/jorawarSinghNijjar)
