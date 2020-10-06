@@ -78,7 +78,12 @@ const StepThree = () => {
             alignItems="center"
           >
             <Box mb="1.5rem">
-              <Typography className={newGame !== 3 ? classes.disabledTitle : null} variant="h3">Assign Teams</Typography>
+              <Typography
+                className={newGame !== 3 ? classes.disabledTitle : null}
+                variant="h3"
+              >
+                Assign Teams
+              </Typography>
             </Box>
             <Grid
               container
@@ -98,7 +103,12 @@ const StepThree = () => {
             alignItems="center"
           >
             <Box mb="1.5rem">
-              <Typography className={newGame !== 4 ? classes.disabledTitle : null} variant="h3">Assign SpyMaster</Typography>
+              <Typography
+                className={newGame !== 4 ? classes.disabledTitle : null}
+                variant="h3"
+              >
+                Assign SpyMaster
+              </Typography>
             </Box>
             <Grid
               container
