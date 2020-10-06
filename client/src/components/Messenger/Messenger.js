@@ -92,7 +92,7 @@ const Messenger = (props) => {
             color="primary"
             size="large"
             onClick={props.changeTurn}
-            disabled={!props.isTurn}
+            disabled={!props.isTurn || props.timeOut}
           >
             Done
           </Button>
@@ -115,6 +115,7 @@ Messenger.propTypes = {
   isSpyMaster: PropTypes.bool,
   isTurn: PropTypes.bool,
   changeTurn: PropTypes.func,
+  timeOut: PropTypes.bool.isRequired,
 };
 
 export default Messenger;

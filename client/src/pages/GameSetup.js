@@ -30,8 +30,8 @@ const GameSetup = (props) => {
     socket.emit("fetch-game", { gameId });
 
     socket.on("update-game", (currentGame) => {
-      console.log("Updated game:" ,currentGame.gameStatus)
-      setGameStatus(currentGame.gameStatus)
+      console.log("Updated game:", currentGame.gameStatus);
+      setGameStatus(currentGame.gameStatus);
     });
   }, []);
 
