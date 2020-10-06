@@ -1,17 +1,15 @@
 import React from "react";
 import EmailInvite from "./EmailInvite";
 import LinkInvite from "./LinkInvite";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { Divider, Grid, Box } from "@material-ui/core";
 import Pulse from "react-reveal/Pulse";
 
-const useStyles = makeStyles((theme) =>
-  createStyles({
-    inviteSection: {
-      margin: "2rem",
-    },
-  }),
-);
+const useStyles = makeStyles((theme) => ({
+  inviteSection: {
+    margin: "2rem",
+  },
+}));
 
 const StepOne = (props) => {
   const classes = useStyles();

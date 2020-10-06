@@ -13,21 +13,19 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import CheckIcon from "@material-ui/icons/Check";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import isEmail from "validator/lib/isEmail";
 import Flip from "react-reveal/Flip";
 
-const useStyles = makeStyles((theme) =>
-  createStyles({
-    invite: {
-      background: theme.grey.dark,
-      color: theme.white,
-    },
-    item: {
-      padding: 0,
-    },
-  }),
-);
+const useStyles = makeStyles((theme) => ({
+  invite: {
+    background: theme.grey.dark,
+    color: theme.white,
+  },
+  item: {
+    padding: 0,
+  },
+}));
 
 const EmailInvite = () => {
   const [emails, setEmails] = useEmails();

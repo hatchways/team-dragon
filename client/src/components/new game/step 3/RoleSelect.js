@@ -13,24 +13,24 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     minWidth: 120,
   },
-  selectRedEmpty: {
-    backgroundColor: theme.red.light,
+  selectRedEmpty: (newGame) => ({
+    backgroundColor: newGame === 4 ? theme.red.light : theme.grey.medium,
     marginTop: theme.spacing(2),
-  },
-  selectBlueEmpty: {
-    backgroundColor: theme.blue.light,
+  }),
+  selectBlueEmpty: (newGame) => ({
+    backgroundColor: newGame === 4 ? theme.blue.light : theme.grey.medium,
     marginTop: theme.spacing(2),
-  },
-  redHelper: {
-    color: theme.red.medium,
-  },
-  blueHelper: {
-    color: theme.blue.medium,
-  },
+  }),
+  redHelper: (newGame) => ({
+    color: newGame === 4 ? theme.red.medium : theme.grey.medium,
+  }),
+  blueHelper: (newGame) => ({
+    color: newGame === 4 ? theme.blue.medium : theme.grey.medium,
+  }),
 }));
 
 const RoleSelect = (props) => {
-  const classes = useStyles();
+  const classes = useStyles(props.newGame);
 
   const handleChange = (event) => {
     if (props.color === "red") {
@@ -58,7 +58,7 @@ const RoleSelect = (props) => {
       );
     });
   }, [props.team]);
-
+  
   return (
     <>
       <div>
@@ -73,6 +73,7 @@ const RoleSelect = (props) => {
               props.color === "red" ? props.spyMaster.red : props.spyMaster.blue
             }
             onChange={handleChange}
+            disabled={props.newGame === 3}
             displayEmpty
             className={
               props.color === "red"

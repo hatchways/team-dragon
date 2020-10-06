@@ -38,6 +38,8 @@ const Game = (props) => {
       setName(recv.name);
       setMessages(recv.history);
       setBoard(recv.state.board);
+      setBlueScore(recv.state.blueTeam.points);
+      setRedScore(recv.state.redTeam.points);
 
       // search game stare to find role of this user
       const redPlayers = recv.state.redTeam.players;
@@ -82,7 +84,7 @@ const Game = (props) => {
     socket.on("new-message", (recv) => {
       setMessages((prevMessages) => [...prevMessages, recv]);
     });
-  }, [gameId]);
+  }, [gameId, setGameStatus]);
 
   const sendMessage = (msg) => {
     const msgData = {

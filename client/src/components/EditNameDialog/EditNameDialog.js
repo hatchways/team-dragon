@@ -13,7 +13,6 @@ import axios from "axios";
 const EditNameDialog = (props) => {
   const [user, setUser] = useUser();
   const [name, setName] = useState("");
-  const [open, setOpen] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
