@@ -15,7 +15,6 @@ import {
 } from "@material-ui/core";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import { makeStyles } from "@material-ui/core/styles";
-import Flip from "react-reveal/Flip";
 import socket from "../../../socket";
 
 const useStyles = makeStyles((theme) => ({
@@ -56,12 +55,10 @@ const StepTwo = (props) => {
     return players.map((player, i) => {
       return (
         <ListItem className={classes.item} key={i}>
-          <Flip left>
-            <ListItemIcon>
-              <CheckCircleIcon color="primary" />
-            </ListItemIcon>
-            <ListItemText primary={player.name} />
-          </Flip>
+          <ListItemIcon>
+            <CheckCircleIcon color="primary" />
+          </ListItemIcon>
+          <ListItemText primary={player.name} />
         </ListItem>
       );
     });

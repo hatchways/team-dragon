@@ -15,7 +15,6 @@ import {
 import CheckIcon from "@material-ui/icons/Check";
 import { makeStyles } from "@material-ui/core/styles";
 import isEmail from "validator/lib/isEmail";
-import Flip from "react-reveal/Flip";
 
 const useStyles = makeStyles((theme) => ({
   invite: {
@@ -61,12 +60,10 @@ const EmailInvite = () => {
   const displayEmails = emails.map((email, i) => {
     return (
       <ListItem className={classes.item} key={i}>
-        <Flip left>
-          <ListItemIcon>
-            <CheckIcon color="primary" />
-          </ListItemIcon>
-          <ListItemText primary={email} />
-        </Flip>
+        <ListItemIcon>
+          <CheckIcon color="primary" />
+        </ListItemIcon>
+        <ListItemText primary={email} />
       </ListItem>
     );
   });

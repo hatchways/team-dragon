@@ -7,7 +7,6 @@ import {
   useNewGame,
 } from "../../../contexts/DataContext";
 import { Grid, Box, Typography } from "@material-ui/core";
-import Pulse from "react-reveal/Pulse";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -69,7 +68,6 @@ const StepThree = () => {
 
   return (
     <>
-      <Pulse>
         <Box m={3}>
           <Grid
             container
@@ -122,7 +120,6 @@ const StepThree = () => {
             </Grid>
           </Grid>
         </Box>
-      </Pulse>
     </>
   );
 };
