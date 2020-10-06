@@ -36,7 +36,7 @@ const GameBar = (props) => {
             <Typography>Blue Team</Typography>
           </Box>
           <Box display="flex" justifyContent="center" padding={"0 10px"}>
-            <Typography variant="h2">-</Typography>
+            <Typography variant="h3">-</Typography>
           </Box>
           <Box className={classes.RedScore}>
             <Typography variant="h3">{props.redScore}</Typography>
@@ -87,9 +87,13 @@ const GameBar = (props) => {
 };
 
 GameBar.propTypes = {
+  gameStatus: PropTypes.string.isRequired,
   currentTurn: PropTypes.string.isRequired,
   redScore: PropTypes.number.isRequired,
   blueScore: PropTypes.number.isRequired,
+  stopGame: PropTypes.func.isRequired,
+  isSpyMaster: PropTypes.bool.isRequired,
+  teamList: PropTypes.object.isRequired,
 };
 
 export default GameBar;

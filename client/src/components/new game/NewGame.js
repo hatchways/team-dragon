@@ -18,30 +18,24 @@ import {
   Card,
   Box,
 } from "@material-ui/core";
-
-import { makeStyles, createStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import socket from "../../socket";
 import axios from "axios";
 
-const useStyles = makeStyles((theme) =>
-  createStyles({
-    card: {
-      padding: "2rem",
-      marginTop: "2rem",
-    },
-    titleDivider: {
-      borderTop: `7px solid ${theme.palette.primary.main}`,
-      width: "5rem",
-      marginTop: "1rem",
-    },
-  }),
-);
+const useStyles = makeStyles((theme) => ({
+  card: {
+    padding: "2rem",
+    marginTop: "2rem",
+  },
+  titleDivider: {
+    borderTop: `7px solid ${theme.palette.primary.main}`,
+    width: "5rem",
+    marginTop: "1rem",
+  },
+}));
 
 const NewGame = (props) => {
   const classes = useStyles();
-
-  // const [openDialog, setOpenDialog] = useState(false);
-  // const [error, setError] = useState("");
 
   //Holds Game ID + Template for Passing Roles to Server
   const [newGame, setNewGame] = useNewGame();
@@ -50,7 +44,7 @@ const NewGame = (props) => {
   const [players] = usePlayers();
 
   //Holds Selected SpyMaster
-  const [spyMaster] = useSpyMaster();
+  const [spyMaster, setSpyMaster] = useSpyMaster();
 
   //Holds Emails to be Invited to Game
   const [emails, setEmails] = useEmails();
@@ -60,16 +54,6 @@ const NewGame = (props) => {
   // Goes back to the step of the host when page refreshes
   useEffect(() => window.localStorage.setItem("newGame", newGame), [newGame]);
 
-  const resetNewGame = async () => {
-    try {
-      const getData = await axios.post("/create-game");
-      await setNewGame(1);
-      await props.value.history.push(String(getData.data.game.id));
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   const nextStep = async () => {
     try {
       if (newGame !== 1 || emails.length < 1) {
@@ -78,8 +62,6 @@ const NewGame = (props) => {
         const getData = await axios.post("/send-email", { emails, gameId: id });
         if (getData.data.error) {
           console.log("Error:", getData.data.error);
-          // setError(getData.data.error);
-          // setOpenDialog(true);
           return null;
         }
         await setEmails([]);
@@ -137,6 +119,8 @@ const NewGame = (props) => {
         return <StepTwo />;
       case 3:
         return <StepThree />;
+      case 4:
+        return <StepThree />;
       default:
         return (
           <h2>
@@ -167,7 +151,7 @@ const NewGame = (props) => {
             alignItems="center"
           >
             <Box mx={2}>
-              {newGame < 3 ? (
+              {newGame < 4 ? (
                 <Button variant="contained" color="primary" onClick={nextStep}>
                   Next
                 </Button>
@@ -179,13 +163,20 @@ const NewGame = (props) => {
               )}
             </Box>
             <Box mx={2}>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={resetNewGame}
-              >
-                Start Over
-              </Button>
+              {newGame !== 1 && (
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => {
+                    setNewGame((prevState) => prevState - 1);
+                    if (newGame === 4) {
+                      setSpyMaster({ blue: "", red: "" });
+                    }
+                  }}
+                >
+                  Back
+                </Button>
+              )}
             </Box>
           </Grid>
         </Box>

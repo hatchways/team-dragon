@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Button, Typography, Box, Grid } from "@material-ui/core";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import LinkIcon from "@material-ui/icons/Link";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Flip from "react-reveal/Flip";
 
-const useStyles = makeStyles((theme) =>
-  createStyles({
-    copy: {
-      background: theme.white,
-    },
-    copyConfirm: {
-      color: theme.palette.primary.main,
-    },
-  }),
-);
+const useStyles = makeStyles((theme) => ({
+  copy: {
+    background: theme.white,
+  },
+  copyConfirm: {
+    color: theme.palette.primary.main,
+  },
+}));
 
 const LinkInvite = (props) => {
   const classes = useStyles();

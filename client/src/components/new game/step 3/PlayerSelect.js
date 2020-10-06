@@ -9,31 +9,18 @@ import {
 import { withStyles } from "@material-ui/core/styles";
 import { red, blue } from "@material-ui/core/colors";
 
-import { makeStyles, createStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) =>
-  createStyles({
-    playerLabel: {
-      color: theme.grey.dark,
-      fontSize: "1.1rem",
-      marginBottom: ".5rem",
-    },
+const useStyles = makeStyles((theme) => ({
+  playerLabel: (newGame) => ({
+    color: newGame === 3 ? theme.grey.dark : theme.grey.mediumDark,
+    fontSize: "1.1rem",
+    marginBottom: ".5rem",
   }),
-);
+}));
 
-// const noTeamColor = grey[500];
 const blueTeamColor = blue[500];
 const redTeamColor = red[500];
-
-// const NoTeamRadio = withStyles({
-//   root: {
-//     color: noTeamColor,
-//     "&$checked": {
-//       color: noTeamColor,
-//     },
-//   },
-//   checked: {},
-// })((props) => <Radio color="default" {...props} />);
 
 const BlueRadio = withStyles({
   root: {
@@ -56,29 +43,9 @@ const RedRadio = withStyles({
 })((props) => <Radio color="default" {...props} />);
 
 const PlayerSelect = (props) => {
-  const classes = useStyles();
+  const classes = useStyles(props.newGame);
 
   const handleChange = (event) => {
-    //Following conditional statements remove player a spymaster who is moved to no team
-    if (
-      event.target.value === "noTeam" &&
-      props.player.id === props.spyMaster.blue
-    ) {
-      props.setSpyMaster((prevState) => ({
-        ...prevState,
-        blue: "",
-      }));
-    }
-    if (
-      event.target.value === "noTeam" &&
-      props.player.id === props.spyMaster.red
-    ) {
-      props.setSpyMaster((prevState) => ({
-        ...prevState,
-        red: "",
-      }));
-    }
-
     const { id, name } = props.player;
     let changeTeam = props.players;
     changeTeam[props.ele] = { id, name, team: event.target.value };
@@ -97,20 +64,17 @@ const PlayerSelect = (props) => {
           value={props.player.team || ""}
           onChange={handleChange}
         >
-          {/* <FormControlLabel
-            value="noTeam"
-            control={<NoTeamRadio />}
-            label="No Team"
-          /> */}
           <FormControlLabel
             value="blue"
             control={<BlueRadio />}
             label="Blue Team"
+            disabled={props.newGame !== 3}
           />
           <FormControlLabel
             value="red"
             control={<RedRadio />}
             label="Red Team"
+            disabled={props.newGame !== 3}
           />
         </RadioGroup>
       </FormControl>

@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const config = require("./config");
 const User = require("./models/User");
 const GameEngine = require("./models/gameEngine/GameEngine");
+const Timer = require("./models/gameEngine/Timer");
 
 module.exports = (server) => {
   const io = require("socket.io")(server);
@@ -15,6 +16,15 @@ module.exports = (server) => {
       const errors = [];
 
       try {
+        if (!gameId) {
+          errors.push({
+            name: "UndefinedError",
+            message: "Game not created yet",
+          });
+          socket.emit("error", errors);
+          throw new Error("Game not created");
+        }
+
         const decoded = jwt.verify(token, config.secret);
         if (!decoded) {
           errors.push({
@@ -41,8 +51,15 @@ module.exports = (server) => {
         // create room details if does not exist
         if (roomDetails[gameId] === undefined) {
           roomDetails[gameId] = {
-            history: [],
+            messages: [],
+            clients: [socket.id],
+            timer: new Timer(io, gameId),
           };
+        } else {
+          const isClient = (el) => el === socket.id;
+          if (roomDetails[gameId].clients.findIndex(isClient) == -1) {
+            roomDetails[gameId].clients.push(socket.id);
+          }
         }
 
         // assign user a name and store user details
@@ -57,15 +74,6 @@ module.exports = (server) => {
           id: user.id,
           name: user.name,
         };
-
-        if (!gameId) {
-          errors.push({
-            name: "UndefinedError",
-            message: "Game not created yet",
-          });
-          socket.emit("error", errors);
-          throw new Error("Game not created");
-        }
 
         const currentGame = await GameEngine.getGame(gameId);
         if (!currentGame) {
@@ -123,6 +131,9 @@ module.exports = (server) => {
         currentGame.startGame();
         await currentGame.save();
 
+        // start the turn timer
+        roomDetails[gameId].timer.start();
+
         io.to(gameId).emit("update-roles", currentGame);
       } catch (err) {
         console.error(err);
@@ -138,14 +149,14 @@ module.exports = (server) => {
         message: `${clientDetails[socket.id].name} joined the game`,
       };
 
-      roomDetails[gameId].history.push(alert);
+      roomDetails[gameId].messages.push(alert);
       socket.to(gameId).broadcast.emit("new-message", alert);
 
-      // return assigned name and chat history
+      // return assigned name and chat messages
       fn({
         name: clientDetails[socket.id].name,
         state: await GameEngine.getGame(gameId),
-        history: roomDetails[gameId].history,
+        messages: roomDetails[gameId].messages,
       });
     });
 
@@ -153,8 +164,8 @@ module.exports = (server) => {
     socket.on("message", (recv) => {
       const { gameId, msgData } = recv;
 
-      // save message into history
-      roomDetails[gameId].history.push(msgData);
+      // save message into messages
+      roomDetails[gameId].messages.push(msgData);
 
       // update other clients with the message
       io.to(gameId).emit("new-message", msgData);
@@ -168,15 +179,26 @@ module.exports = (server) => {
       currentGame.pickCard(currentTurn, cardIndex); // Result of the move would be in console for now
       await currentGame.save();
 
+      // reset timer if turn changed
+      if (currentGame.turn !== currentTurn) {
+        roomDetails[gameId].timer.start();
+      }
+
       io.to(gameId).emit("update-game", currentGame);
     });
 
     socket.on("change-turn", async (recv) => {
       const { gameId } = recv;
 
+      // Stop the timer
+      roomDetails[gameId].timer.stop();
+
       const currentGame = await GameEngine.getGame(gameId);
       currentGame.changeTurn();
       await currentGame.save();
+
+      // Restart the timer
+      roomDetails[gameId].timer.start();
 
       io.to(gameId).emit("update-game", currentGame);
     });
@@ -190,6 +212,20 @@ module.exports = (server) => {
       const currentGame = await GameEngine.getGame(gameId);
       currentGame.gameOver(winner, method);
       await currentGame.save();
+
+      // Stop the timer
+      roomDetails[gameId].timer.stop();
+
+      io.to(gameId).emit("update-game", currentGame);
+    });
+
+    // Listener to regulary update game
+    socket.on("fetch-game", async (recv) => {
+      console.log("recv", recv);
+      const { gameId } = recv;
+      console.log("Update game");
+
+      const currentGame = await GameEngine.getGame(gameId);
 
       io.to(gameId).emit("update-game", currentGame);
     });
@@ -205,10 +241,21 @@ module.exports = (server) => {
             message: `${user.name} left the game`,
           };
 
-          roomDetails[room].history.push(alert);
+          roomDetails[room].messages.push(alert);
+          roomDetails[room].clients = roomDetails[room].clients.filter(
+            (client) => client !== socket.id,
+          );
+
+          // delete the room if all clients are gone
+          if (!roomDetails[room].clients.length) {
+            roomDetails[room].timer.stop();
+            delete roomDetails[room];
+          }
+
           io.to(room).emit("new-message", alert);
         });
 
+        // remove client data from socket
         delete clientDetails[socket.id];
       }
     });

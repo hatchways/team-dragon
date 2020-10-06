@@ -5,7 +5,9 @@ const User = require("../models/User");
 exports.postCreateGame = async (req, res, next) => {
   try {
     if (!req.user) {
-      return res.status(401).json({ success: false, error: "Please Sign in !" });
+      return res
+        .status(401)
+        .json({ success: false, error: "Please Sign in !" });
     }
 
     // User id coming from request
