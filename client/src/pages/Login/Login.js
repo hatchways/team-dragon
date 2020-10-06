@@ -38,7 +38,12 @@ const Login = (props) => {
 
       // save user data
       const decoded = decode(data.token);
-      setUser({ id: decoded.id, email: decoded.email, name: decoded.name });
+      setUser({
+        id: decoded.id,
+        email: decoded.email,
+        name: decoded.name,
+        profileImageLocation: decoded.profileImageLocation,
+      });
       window.localStorage.setItem("token", data.token);
       axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
 

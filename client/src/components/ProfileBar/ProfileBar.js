@@ -2,25 +2,26 @@ import React, { useEffect, useState } from "react";
 import { Box, Avatar, Button } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import { useUser } from "../../contexts/UserContext";
-import useStyles from "./styles";
-import axios from "axios";
 import { useGameStatus } from "../../contexts/GameContext";
+import useStyles from "./styles";
 
 const ProfileBar = (props) => {
   const classes = useStyles();
 
   const [, setGameStatus] = useGameStatus();
   const [user, setUser] = useUser();
-
-  // Local State
   const [profileImageUrl, setProfileImageUrl] = useState("");
 
-  const userId = localStorage.getItem("id");
+  useEffect(() => {
+    if (user) {
+      setProfileImageUrl(user.profileImageLocation);
+    }
+  }, [user]);
 
   // Toggle Login and Logout
   const handleAuthentication = () => {
-    if (userId) {
-      localStorage.clear();
+    if (user) {
+      localStorage.removeItem("token");
       setUser(null);
       setGameStatus("setup");
       props.history.push("/");
@@ -29,28 +30,9 @@ const ProfileBar = (props) => {
     }
   };
 
-  const getProfile = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      const result = await axios.get(`/profile/${userId}`);
-      setUser(result.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   const handleAvatarClick = () => {
     props.history.push("/edit-profile");
   };
-
-  useEffect(() => {
-    if (user) {
-      setProfileImageUrl(user.profileImageLocation);
-    } else if (userId) {
-      getProfile();
-    }
-  }, [user, userId]);
 
   return (
     <Box className={classes.Profile}>

@@ -21,7 +21,12 @@ const App = () => {
 
     if (token !== null) {
       const decoded = decode(token);
-      setUser({ id: decoded.id, email: decoded.email, name: decoded.name });
+      setUser({
+        id: decoded.id,
+        email: decoded.email,
+        name: decoded.name,
+        profileImageLocation: decoded.profileImageLocation,
+      });
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     } else {
       localStorage.clear();
