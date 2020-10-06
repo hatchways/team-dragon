@@ -49,7 +49,7 @@ REDIS_URI=[Enter your redis URI here]
 7. Sign up for SendGrid and add the API Key you get from SendGrid to `SENDGRID_API_KEY`:
 ```
 # SendGrid
-SENDGRID_API_KEY=
+SENDGRID_API_KEY=[Enter SendGrid API Key here]
 ```
 8.Sign up for AWS and configure AWS variables in `.env` file:
 ```
@@ -58,4 +58,7 @@ AWS_ACCESS_KEY=[Enter AWS access key]
 AWS_SECRET= [Enter AWS secret]
 ```
 
+9. Finally, when all the `.env` variables are setup, run `npm start` for client and `npm run dev` for server to start. Enjoy the application!
+
+## Demo
 
