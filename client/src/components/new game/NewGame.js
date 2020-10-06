@@ -21,6 +21,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import socket from "../../socket";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -52,7 +53,9 @@ const NewGame = (props) => {
   let { id } = useParams();
 
   // Goes back to the step of the host when page refreshes
-  useEffect(() => window.localStorage.setItem("newGame", newGame), [newGame]);
+  useEffect(() => {
+    Cookies.set("step", newGame, { expires: 365 });
+  }, [newGame]);
 
   const nextStep = async () => {
     try {
@@ -104,7 +107,7 @@ const NewGame = (props) => {
 
       const gameDetails = await setGame(players, spyMaster);
       console.log("Emitting start-game:", gameDetails);
-      localStorage.removeItem("newGame");
+      Cookies.remove("step");
       socket.emit("start-game", gameDetails);
     } catch (err) {
       console.log(err);

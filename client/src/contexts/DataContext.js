@@ -1,4 +1,5 @@
 import React, { useContext, useState, useMemo } from "react";
+import Cookies from "js-cookie";
 
 const EmailContext = React.createContext();
 
@@ -51,8 +52,7 @@ export function DataProvider({ children }) {
   ]);
 
   //Holds New Game Steps for Host
-  const initialState = () =>
-    Number(window.localStorage.getItem("newGame") || null);
+  const initialState = () => Number(Cookies.get("step") || null);
   const [newGame, setNewGame] = useState(initialState);
 
   const providerNewGame = useMemo(() => [newGame, setNewGame], [
