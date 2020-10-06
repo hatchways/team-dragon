@@ -13,7 +13,7 @@ ClueWords is a board game for 4-8 players. Two teams compete by having a spymast
 1. Clone the repository
 2. **Dependencies** - Run `npm install` in both client and server directories.
 
-## Configuration ![alt text](https://icons.iconarchive.com/icons/dtafalonso/android-lollipop/512/Settings-icon.png "setup")
+## Configuration
 
 1. Create a file with filename `.env` in server directory.
 2. Create your account with Mongo Atlas (if you don't have an account). OR Use local instance of MongoDB
