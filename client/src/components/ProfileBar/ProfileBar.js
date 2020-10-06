@@ -72,7 +72,7 @@ const ProfileBar = (props) => {
         className={classes.ProfileItem}
         onClick={handleAuthentication}
       >
-        <Typography>{userId ? "Logout" : "Login"}</Typography>
+        <Typography>{user ? "Logout" : "Login"}</Typography>
       </Button>
     </Box>
   );

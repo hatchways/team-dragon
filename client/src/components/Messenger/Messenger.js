@@ -106,6 +106,7 @@ Messenger.defaultProps = {
   name: "",
   isSpyMaster: false,
   isTurn: false,
+  timeOut: false,
 };
 
 Messenger.propTypes = {

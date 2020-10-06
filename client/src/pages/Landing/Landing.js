@@ -32,7 +32,7 @@ const Landing = (props) => {
   const createNewGame = async () => {
     try {
       const getData = await axios.post("/create-game");
-      console.log(getData)
+
       if (getData.data.error) {
         setError(getData.data.error);
         setOpenDialog(true);
