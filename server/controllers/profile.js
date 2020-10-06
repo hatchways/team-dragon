@@ -63,8 +63,8 @@ exports.getProfile = (req, res, next) => {
       if (!user) {
         throw new Error("User does not found!");
       }
-      const { id, name, profileImageLocation } = user;
-      res.json({ id, name, profileImageLocation });
+      const { id, name, profileImageLocation,email } = user;
+      res.json({ id, name, profileImageLocation,email });
     })
     .catch((err) => {
       console.log(err);

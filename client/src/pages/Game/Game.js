@@ -36,7 +36,7 @@ const Game = (props) => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const gameId = props.match.params.id;
-
+  console.log(props);
   useEffect(() => {
     // join the match
     socket.emit("init-game", { gameId }, (recv) => {
@@ -147,6 +147,7 @@ const Game = (props) => {
           stopGame={stopGame}
           isSpyMaster={isSpyMaster}
           teamList={teamList}
+          history={props.history}
         />
       </div>
       <div className={classes.Messenger}>

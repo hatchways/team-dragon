@@ -2,12 +2,11 @@ import React from "react";
 import { useHostId } from "../../contexts/DataContext";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import Avatar from "@material-ui/core/Avatar";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
-import Icon from "@material-ui/core/Icon";
 import Typography from "@material-ui/core/Typography";
 import useStyles from "./styles";
+import ProfileBar from "../ProfileBar";
 
 const GameBar = (props) => {
   const classes = useStyles(props);
@@ -73,13 +72,7 @@ const GameBar = (props) => {
           >
             New Game
           </Button>
-          <Box className={classes.Profile}>
-            <Avatar>U</Avatar>
-            <Button>
-              <Typography>My Profile</Typography>
-              <Icon>arrow_drop_down</Icon>
-            </Button>
-          </Box>
+          <ProfileBar history={props.history} />
         </Box>
       </Box>
     </nav>

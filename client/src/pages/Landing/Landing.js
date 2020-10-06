@@ -34,6 +34,7 @@ const Landing = (props) => {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
       const getData = await axios.post("/create-game");
+      console.log(getData)
       if (getData.data.error) {
         setError(getData.data.error);
         setOpenDialog(true);
@@ -54,28 +55,16 @@ const Landing = (props) => {
         </Typography>
 
         {!localStorage.id ? (
-          <>
-            <Button
-              className={classes.Button}
-              component={Link}
-              to="/register"
-              variant="contained"
-              color="primary"
-              size="large"
-            >
-              Sign Up
-            </Button>
-            <Button
-              className={classes.Button}
-              component={Link}
-              to="/login"
-              variant="contained"
-              color="primary"
-              size="large"
-            >
-              Sign In
-            </Button>
-          </>
+          <Button
+            className={classes.Button}
+            component={Link}
+            to="/register"
+            variant="contained"
+            color="primary"
+            size="large"
+          >
+            Sign Up
+          </Button>
         ) : (
           <Button
             className={classes.Button}
