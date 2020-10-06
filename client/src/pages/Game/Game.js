@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import Snackbar from "@material-ui/core/Snackbar";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 import GameBar from "../../components/GameBar";
 import Messenger from "../../components/Messenger";
 import Board from "../../components/Board";
@@ -28,6 +31,10 @@ const Game = (props) => {
   });
   const [gameStatus, setGameStatus] = useGameStatus();
   const [endGame, setEndGame] = useState({ winner: "", gameOverTest: "" });
+  const [timer, setTimer] = useState(60);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+
   const gameId = props.match.params.id;
 
   useEffect(() => {
@@ -36,7 +43,7 @@ const Game = (props) => {
       console.log("Game State:", recv);
       setTeamList(recv.state.teamList);
       setName(recv.name);
-      setMessages(recv.history);
+      setMessages(recv.messages);
       setBoard(recv.state.board);
       setBlueScore(recv.state.blueTeam.points);
       setRedScore(recv.state.redTeam.points);
@@ -70,7 +77,6 @@ const Game = (props) => {
       console.log("Updated Game State:", recv);
 
       // set current state of the game
-
       setGameStatus(recv.gameStatus);
       setBoard(recv.board);
       setCurrentTurn(recv.turn);
@@ -83,6 +89,15 @@ const Game = (props) => {
 
     socket.on("new-message", (recv) => {
       setMessages((prevMessages) => [...prevMessages, recv]);
+    });
+
+    socket.on("tick", (recv) => {
+      setTimer(recv);
+    });
+
+    socket.on("time-out", () => {
+      setSnackbarMessage("Time out! Swapping turns...");
+      setOpenSnackbar(true);
     });
   }, [gameId, setGameStatus]);
 
@@ -123,16 +138,18 @@ const Game = (props) => {
 
   return (
     <div className={classes.Game}>
-      <GameBar
-        gameStatus={gameStatus}
-        currentTurn={currentTurn}
-        redScore={redScore}
-        blueScore={blueScore}
-        stopGame={stopGame}
-        isSpyMaster={isSpyMaster}
-        teamList={teamList}
-      />
-      <div className={classes.GameArea}>
+      <div className={classes.Gamebar}>
+        <GameBar
+          gameStatus={gameStatus}
+          currentTurn={currentTurn}
+          redScore={redScore}
+          blueScore={blueScore}
+          stopGame={stopGame}
+          isSpyMaster={isSpyMaster}
+          teamList={teamList}
+        />
+      </div>
+      <div className={classes.Messenger}>
         <Messenger
           messages={messages}
           sendMessage={sendMessage}
@@ -140,7 +157,10 @@ const Game = (props) => {
           isSpyMaster={isSpyMaster}
           isTurn={team === currentTurn}
           changeTurn={changeTurn}
+          timeOut={timer === 0}
         />
+      </div>
+      <div className={classes.Board}>
         <Board
           gameStatus={gameStatus}
           board={board}
@@ -149,8 +169,25 @@ const Game = (props) => {
           blueScore={blueScore}
           endGame={endGame}
           selectCard={selectCard}
+          timer={timer}
         />
       </div>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setOpenSnackbar(false)}
+        message={snackbarMessage}
+        action={
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={() => setOpenSnackbar(false)}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        }
+      />
     </div>
   );
 };

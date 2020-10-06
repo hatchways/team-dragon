@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const profileController = require("../controllers/profile");
-const passport = require('passport');
+const passport = require("passport");
 
 // const isAuth = require("../middleware/isAuth");
 
@@ -9,8 +9,16 @@ const passport = require('passport');
 
 // router.get("/profile/:id",isAuth, profileController.getProfile);
 
-router.post("/edit-profile/:id", passport.authenticate('jwt',{session:false}), profileController.postUpdateProfile);
+router.post(
+  "/edit-profile/:id",
+  passport.authenticate("jwt", { session: false }),
+  profileController.postUpdateProfile,
+);
 
-router.get("/profile/:id",passport.authenticate('jwt',{session:false}), profileController.getProfile);
+router.get(
+  "/profile/:id",
+  passport.authenticate("jwt", { session: false }),
+  profileController.getProfile,
+);
 
 module.exports = router;

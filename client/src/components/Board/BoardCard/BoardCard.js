@@ -6,7 +6,6 @@ import useStyles from "./styles";
 
 const BoardCard = (props) => {
   const classes = useStyles(props);
-  
 
   let styles = [`${classes.Card}`];
   if (props.type === "red") {
@@ -24,9 +23,12 @@ const BoardCard = (props) => {
   }
 
   return (
-      <Card onClick={() => props.selectCard(props.cardIndex)} className={styles.join(" ")}>
-        <Typography variant="h3">{props.word}</Typography>
-      </Card>
+    <Card
+      onClick={() => props.selectCard(props.cardIndex)}
+      className={styles.join(" ")}
+    >
+      <Typography variant="h3">{props.word}</Typography>
+    </Card>
   );
 };
 

@@ -1,11 +1,13 @@
-import { Box, Typography } from '@material-ui/core';
-import React from 'react';
+import { Box, Typography } from "@material-ui/core";
+import React from "react";
 
 const TestMessenger = () => {
-    return <Box width="20%">
-        <Typography variant="h2">Messenger</Typography>
+  return (
+    <Box width="20%">
+      <Typography variant="h2">Messenger</Typography>
     </Box>
-}
+  );
+};
 
 export default TestMessenger;
 

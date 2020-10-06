@@ -26,7 +26,6 @@ exports.postUpdateProfile = (req, res, next) => {
         console.log(err);
       });
   } else {
-    
     // If profile picture request is sent
     uploadImage(req, res, (err) => {
       if (err) {
