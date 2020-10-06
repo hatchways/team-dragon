@@ -33,7 +33,7 @@ const GameSetup = (props) => {
       console.log("Updated game:", currentGame.gameStatus);
       setGameStatus(currentGame.gameStatus);
     });
-  }, []);
+  }, [gameId, setGameStatus]);
 
   useEffect(() => {
     //Shows players now assigned on teams and roles, ALSO - change gameStatus now === "running"
@@ -41,7 +41,7 @@ const GameSetup = (props) => {
       console.log("socket-on-update-roles", game);
       setGameStatus(game.gameStatus);
     });
-  }, [gameStatus]);
+  }, [gameStatus, setGameStatus]);
 
   useEffect(() => {
     socket.on("new-message", (recv) => {
