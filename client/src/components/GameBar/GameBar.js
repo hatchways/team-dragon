@@ -14,7 +14,7 @@ const GameBar = (props) => {
   const classes = useStyles(props);
   const [hostId] = useHostId();
   const userId = window.localStorage.getItem("id");
-
+  
   return (
     <nav className={classes.NavBar}>
       <Box className={classes.NavBarWrap}>
@@ -74,7 +74,7 @@ const GameBar = (props) => {
           >
             New Game
           </Button>
-          <ProfileBar />
+          <ProfileBar history={props.history}/>
         </Box>
       </Box>
     </nav>

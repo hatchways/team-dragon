@@ -23,6 +23,7 @@ const ProfileBar = (props) => {
     if (userId) {
       localStorage.clear();
       setUser(null);
+      setGameStatus("setup");
       props.history.push("/");
     } else {
       props.history.push("/login");

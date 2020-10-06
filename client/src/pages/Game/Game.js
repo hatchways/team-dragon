@@ -29,7 +29,7 @@ const Game = (props) => {
   const [gameStatus, setGameStatus] = useGameStatus();
   const [endGame, setEndGame] = useState({ winner: "", gameOverTest: "" });
   const gameId = props.match.params.id;
-
+  console.log(props)
   useEffect(() => {
     // join the match
     socket.emit("init-game", { gameId }, (recv) => {
@@ -129,6 +129,7 @@ const Game = (props) => {
         stopGame={stopGame}
         isSpyMaster={isSpyMaster}
         teamList={teamList}
+        history={props.history}
       />
       <div className={classes.GameArea}>
         <Messenger
