@@ -16,8 +16,22 @@ ClueWords is a board game for 4-8 players. Two teams compete by having a spymast
 ## Configuration <img src="https://www.clipartmax.com/png/middle/339-3394813_setting-clipart-control-system-system-configuration-icon.png" width="40">
 
 1. Create a file with filename `.env` in server directory.
-2. Create your account with Mongo Atlas (if you don't have an account). OR Use local instance of MongoDB
-3. Configure the following environment variables `DB_URI` in the `.env` file:
+2. Configure the application environment using `NODE_ENV` and `PORT` :
+
+```
+# Misc
+NODE_ENV=[production or test or dev]
+PORT= [Enter port number here]
+
+```
+3. Configure the application secret key for authentication using `SECRET_KEY`:
+
+```
+SECRET_KEY= [Enter secret key for passport.js here]
+```
+
+4. Create your account with Mongo Atlas (if you don't have an account) OR Use local instance of MongoDB
+5. Configure the database URI using `DB_URI` :
 
 ```
 # Database
@@ -25,3 +39,23 @@ ClueWords is a board game for 4-8 players. Two teams compete by having a spymast
 DB_URI= [Enter your mongo URI here]
 
 ```
+6. Download redis and add the `REDIS_URI`:
+
+```
+#Redis
+REDIS_URI=[Enter your redis URI here]
+```
+
+7. Sign up for SendGrid and add the API Key you get from SendGrid to `SENDGRID_API_KEY`:
+```
+# SendGrid
+SENDGRID_API_KEY=
+```
+8.Sign up for AWS and configure AWS variables in `.env` file:
+```
+#AWS S3
+AWS_ACCESS_KEY=[Enter AWS access key]
+AWS_SECRET= [Enter AWS secret]
+```
+
+
