@@ -6,12 +6,12 @@ import { GameProvider } from "./contexts/GameContext";
 import { UserProvider } from "./contexts/UserContext";
 import { theme } from "./themes/theme";
 import NavBar from "./components/NavBar";
+import PrivateRoute from "./components/PrivateRoute";
 import Landing from "./pages/Landing";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import GameSetup from "./pages/GameSetup";
 import ProfileSettings from "./pages/ProfileSettings";
-import PrivateRoute from "./components/PrivateRoute";
 
 const App = () => {
   return (
@@ -22,15 +22,15 @@ const App = () => {
             <BrowserRouter>
               <NavBar />
               <Switch>
+                <Route exact path="/register" component={Register} />
+                <Route exact path="/login" component={Login} />
                 <PrivateRoute
                   exact
                   path="/edit-profile"
                   component={ProfileSettings}
                 />
-                <Route exact path="/register" component={Register} />
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/:id" component={GameSetup} />
-                <Route path="/" component={Landing} />
+                <PrivateRoute exact path="/:id" component={GameSetup} />
+                <Route exact path="/" component={Landing} />
               </Switch>
             </BrowserRouter>
           </MuiThemeProvider>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import qs from "query-string";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import Container from "@material-ui/core/Container";
@@ -16,6 +17,8 @@ const Register = (props) => {
   const [password, setPassword] = useState("");
   const [isLoading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+
+  const toPath = qs.parse(props.location.search).redirect || "/";
 
   const validateForm = () => {
     return name.length > 0 && email.length > 0 && password.length > 0;
@@ -39,7 +42,7 @@ const Register = (props) => {
       window.localStorage.setItem("name", data.user.name);
       window.localStorage.setItem("token", data.token);
 
-      props.history.push("/");
+      props.history.push(toPath);
     } catch (err) {
       if (err.response) {
         const errObj = err.response.data;
@@ -122,7 +125,8 @@ const Register = (props) => {
           </Button>
 
           <Typography variant="body1">
-            Already have an account? <Link to="/login">Sign In</Link>
+            Already have an account?{" "}
+            <Link to={`/login?redirect=${toPath}`}>Sign In</Link>
           </Typography>
         </form>
       </Card>
