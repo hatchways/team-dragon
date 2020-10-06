@@ -1,6 +1,7 @@
 import React from "react";
 import StepTwo from "./step 2/StepTwo";
 import { useHostName } from "../../contexts/DataContext";
+import { useUser } from "../../contexts/UserContext";
 import {
   Container,
   Divider,
@@ -29,14 +30,13 @@ const useStyles = makeStyles((theme) => ({
 const WaitingRoom = (props) => {
   const classes = useStyles();
   const [hostName] = useHostName();
-
-  const userName = localStorage.getItem("name");
+  const [user] = useUser();
 
   return (
     <Container maxWidth="md">
       <Card className={classes.card}>
         <Typography align="center" variant="h1">
-          Welcome {userName}!
+          Welcome {user.name}!
         </Typography>
         <Grid container direction="row" justify="center" alignItems="center">
           <Divider className={classes.titleDivider} />

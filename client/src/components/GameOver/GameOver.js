@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Button, Paper, Box, Typography } from "@material-ui/core";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import { useHostId } from "../../contexts/DataContext";
+import { useUser } from "../../contexts/UserContext";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -57,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
 
 const GameOver = (props) => {
   const [hostId] = useHostId();
-  const userId = window.localStorage.getItem("id");
+  const [user] = useUser();
   const classes = useStyles(props);
   const {
     popUpWindow,
@@ -120,7 +121,7 @@ const GameOver = (props) => {
               </Typography>
             </Box>
             <Box>
-              {userId === hostId && (
+              {user.id === hostId && (
                 <Button
                   variant="contained"
                   color="primary"

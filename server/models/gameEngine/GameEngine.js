@@ -49,6 +49,10 @@ class GameEngine {
   static async getGame(id) {
     try {
       const response = await redis.get(id);
+      if (!response) {
+        return null;
+      }
+
       return new this(JSON.parse(response));
     } catch (err) {
       console.error(err);
