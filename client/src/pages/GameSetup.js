@@ -9,6 +9,16 @@ import socket from "../socket";
 const GameSetup = (props) => {
   const [gameStatus, setGameStatus] = useGameStatus();
   const [hostId] = useHostId();
+  const gameId = props.match.params.id;
+
+  useEffect(() => {
+    socket.emit("fetch-game", { gameId });
+
+    socket.on("update-game", (currentGame) => {
+      console.log("Updated game:" ,currentGame.gameStatus)
+      setGameStatus(currentGame.gameStatus)
+    });
+  }, []);
 
   useEffect(() => {
     //Shows players now assigned on teams and roles, ALSO - change gameStatus now === "running"
@@ -16,7 +26,7 @@ const GameSetup = (props) => {
       console.log("socket-on-update-roles", game);
       setGameStatus(game.gameStatus);
     });
-  }, [setGameStatus]);
+  }, [gameStatus]);
 
   const gameJourney = () => {
     if (localStorage.getItem("id") === hostId) {
