@@ -36,7 +36,7 @@ const Game = (props) => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const gameId = props.match.params.id;
-  console.log(props);
+
   useEffect(() => {
     // join the match
     socket.emit("init-game", { gameId }, (recv) => {
@@ -99,6 +99,14 @@ const Game = (props) => {
       setSnackbarMessage("Time out! Swapping turns...");
       setOpenSnackbar(true);
     });
+
+    return () => {
+      setGameStatus("setup");
+      socket.off("new-message");
+      socket.off("tick");
+      socket.off("time-out");
+      socket.off("update-game");
+    };
   }, [gameId, setGameStatus]);
 
   const sendMessage = (msg) => {

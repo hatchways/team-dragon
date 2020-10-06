@@ -83,7 +83,7 @@ const GameSetup = (props) => {
           // isSpyMaster={isSpyMaster}
           // isTurn={team === currentTurn}
           // changeTurn={changeTurn}
-        ></Messenger>
+        />
       );
     }
   };

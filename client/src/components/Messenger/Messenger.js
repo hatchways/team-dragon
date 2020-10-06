@@ -115,7 +115,7 @@ Messenger.propTypes = {
   isSpyMaster: PropTypes.bool,
   isTurn: PropTypes.bool,
   changeTurn: PropTypes.func,
-  timeOut: PropTypes.bool.isRequired,
+  timeOut: PropTypes.bool,
 };
 
 export default Messenger;
