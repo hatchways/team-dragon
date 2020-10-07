@@ -4,6 +4,7 @@ import { Button, Paper, Box, Typography } from "@material-ui/core";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import { useHostId } from "../../contexts/DataContext";
 import { makeStyles } from "@material-ui/core/styles";
+import PlayAgain from "../PlayAgain";
 
 const useStyles = makeStyles((theme) => ({
   popUpWindow: {
@@ -71,9 +72,9 @@ const GameOver = (props) => {
     newGameButton,
   } = classes;
 
-  const handleNewGame = () => {
-    //Reset Game
-  };
+  // const handleNewGame = () => {
+  //   //Reset Game
+  // };
 
   console.log("props.endGame.winner", props.endGame.winner);
 
@@ -121,14 +122,15 @@ const GameOver = (props) => {
             </Box>
             <Box>
               {userId === hostId && (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleNewGame}
-                  className={newGameButton}
-                >
-                  Play again
-                </Button>
+                // <Button
+                //   variant="contained"
+                //   color="primary"
+                //   onClick={handleNewGame}
+                //   className={newGameButton}
+                // >
+                //   Play again
+                // </Button>
+                <PlayAgain />
               )}
             </Box>
           </Box>

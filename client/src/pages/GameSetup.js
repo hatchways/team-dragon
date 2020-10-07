@@ -27,9 +27,16 @@ const GameSetup = (props) => {
   const gameId = props.match.params.id;
 
   useEffect(() => {
+    socket.on("play-again", (currentGame) => {
+      console.log("Play-again:", currentGame.players);
+      setGameStatus(currentGame.gameStatus);
+    });
+  }, [setGameStatus]);
+
+  useEffect(() => {
     socket.emit("fetch-game", { gameId });
 
-    socket.on("update-game", (currentGame) => {
+    socket.on("fetch-game", (currentGame) => {
       console.log("Updated game:", currentGame.gameStatus);
       setGameStatus(currentGame.gameStatus);
     });
