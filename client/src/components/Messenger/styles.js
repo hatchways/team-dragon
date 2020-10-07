@@ -6,11 +6,14 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     background: theme.grey.superLight,
     overflow: "hidden",
+    display:"flex",
+    flexDirection:"column",
+    borderRight: `4px solid ${theme.palette.secondary.main}`,
   },
   MessageContainer: (props) => ({
     padding: "2rem",
-    minHeight: props.isTurn ? "calc(80% - 52px)" : "80%",
-    maxHeight: props.isTurn ? "calc(80% - 52px)" : "80%",
+    minHeight: props.isTurn ? "calc(70% - 52px)" : "70%",
+    maxHeight: props.isTurn ? "calc(70% - 52px)" : "70%",
     overflow: "auto",
   }),
   Message: {
@@ -63,6 +66,17 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     background: theme.grey.dark,
     color: theme.white,
+  },
+  ChatBar: {
+    width: "100%",
+    height: "100%",
+    backgroundColor: theme.palette.secondary.main,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "white",
+    zIndex:"5",
+    boxShadow: "0 4px 10px 2px grey"
   },
 }));
 

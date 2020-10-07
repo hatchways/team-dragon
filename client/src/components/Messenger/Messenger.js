@@ -52,9 +52,11 @@ const Messenger = (props) => {
       );
     }
   });
-
   return (
     <div className={classes.Messenger}>
+      <Box className={classes.ChatBar}>
+        <Typography variant="h5">Chat</Typography>
+      </Box>
       <List className={classes.MessageContainer} ref={elRef}>
         {messageList}
       </List>

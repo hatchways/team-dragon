@@ -7,11 +7,12 @@ import Game from "./Game";
 import socket from "../socket";
 import Messenger from "../components/Messenger";
 import { makeStyles } from "@material-ui/core/styles";
+import { AppBar, Box, Typography, Toolbar } from "@material-ui/core";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   WaitingRoom: {
     width: "100%",
-    height: "100%",
+    height: "88vh",
     display: "grid",
     gridTemplateColumns: "400px 1fr",
     gridTemplateRows: "auto",
@@ -71,26 +72,11 @@ const GameSetup = (props) => {
     }
   };
 
-  const renderWaitRoom = () => {
-    if (gameStatus === "running") {
-      return null;
-    } else if (gameStatus === "setup") {
-      return (
-        <Messenger
-          messages={messages}
-          sendMessage={sendMessage}
-          name={name}
-          // isSpyMaster={isSpyMaster}
-          // isTurn={team === currentTurn}
-          // changeTurn={changeTurn}
-        />
-      );
-    }
-  };
-
   return (
     <div className={classes.WaitingRoom}>
-      {renderWaitRoom()}
+      {gameStatus === "setup" ? (
+        <Messenger messages={messages} sendMessage={sendMessage} name={name} />
+      ) : null}
       <div>{gameStatus === "setup" ? gameJourney() : <Game {...props} />}</div>
     </div>
   );
