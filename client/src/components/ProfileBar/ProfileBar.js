@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Box, Avatar, Button } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
+import {
+  Box,
+  Avatar,
+  Button,
+  Snackbar,
+  IconButton,
+  Typography,
+} from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
 import { useUser } from "../../contexts/UserContext";
 import { useGameStatus } from "../../contexts/GameContext";
 import useStyles from "./styles";
-import Cookies from "js-cookie";
+import axios from "axios";
 
 const ProfileBar = (props) => {
   const classes = useStyles();
@@ -12,6 +19,8 @@ const ProfileBar = (props) => {
   const [, setGameStatus] = useGameStatus();
   const [user, setUser] = useUser();
   const [profileImageUrl, setProfileImageUrl] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   useEffect(() => {
     if (user) {
@@ -20,11 +29,13 @@ const ProfileBar = (props) => {
   }, [user]);
 
   // Toggle Login and Logout
-  const handleAuthentication = () => {
+  const handleAuthentication = async () => {
     if (user) {
-      Cookies.clear("token");
       setUser(null);
       setGameStatus("setup");
+      const logout = await axios.post("/users/logout");
+      setSnackbarMessage(logout.data.message);
+      setOpenSnackbar(true);
       props.history.push("/");
     } else {
       props.history.push("/login");
@@ -57,6 +68,22 @@ const ProfileBar = (props) => {
       >
         <Typography>{user ? "Logout" : "Login"}</Typography>
       </Button>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setOpenSnackbar(false)}
+        message={snackbarMessage}
+        action={
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={() => setOpenSnackbar(false)}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        }
+      />
     </Box>
   );
 };

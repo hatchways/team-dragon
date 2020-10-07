@@ -8,4 +8,10 @@ router.post("/register", authController.register);
 
 router.post("/login", authController.login);
 
+router.post("/logout", authController.logout);
+
+// router.post("/logout",isAuth, authController.logout);
+
+// router.post("/logout",passport.authenticate('jwt',{session:false}), authController.logout);
+
 module.exports = router;

@@ -99,6 +99,9 @@ module.exports = {
   // Logout
   logout(req, res, next) {
     res.clearCookie("token");
-    res.send({ success: true });
+    res.send({ message: "Logout successful" });
+    // return res.status(200).json({
+    //   message: "Logout successful",
+    // });
   },
 };
