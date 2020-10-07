@@ -4,6 +4,7 @@ import { MuiThemeProvider } from "@material-ui/core";
 import { DataProvider } from "./contexts/DataContext";
 import { GameProvider } from "./contexts/GameContext";
 import { UserProvider } from "./contexts/UserContext";
+import { SnackbarProvider } from "./contexts/SnackbarContext";
 import { theme } from "./themes/theme";
 import "./index.css";
 import App from "./App";
@@ -13,9 +14,11 @@ ReactDOM.render(
   <DataProvider>
     <GameProvider>
       <UserProvider>
-        <MuiThemeProvider theme={theme}>
-          <App />
-        </MuiThemeProvider>
+        <SnackbarProvider>
+          <MuiThemeProvider theme={theme}>
+            <App />
+          </MuiThemeProvider>
+        </SnackbarProvider>
       </UserProvider>
     </GameProvider>
   </DataProvider>,
