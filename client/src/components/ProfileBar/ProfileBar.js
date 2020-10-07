@@ -4,6 +4,8 @@ import Typography from "@material-ui/core/Typography";
 import { useUser } from "../../contexts/UserContext";
 import { useGameStatus } from "../../contexts/GameContext";
 import useStyles from "./styles";
+import Cookies from "js-cookie";
+
 
 const ProfileBar = (props) => {
   const classes = useStyles();
@@ -21,7 +23,7 @@ const ProfileBar = (props) => {
   // Toggle Login and Logout
   const handleAuthentication = () => {
     if (user) {
-      localStorage.removeItem("token");
+      Cookies.clear("token");
       setUser(null);
       setGameStatus("setup");
       props.history.push("/");

@@ -34,7 +34,8 @@ module.exports = {
         email: newUser.email,
         name: newUser.name,
       };
-      const token = jwt.sign(payload, config.secret);
+      const token = jwt.sign(payload, config.secret, { expiresIn: "24h" });
+      res.cookie("token", token, { httpOnly: true });
 
       return res.status(201).json({
         token: token,
@@ -70,7 +71,10 @@ module.exports = {
           name: user.name,
           profileImageLocation: user.profileImageLocation,
         };
-        const token = jwt.sign(payload, config.secret);
+        const token = jwt.sign(payload, config.secret, { expiresIn: "24h" });
+
+        res.cookie("token", token, { httpOnly: true });
+        // .send(_.pick(user, ["_id", "name", "role"]));
 
         return res.status(200).json({
           token: token,

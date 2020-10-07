@@ -44,9 +44,8 @@ const Login = (props) => {
         name: decoded.name,
         profileImageLocation: decoded.profileImageLocation,
       });
-      window.localStorage.setItem("token", data.token);
-      axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
 
+      axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
       // redirect back to either game or landing page
       props.history.push(toPath);
     } catch (err) {

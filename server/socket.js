@@ -4,6 +4,7 @@ const User = require("./models/User");
 const Game = require("./models/Game");
 const GameEngine = require("./models/gameEngine/GameEngine");
 const Timer = require("./models/gameEngine/Timer");
+const cookie = require("cookie");
 
 module.exports = (server) => {
   const io = require("socket.io")(server);
@@ -22,7 +23,8 @@ module.exports = (server) => {
 
     // Socket listener for game rooms
     socket.on("join-game", async (recv) => {
-      const { gameId, token } = recv;
+      const token = cookie.parse(socket.handshake.headers.cookie).token;
+      const { gameId } = recv;
       const errors = [];
 
       try {
@@ -236,8 +238,8 @@ module.exports = (server) => {
       currentGame.playAgain();
       await currentGame.save();
 
-      io.to(gameId).emit("play-again",currentGame);
-    })
+      io.to(gameId).emit("play-again", currentGame);
+    });
 
     // Listener to regulary update game
     socket.on("fetch-game", async (recv) => {
