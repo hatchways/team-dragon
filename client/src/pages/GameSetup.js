@@ -40,6 +40,7 @@ const GameSetup = (props) => {
   // Fetches the game status to update the component according to the gameStatus
   useEffect(() => {
     socket.emit("fetch-game", { gameId });
+    console.log('fetching gmae')
 
     socket.on("fetch-game", (currentGame) => {
       console.log("Updated game:", currentGame.gameStatus);
@@ -49,7 +50,7 @@ const GameSetup = (props) => {
     socket.on("error", () => {
       props.history.push("/");
     });
-  }, [gameId, setGameStatus, props.history]);
+  }, [gameId, gameStatus, setGameStatus, props.history]);
 
   useEffect(() => {
     //Shows players now assigned on teams and roles, ALSO - change gameStatus now === "running"
@@ -64,6 +65,8 @@ const GameSetup = (props) => {
       setMessages((prevMessages) => [...prevMessages, recv]);
     });
   }, []);
+
+  console.log('gameStatus', gameStatus)
 
   //Send message event
   const sendMessage = (msg) => {

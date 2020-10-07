@@ -80,7 +80,6 @@ module.exports = {
         const hour = 3600000;
         res.cookie("token", token, {
           expires: new Date(Date.now() + hour * 24),
-          httpOnly: true,
         });
 
         return res.status(200).json({

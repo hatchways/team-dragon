@@ -19,8 +19,6 @@ const App = () => {
   useEffect(() => {
     // check if token already set, if so assign user data to context
     const token = Cookies.get("token");
-    console.log('token', token)
-    console.log('cookies', document.cookie)
 
     if (token !== undefined) {
       const decoded = decode(token);

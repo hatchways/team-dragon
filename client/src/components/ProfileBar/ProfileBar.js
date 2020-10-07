@@ -6,7 +6,6 @@ import { useGameStatus } from "../../contexts/GameContext";
 import useStyles from "./styles";
 import Cookies from "js-cookie";
 
-
 const ProfileBar = (props) => {
   const classes = useStyles();
 
@@ -23,7 +22,7 @@ const ProfileBar = (props) => {
   // Toggle Login and Logout
   const handleAuthentication = () => {
     if (user) {
-      // Cookies.clear("token");
+      Cookies.clear("token");
       setUser(null);
       setGameStatus("setup");
       props.history.push("/");
