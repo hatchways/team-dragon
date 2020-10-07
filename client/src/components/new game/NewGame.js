@@ -53,9 +53,8 @@ const NewGame = (props) => {
   let { id } = useParams();
 
   // Goes back to the step of the host when page refreshes
-  useEffect(() => {
-    Cookies.set("step", newGame, { expires: 365 });
-  }, [newGame]);
+  useEffect(() => window.localStorage.setItem("newGame", newGame), [newGame]);
+
 
   const nextStep = async () => {
     try {
@@ -107,7 +106,7 @@ const NewGame = (props) => {
 
       const gameDetails = await setGame(players, spyMaster);
       console.log("Emitting start-game:", gameDetails);
-      Cookies.remove("step");
+      localStorage.removeItem("newGame");
       socket.emit("start-game", gameDetails);
     } catch (err) {
       console.log(err);
