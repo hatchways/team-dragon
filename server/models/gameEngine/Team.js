@@ -22,6 +22,9 @@ class Team {
   resetPoints(){
     this.points = 0;
   }
+  resetPlayers(){
+    this.players = [];
+  }
 }
 
 module.exports = Team;
