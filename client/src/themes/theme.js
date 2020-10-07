@@ -56,6 +56,6 @@ export const theme = createMuiTheme({
   black: colors.black,
   palette: {
     primary: { main: "#32be72", contrastText: "#fff" }, // This is Green, for "Create Game", "New Game", "Done"
-    secondary: {main: "#44456c", contrastText: "#fff"}
+    secondary: { main: "#44456c", contrastText: "#fff" },
   },
 });

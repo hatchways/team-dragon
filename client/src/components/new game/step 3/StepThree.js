@@ -68,58 +68,53 @@ const StepThree = () => {
 
   return (
     <>
-        <Box m={3}>
+      <Box m={3}>
+        <Grid
+          container
+          direction="column"
+          justify="space-evenly"
+          alignItems="center"
+        >
+          <Box mb="1.5rem">
+            <Typography
+              className={newGame !== 3 ? classes.disabledTitle : null}
+              variant="h3"
+            >
+              Assign Teams
+            </Typography>
+          </Box>
+          <Grid container direction="row" justify="center" alignItems="center">
+            {displayPlayers()}
+          </Grid>
+        </Grid>
+      </Box>
+      <Box mb={4}>
+        <Grid
+          container
+          direction="column"
+          justify="space-evenly"
+          alignItems="center"
+        >
+          <Box mb="1.5rem">
+            <Typography
+              className={newGame !== 4 ? classes.disabledTitle : null}
+              variant="h3"
+            >
+              Assign SpyMaster
+            </Typography>
+          </Box>
           <Grid
             container
-            direction="column"
-            justify="space-evenly"
+            direction="row"
+            justify="center"
             alignItems="center"
+            spacing={4}
           >
-            <Box mb="1.5rem">
-              <Typography
-                className={newGame !== 3 ? classes.disabledTitle : null}
-                variant="h3"
-              >
-                Assign Teams
-              </Typography>
-            </Box>
-            <Grid
-              container
-              direction="row"
-              justify="center"
-              alignItems="center"
-            >
-              {displayPlayers()}
-            </Grid>
+            <Grid item>{displayBlueRoles()}</Grid>
+            <Grid item>{displayRedRoles()}</Grid>
           </Grid>
-        </Box>
-        <Box mb={4}>
-          <Grid
-            container
-            direction="column"
-            justify="space-evenly"
-            alignItems="center"
-          >
-            <Box mb="1.5rem">
-              <Typography
-                className={newGame !== 4 ? classes.disabledTitle : null}
-                variant="h3"
-              >
-                Assign SpyMaster
-              </Typography>
-            </Box>
-            <Grid
-              container
-              direction="row"
-              justify="center"
-              alignItems="center"
-              spacing={4}
-            >
-              <Grid item>{displayBlueRoles()}</Grid>
-              <Grid item>{displayRedRoles()}</Grid>
-            </Grid>
-          </Grid>
-        </Box>
+        </Grid>
+      </Box>
     </>
   );
 };

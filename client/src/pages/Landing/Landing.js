@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNewGame } from "../../contexts/DataContext";
+import { useUser } from "../../contexts/UserContext";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
@@ -18,6 +19,7 @@ const Landing = (props) => {
 
   //Holds Game ID + Template for Passing Roles to Server
   const [, setNewGame] = useNewGame();
+  const [user] = useUser();
   const [openDialog, setOpenDialog] = useState(false);
   const [error, setError] = useState("");
 
@@ -29,12 +31,8 @@ const Landing = (props) => {
 
   const createNewGame = async () => {
     try {
-      // Probably,in future we could make a separate function to set the headers for all requests
-      const token = localStorage.getItem("token");
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
       const getData = await axios.post("/create-game");
-      console.log(getData)
+
       if (getData.data.error) {
         setError(getData.data.error);
         setOpenDialog(true);
@@ -54,7 +52,7 @@ const Landing = (props) => {
           Welcome to Cluewords!
         </Typography>
 
-        {!localStorage.id ? (
+        {!user ? (
           <Button
             className={classes.Button}
             component={Link}

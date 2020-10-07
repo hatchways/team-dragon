@@ -35,13 +35,11 @@ const StepTwo = (props) => {
     // User joins the room
     const token = localStorage.getItem("token");
 
-    if (id !== "") {
-      console.log("joining game", id);
-      socket.emit("join-game", {
-        gameId: id,
-        token: token,
-      });
-    }
+    console.log("joining game", id);
+    socket.emit("join-game", {
+      gameId: id,
+      token: token,
+    });
 
     socket.on("update-players", (game) => {
       console.log("Updated players:", game.players);

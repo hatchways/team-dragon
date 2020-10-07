@@ -1,42 +1,59 @@
-import React from "react";
-import { MuiThemeProvider } from "@material-ui/core";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { DataProvider } from "./contexts/DataContext";
-import { GameProvider } from "./contexts/GameContext";
-import { UserProvider } from "./contexts/UserContext";
-import { theme } from "./themes/theme";
+import axios from "axios";
+import decode from "jwt-decode";
 import NavBar from "./components/NavBar";
+import PrivateRoute from "./components/PrivateRoute";
 import Landing from "./pages/Landing";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import GameSetup from "./pages/GameSetup";
 import ProfileSettings from "./pages/ProfileSettings";
-import PrivateRoute from "./components/PrivateRoute";
+import { useUser } from "./contexts/UserContext";
 
 const App = () => {
+  const [, setUser] = useUser();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // check if token already set, if so assign user data to context
+    const token = localStorage.getItem("token");
+
+    if (token !== null) {
+      const decoded = decode(token);
+      setUser({
+        id: decoded.id,
+        email: decoded.email,
+        name: decoded.name,
+        profileImageLocation: decoded.profileImageLocation,
+      });
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    } else {
+      localStorage.clear();
+      setUser(null);
+      delete axios.defaults.headers.common["Authorization"];
+    }
+
+    setIsLoading(false);
+  }, [setUser]);
+
   return (
-    <DataProvider>
-      <GameProvider>
-        <UserProvider>
-          <MuiThemeProvider theme={theme}>
-            <BrowserRouter>
-              <NavBar />
-              <Switch>
-                <PrivateRoute
-                  exact
-                  path="/edit-profile"
-                  component={ProfileSettings}
-                />
-                <Route exact path="/register" component={Register} />
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/:id" component={GameSetup} />
-                <Route path="/" component={Landing} />
-              </Switch>
-            </BrowserRouter>
-          </MuiThemeProvider>
-        </UserProvider>
-      </GameProvider>
-    </DataProvider>
+    !isLoading && (
+      <BrowserRouter>
+        <NavBar />
+        <Switch>
+          <Route exact path="/register" component={Register} />
+          <Route exact path="/login" component={Login} />
+          <PrivateRoute
+            exact
+            path="/edit-profile"
+            component={ProfileSettings}
+          />
+          <PrivateRoute exact path="/:id" component={GameSetup} />
+          <Route exact path="/" component={Landing} />
+        </Switch>
+      </BrowserRouter>
+    )
   );
 };
 

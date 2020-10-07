@@ -86,7 +86,9 @@ const ProfileSettings = () => {
       try {
         const result = await axios.post(`/edit-profile/${user.id}`, data);
         if (result) {
-          const { location } = result.data;
+          const { location, token } = result.data;
+
+          localStorage.setItem("token", token);
           setProfileImageUrl(location);
 
           // Updates the UserContext
