@@ -4,6 +4,7 @@ import {
   useHostName,
   useHostId,
 } from "../../../contexts/DataContext";
+import { useGameStatus } from "../../../contexts/GameContext";
 import { useParams } from "react-router-dom";
 import {
   Box,
@@ -24,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const StepTwo = (props) => {
+  const [, setGameStatus] = useGameStatus();
   const [players, setPlayers] = usePlayers();
   const [, setHostName] = useHostName();
   const [, setHostId] = useHostId();
@@ -43,6 +45,7 @@ const StepTwo = (props) => {
 
     socket.on("update-players", (game) => {
       console.log("Updated players:", game.players);
+      setGameStatus(game.gameStatus);
       setPlayers(game.players);
       setHostId(game.host._id);
       setHostName(game.host.name);
