@@ -23,7 +23,7 @@ const ProfileBar = (props) => {
   // Toggle Login and Logout
   const handleAuthentication = () => {
     if (user) {
-      Cookies.clear("token");
+      // Cookies.clear("token");
       setUser(null);
       setGameStatus("setup");
       props.history.push("/");

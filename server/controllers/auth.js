@@ -96,4 +96,10 @@ module.exports = {
       return next(e);
     }
   },
+
+  // Logout
+  logout(req, res, next) {
+    res.clearCookie("token");
+    res.send({ success: true });
+  },
 };

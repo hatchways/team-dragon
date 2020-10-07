@@ -34,7 +34,7 @@ const Login = (props) => {
       const { data } = await axios.post("/users/login", {
         email,
         password,
-      });
+      }, {withCredentials: true});
 
       // save user data
       const decoded = decode(data.token);

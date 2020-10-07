@@ -20,6 +20,7 @@ const App = () => {
     // check if token already set, if so assign user data to context
     const token = Cookies.get("token");
     console.log('token', token)
+    console.log('cookies', document.cookie)
 
     if (token !== undefined) {
       const decoded = decode(token);
@@ -31,8 +32,6 @@ const App = () => {
       });
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     } else {
-      // Cookies.clear("token");
-      // Cookies.clear("step");
       setUser(null);
       delete axios.defaults.headers.common["Authorization"];
     }
