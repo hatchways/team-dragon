@@ -40,7 +40,6 @@ const GameSetup = (props) => {
   // Fetches the game status to update the component according to the gameStatus
   useEffect(() => {
     socket.emit("fetch-game", { gameId });
-    console.log('fetching gmae')
 
     socket.on("fetch-game", (currentGame) => {
       console.log("Updated game:", currentGame.gameStatus);
@@ -66,7 +65,6 @@ const GameSetup = (props) => {
     });
   }, []);
 
-  console.log('gameStatus', gameStatus)
 
   //Send message event
   const sendMessage = (msg) => {
