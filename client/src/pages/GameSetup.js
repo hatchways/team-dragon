@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useGameStatus } from "../contexts/GameContext";
-import { useHostId } from "../contexts/DataContext";
+import { useHostId, useNewGame } from "../contexts/DataContext";
 import NewGame from "../components/new game/NewGame";
 import WaitingRoom from "../components/new game/WaitingRoom";
 import Game from "./Game";
@@ -24,12 +24,14 @@ const GameSetup = (props) => {
   const [hostId] = useHostId();
   const name = localStorage.getItem("name");
   const [messages, setMessages] = useState([]);
+  const [,setNewGame] = useNewGame();
   const gameId = props.match.params.id;
 
   useEffect(() => {
     socket.on("play-again", (currentGame) => {
       console.log("Play-again:", currentGame.players);
       setGameStatus(currentGame.gameStatus);
+      setNewGame(1);
     });
   }, [setGameStatus]);
 
