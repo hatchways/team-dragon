@@ -26,6 +26,8 @@ const useStyles = makeStyles((theme) => ({
   MessageSender: {
     fontSize: "0.9rem",
     marginBottom: "0.5rem",
+    color: theme.grey.light,
+    fontWeight: "bold"
   },
   MessageMsg: {
     margin: 0,
