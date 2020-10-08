@@ -45,26 +45,12 @@ const GameSetup = (props) => {
 
   // Fetches the game status to update the component according to the gameStatus
   useEffect(() => {
-    socket.emit("fetch-game", { gameId });
-
-    socket.on("fetch-game", (currentGame) => {
-      console.log("Updated game:", currentGame.gameStatus);
-      setGameStatus(currentGame.gameStatus);
-    });
-
     socket.on("error", () => {
       setSnackbarMessage("Game does not exist!");
       setSnackbarOpen(true);
-
       props.history.push("/");
     });
-  }, [
-    gameId,
-    setGameStatus,
-    props.history,
-    setSnackbarMessage,
-    setSnackbarOpen,
-  ]);
+  }, [props.history, setSnackbarMessage, setSnackbarOpen]);
 
   useEffect(() => {
     //Shows players now assigned on teams and roles, ALSO - change gameStatus now === "running"

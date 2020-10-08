@@ -42,7 +42,7 @@ class GameEngine {
       this.players = data.players;
       this.host = data.host;
       this.gameStatus = data.gameStatus;
-      this.endGame = {};
+      this.endGame = data.endGame;
     }
   }
 

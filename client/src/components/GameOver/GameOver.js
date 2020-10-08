@@ -18,7 +18,7 @@ const GameOver = (props) => {
     gameOver,
     gameOverText,
     redScore,
-    blueScore
+    blueScore,
   } = classes;
 
   return (
