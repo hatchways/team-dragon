@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import {Button} from '@material-ui/core';
 import { useHistory, useParams } from "react-router-dom";
 import socket from "../../socket";
+import useStyles from "./styles";
 
 const PlayAgain = (props) => {
+  const classes = useStyles();
   const history = useHistory();
   const params = useParams();
-  // const handleNewGame = () => {
-  //   history.push("/")
-  // }
+
   const gameId = params.id;
   const handleNewGame = () => {
     socket.emit("play-again",gameId);
@@ -19,7 +19,7 @@ const PlayAgain = (props) => {
     variant="contained"
     color="primary"
     onClick={handleNewGame}
-    // className={newGameButton}
+    className={classes.playAgainButton}
   >
     Play again
   </Button>);
