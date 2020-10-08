@@ -11,6 +11,10 @@ const useStyles = makeStyles((theme) => ({
     "&:hover:not(.clicked)": {
       transform: "scale(1.2)",
     },
+    backgroundImage: 'url(./card-bg.jpg)',
+    backgroundSize: '100%',
+    backgroundPosition:"center",  
+    border: `4px solid ${theme.black}`
   }),
   Red: (props) => ({
     color: props.isSpyMaster ? theme.red.medium : theme.grey.dark,
