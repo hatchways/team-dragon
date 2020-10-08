@@ -1,5 +1,6 @@
 import React from "react";
 import { useHostId } from "../../contexts/DataContext";
+import { useUser } from "../../contexts/UserContext";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import Box from "@material-ui/core/Box";
@@ -12,7 +13,7 @@ import PlayAgain from "../PlayAgain";
 const GameBar = (props) => {
   const classes = useStyles(props);
   const [hostId] = useHostId();
-  const userId = window.localStorage.getItem("id");
+  const [user] = useUser();
 
   return (
     <nav className={classes.NavBar}>
@@ -54,7 +55,7 @@ const GameBar = (props) => {
           </Box>
         </Box>
         <Box className={classes.BarControls}>
-          {userId === hostId && (
+          {user.id === hostId && (
             <Button
               className={classes.EndGameButton}
               variant="contained"

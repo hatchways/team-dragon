@@ -39,7 +39,6 @@ describe("Auth Routes", () => {
         .end((err, res) => {
           expect(err).to.be.null;
           expect(res).to.have.status(201);
-          expect(res.body).to.have.property("user");
           expect(res.body).to.have.property("token");
           done();
         })
@@ -51,30 +50,32 @@ describe("Auth Routes", () => {
         .send({
           email: "fail@example.com",
           password: "123456",
-          password2: "123456"
+          password2: "123456",
         })
         .end((err, res) => {
           expect(err).to.be.null;
           expect(res).to.have.status(400);
           expect(res.body).to.have.property("success", false);
           expect(res.body).to.have.property("errors");
+          expect(res.body.errors).to.have.property("name");
           done();
         });
     });
-    it("expects to fail if missing emailfield", (done) => {
+    it("expects to fail if missing email field", (done) => {
       chai
         .request(app)
         .post("/users/register")
         .send({
           name: "fail",
           password: "123456",
-          password2: "123456"
+          password2: "123456",
         })
         .end((err, res) => {
           expect(err).to.be.null;
           expect(res).to.have.status(400);
           expect(res.body).to.have.property("success", false);
           expect(res.body).to.have.property("errors");
+          expect(res.body.errors).to.have.property("email");
           done();
         });
     });
@@ -85,13 +86,14 @@ describe("Auth Routes", () => {
         .send({
           name: "fail",
           email: "fail@example.com",
-          password2: "123456"
+          password2: "123456",
         })
         .end((err, res) => {
           expect(err).to.be.null;
           expect(res).to.have.status(400);
           expect(res.body).to.have.property("success", false);
           expect(res.body).to.have.property("errors");
+          expect(res.body.errors).to.have.property("password");
           done();
         });
     });
@@ -109,6 +111,7 @@ describe("Auth Routes", () => {
           expect(res).to.have.status(400);
           expect(res.body).to.have.property("success", false);
           expect(res.body).to.have.property("errors");
+          expect(res.body.errors).to.have.property("password2");
           done();
         });
     });
@@ -127,6 +130,7 @@ describe("Auth Routes", () => {
           expect(res).to.have.status(400);
           expect(res.body).to.have.property("success", false);
           expect(res.body).to.have.property("errors");
+          expect(res.body.errors).to.have.property("password2");
           done();
         });
     });
@@ -138,13 +142,14 @@ describe("Auth Routes", () => {
           name: "fail",
           email: "fail@example.com",
           password: "1234",
-          password: "1234",
+          password2: "1234",
         })
         .end((err, res) => {
           expect(err).to.be.null;
           expect(res).to.have.status(400);
           expect(res.body).to.have.property("success", false);
           expect(res.body).to.have.property("errors");
+          expect(res.body.errors).to.have.property("password");
           done();
         });
     });
@@ -163,6 +168,7 @@ describe("Auth Routes", () => {
           expect(res).to.have.status(400);
           expect(res.body).to.have.property("success", false);
           expect(res.body).to.have.property("errors");
+          expect(res.body.errors).to.have.property("email");
           done();
         });
     });
@@ -180,7 +186,6 @@ describe("Auth Routes", () => {
         .end((err, res) => {
           expect(err).to.be.null;
           expect(res).to.have.status(200);
-          expect(res.body).to.have.property("user");
           expect(res.body).to.have.property("token");
           done();
         })
@@ -198,6 +203,7 @@ describe("Auth Routes", () => {
           expect(res).to.have.status(400);
           expect(res.body).to.have.property("success", false);
           expect(res.body).to.have.property("errors");
+          expect(res.body.errors).to.have.property("password");
           done();
         })
     });
@@ -213,6 +219,7 @@ describe("Auth Routes", () => {
           expect(res).to.have.status(400);
           expect(res.body).to.have.property("success", false);
           expect(res.body).to.have.property("errors");
+          expect(res.body.errors).to.have.property("email");
           done();
         })
     });
@@ -228,6 +235,7 @@ describe("Auth Routes", () => {
           expect(res).to.have.status(400);
           expect(res.body).to.have.property("success", false);
           expect(res.body).to.have.property("errors");
+          expect(res.body.errors).to.have.property("password");
           done();
         })
     });
@@ -244,6 +252,7 @@ describe("Auth Routes", () => {
           expect(res).to.have.status(404);
           expect(res.body).to.have.property("success", false);
           expect(res.body).to.have.property("errors");
+          expect(res.body.errors).to.have.property("email");
           done();
         })
     });

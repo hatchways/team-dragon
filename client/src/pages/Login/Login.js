@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import qs from "query-string";
+import decode from "jwt-decode";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import useStyles from "./styles";
 import { useUser } from "../../contexts/UserContext";
+import useStyles from "./styles";
 
 const Login = (props) => {
   const classes = useStyles();
@@ -17,6 +19,8 @@ const Login = (props) => {
   const [password, setPassword] = useState("");
   const [isLoading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+
+  const toPath = qs.parse(props.location.search).redirect || "/";
 
   const validateForm = () => {
     return email.length > 0 && password.length > 0;
@@ -32,15 +36,19 @@ const Login = (props) => {
         password,
       });
 
-      setUser(data.user);
-
-      axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
-      window.localStorage.setItem("id", data.user.id);
-      window.localStorage.setItem("email", data.user.email);
-      window.localStorage.setItem("name", data.user.name);
+      // save user data
+      const decoded = decode(data.token);
+      setUser({
+        id: decoded.id,
+        email: decoded.email,
+        name: decoded.name,
+        profileImageLocation: decoded.profileImageLocation,
+      });
       window.localStorage.setItem("token", data.token);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
 
-      props.history.push("/");
+      // redirect back to either game or landing page
+      props.history.push(toPath);
     } catch (err) {
       if (err.response) {
         console.log(err.response.data);
@@ -106,7 +114,8 @@ const Login = (props) => {
           </Button>
 
           <Typography variant="body1">
-            Don't have an account? <Link to="/register">Sign Up</Link>
+            Don't have an account?{" "}
+            <Link to={`/register?redirect=${toPath}`}>Sign Up</Link>
           </Typography>
         </form>
       </Card>

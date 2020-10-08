@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const config = require("./config");
 const User = require("./models/User");
+const Game = require("./models/Game");
 const GameEngine = require("./models/gameEngine/GameEngine");
 const Timer = require("./models/gameEngine/Timer");
 
@@ -10,18 +11,28 @@ module.exports = (server) => {
   const roomDetails = {};
 
   io.on("connection", (socket) => {
+    // Listener to regulary update game
+    socket.on("fetch-game", async (recv) => {
+      const { gameId } = recv;
+
+      const currentGame = await GameEngine.getGame(gameId);
+
+      io.to(gameId).emit("update-game", currentGame);
+    });
+
     // Socket listener for game rooms
     socket.on("join-game", async (recv) => {
       const { gameId, token } = recv;
       const errors = [];
 
       try {
-        if (!gameId) {
+        const game = await Game.findOne({ gameId });
+        if (!game) {
           errors.push({
             name: "UndefinedError",
             message: "Game not created yet",
           });
-          socket.emit("error", errors);
+          io.to(socket.id).emit("error", errors);
           throw new Error("Game not created");
         }
 
@@ -31,7 +42,7 @@ module.exports = (server) => {
             name: "InvalidToken",
             message: "Token not valid",
           });
-          socket.emit("error", errors);
+          io.to(socket.id).emit("error", errors);
           throw new Error("Token not valid");
         }
 
@@ -41,7 +52,7 @@ module.exports = (server) => {
             name: "NotFoundError",
             message: "Email id does not exist!",
           });
-          socket.emit("error", errors);
+          io.to(socket.id).emit("error", errors);
           throw new Error("Email id does not exist in database");
         }
 
@@ -81,7 +92,7 @@ module.exports = (server) => {
             name: "UndefinedError",
             message: "Game not found",
           });
-          socket.emit("error", errors);
+          io.to(socket.id).emit("error", errors);
           throw new Error("Game does not Exist");
         }
 
@@ -106,7 +117,7 @@ module.exports = (server) => {
             name: "UndefinedError",
             message: "Game not found",
           });
-          socket.emit("error", errors);
+          io.to(socket.id).emit("error", errors);
           throw new Error("Game does not exist!");
         }
 

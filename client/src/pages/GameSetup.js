@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useGameStatus } from "../contexts/GameContext";
 import { useHostId, useNewGame } from "../contexts/DataContext";
+import { useUser } from "../contexts/UserContext";
 import NewGame from "../components/new game/NewGame";
 import WaitingRoom from "../components/new game/WaitingRoom";
 import Game from "./Game";
@@ -22,9 +23,9 @@ const GameSetup = (props) => {
   const classes = useStyles();
   const [gameStatus, setGameStatus] = useGameStatus();
   const [hostId] = useHostId();
-  const name = localStorage.getItem("name");
   const [messages, setMessages] = useState([]);
   const [,setNewGame] = useNewGame();
+  const [user] = useUser();
   const gameId = props.match.params.id;
 
   useEffect(() => {
@@ -42,7 +43,11 @@ const GameSetup = (props) => {
       console.log("Updated game:", currentGame.gameStatus);
       setGameStatus(currentGame.gameStatus);
     });
-  }, [gameId, setGameStatus]);
+
+    socket.on("error", () => {
+      props.history.push("/");
+    });
+  }, [gameId, setGameStatus, props.history]);
 
   useEffect(() => {
     //Shows players now assigned on teams and roles, ALSO - change gameStatus now === "running"
@@ -61,7 +66,7 @@ const GameSetup = (props) => {
   //Send message event
   const sendMessage = (msg) => {
     const msgData = {
-      sender: name,
+      sender: user.name,
       message: msg,
     };
 
@@ -73,7 +78,7 @@ const GameSetup = (props) => {
   };
 
   const gameJourney = () => {
-    if (localStorage.getItem("id") === hostId) {
+    if (user.id === hostId) {
       return <NewGame value={props} />;
     } else {
       return <WaitingRoom value={props} />;
@@ -88,7 +93,7 @@ const GameSetup = (props) => {
         <Messenger
           messages={messages}
           sendMessage={sendMessage}
-          name={name}
+          name={user.name}
           // isSpyMaster={isSpyMaster}
           // isTurn={team === currentTurn}
           // changeTurn={changeTurn}

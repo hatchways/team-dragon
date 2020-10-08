@@ -49,6 +49,10 @@ class GameEngine {
   static async getGame(id) {
     try {
       const response = await redis.get(id);
+      if (!response) {
+        return null;
+      }
+
       return new this(JSON.parse(response));
     } catch (err) {
       console.error(err);
@@ -227,8 +231,8 @@ class GameEngine {
         this.changeTurn();
         break;
       case "red":
+        this.redTeam.addPoint();
         if (team === this.redTeam.name) {
-          this.redTeam.addPoint();
           console.log(`${team} gets 1 point`);
         } else {
           this.changeTurn();
@@ -236,8 +240,8 @@ class GameEngine {
         }
         break;
       case "blue":
+        this.blueTeam.addPoint();
         if (team === this.blueTeam.name) {
-          this.blueTeam.addPoint();
           console.log(`${team} gets 1 point`);
         } else {
           this.changeTurn();

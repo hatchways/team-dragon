@@ -15,7 +15,7 @@ const gameRouter = require("./routes/game");
 const authRouter = require("./routes/auth");
 const emailRouter = require("./routes/email");
 const profileRouter = require("./routes/profile");
-const User = require("./models/User");
+// const User = require("./models/User");
 
 // app configuration
 var app = express();
@@ -74,6 +74,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
+    useFindAndModify: false,
   })
   .then(() => {
     console.log("Connected to database");
