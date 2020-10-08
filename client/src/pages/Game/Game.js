@@ -48,6 +48,7 @@ const Game = (props) => {
       setBoard(recv.state.board);
       setBlueScore(recv.state.blueTeam.points);
       setRedScore(recv.state.redTeam.points);
+      setEndGame(recv.state.endGame);
 
       // search game stare to find role of this user
       const redPlayers = recv.state.redTeam.players;
@@ -69,7 +70,6 @@ const Game = (props) => {
           setIsSpyMaster(true);
         }
       }
-
       // set current state of the game
       setCurrentTurn(recv.state.turn);
     });
@@ -108,7 +108,7 @@ const Game = (props) => {
       socket.off("time-out");
       socket.off("update-game");
     };
-  }, [gameId, setGameStatus, setSnackbarOpen, setSnackbarMessage]);
+  }, [gameId, setGameStatus, setSnackbarOpen, setSnackbarMessage, setEndGame]);
 
   const sendMessage = (msg) => {
     const msgData = {
