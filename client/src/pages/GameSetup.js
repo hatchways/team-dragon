@@ -24,10 +24,11 @@ const GameSetup = (props) => {
   const [gameStatus, setGameStatus] = useGameStatus();
   const [hostId] = useHostId();
   const [messages, setMessages] = useState([]);
-  const [,setNewGame] = useNewGame();
+  const [, setNewGame] = useNewGame();
   const [user] = useUser();
   const gameId = props.match.params.id;
 
+  // When host ends the game and clicks play again button, this socket fetches the reset version fo the same game with the same players
   useEffect(() => {
     socket.on("play-again", (currentGame) => {
       console.log("Play-again:", currentGame.players);
@@ -36,6 +37,7 @@ const GameSetup = (props) => {
     });
   }, [setGameStatus]);
 
+  // Fetches the game status to update the component according to the gameStatus
   useEffect(() => {
     socket.emit("fetch-game", { gameId });
 
@@ -94,9 +96,6 @@ const GameSetup = (props) => {
           messages={messages}
           sendMessage={sendMessage}
           name={user.name}
-          // isSpyMaster={isSpyMaster}
-          // isTurn={team === currentTurn}
-          // changeTurn={changeTurn}
         />
       );
     }
