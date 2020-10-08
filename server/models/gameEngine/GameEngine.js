@@ -3,6 +3,7 @@ const Player = require("./Player");
 const Card = require("./Card");
 const getRandomNumber = require("./utils/randomNumber");
 const shuffle = require("./utils/shuffle");
+const getGameId = require("./utils/getGameId");
 const { words } = require("./utils/words");
 const Redis = require("ioredis");
 const config = require("../../config");
@@ -12,7 +13,7 @@ const redis = new Redis(config.redis);
 class GameEngine {
   constructor(data = null) {
     if (!data) {
-      this.id = getRandomNumber(1000);
+      this.id = getGameId();
       this.redTeam = new Team("red");
       this.blueTeam = new Team("blue");
       this.teamList = {};
