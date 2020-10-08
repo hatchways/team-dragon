@@ -47,6 +47,8 @@ const Login = (props) => {
 
       axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
       // redirect back to either game or landing page
+      props.history.push(toPath);
+      props.history.go();
     } catch (err) {
       if (err.response) {
         console.log(err.response.data);
@@ -56,8 +58,6 @@ const Login = (props) => {
         // TODO: handle generic errors
         console.log(err.message);
       }
-      
-      props.history.push(toPath);
       setLoading(false);
     }
   };

@@ -46,6 +46,7 @@ const Register = (props) => {
 
       // redirect back to either game or landing page
       props.history.push(toPath);
+      props.history.go();
     } catch (err) {
       if (err.response) {
         const errObj = err.response.data;

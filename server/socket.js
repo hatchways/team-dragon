@@ -35,7 +35,6 @@ module.exports = (server) => {
       const token = cookie.parse(socket.handshake.headers.cookie).token;
       const { gameId } = recv;
       const errors = [];
-console.log("conneeccttttt")
       try {
         const game = await Game.findOne({ gameId });
         if (!game) {
@@ -60,7 +59,6 @@ console.log("conneeccttttt")
         }
 
         // Joining room
-        console.log("DECODEDDD", decoded)
         socket.join(gameId);
 
         // create room details if does not exist
