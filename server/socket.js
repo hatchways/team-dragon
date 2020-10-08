@@ -48,15 +48,6 @@ module.exports = (server) => {
         }
 
         const decoded = jwt.verify(token, config.secret);
-        // Removed - validation happens on socket connection.
-        // if (!decoded) {
-        //   errors.push({
-        //     name: "InvalidToken",
-        //     message: "Token not valid",
-        //   });
-        //   io.to(socket.id).emit("error", errors);
-        //   throw new Error("Token not valid");
-        // }
 
         const user = await User.findOne({ email: decoded.email });
         if (!user) {
@@ -228,7 +219,6 @@ module.exports = (server) => {
 
     // Listener to end game
     socket.on("end-game", async (recv) => {
-      console.log("recv", recv);
       const { gameId, winner, method } = recv;
       console.log("WINNER", winner);
 
