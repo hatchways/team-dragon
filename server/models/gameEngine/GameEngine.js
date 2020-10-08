@@ -322,16 +322,15 @@ class GameEngine {
     }
   }
 
-  playAgain(){
+  playAgain() {
     this.redTeam.resetPoints();
     this.blueTeam.resetPoints();
     this.redTeam.resetPlayers();
     this.blueTeam.resetPlayers();
     this.board = this.createBoard();
-    this.gameStatus="setup";
+    this.gameStatus = "setup";
     this.startingTeam = getRandomNumber(2) === 0 ? "blue" : "red";
     this.turn = this.startingTeam;
-    
   }
 }
 

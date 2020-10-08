@@ -35,6 +35,11 @@ module.exports = {
         name: newUser.name,
       };
       const token = jwt.sign(payload, config.secret);
+      const hour = 3600000;
+      res.cookie("token", token, {
+        expires: new Date(Date.now() + hour * 24),
+        httpOnly: true,
+      });
 
       return res.status(201).json({
         token: token,
@@ -72,6 +77,11 @@ module.exports = {
         };
         const token = jwt.sign(payload, config.secret);
 
+        const hour = 3600000;
+        res.cookie("token", token, {
+          expires: new Date(Date.now() + hour * 24),
+        });
+
         return res.status(200).json({
           token: token,
         });
@@ -84,5 +94,11 @@ module.exports = {
     } catch (e) {
       return next(e);
     }
+  },
+
+  // Logout
+  logout(req, res, next) {
+    res.clearCookie("token");
+    res.send({ message: "Logout successful" });
   },
 };

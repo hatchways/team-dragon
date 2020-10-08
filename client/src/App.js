@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import GameSetup from "./pages/GameSetup";
 import ProfileSettings from "./pages/ProfileSettings";
 import { useUser } from "./contexts/UserContext";
+import Cookies from "js-cookie";
 
 const App = () => {
   const [, setUser] = useUser();
@@ -17,9 +18,9 @@ const App = () => {
 
   useEffect(() => {
     // check if token already set, if so assign user data to context
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
 
-    if (token !== null) {
+    if (token !== undefined) {
       const decoded = decode(token);
       setUser({
         id: decoded.id,
@@ -29,7 +30,6 @@ const App = () => {
       });
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     } else {
-      localStorage.clear();
       setUser(null);
       delete axios.defaults.headers.common["Authorization"];
     }

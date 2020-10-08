@@ -4,25 +4,36 @@ const User = require("./models/User");
 const Game = require("./models/Game");
 const GameEngine = require("./models/gameEngine/GameEngine");
 const Timer = require("./models/gameEngine/Timer");
+const cookie = require("cookie");
 
 module.exports = (server) => {
   const io = require("socket.io")(server);
   const clientDetails = {};
   const roomDetails = {};
 
-  io.on("connection", (socket) => {
+  io.use(function (socket, next) {
+    if (socket.handshake.headers && socket.handshake.headers.cookie) {
+      const token = cookie.parse(socket.handshake.headers.cookie).token;
+      jwt.verify(token, config.secret, function (err, decoded) {
+        if (err) return next(new Error("Authentication error"));
+        socket.decoded = decoded;
+        next();
+      });
+    } else {
+      next(new Error("Authentication error"));
+    }
+  }).on("connection", (socket) => {
     // Listener to regulary update game
     socket.on("fetch-game", async (recv) => {
       const { gameId } = recv;
-
       const currentGame = await GameEngine.getGame(gameId);
-
       io.to(gameId).emit("update-game", currentGame);
     });
 
     // Socket listener for game rooms
     socket.on("join-game", async (recv) => {
-      const { gameId, token } = recv;
+      const token = cookie.parse(socket.handshake.headers.cookie).token;
+      const { gameId } = recv;
       const errors = [];
 
       try {
@@ -37,14 +48,6 @@ module.exports = (server) => {
         }
 
         const decoded = jwt.verify(token, config.secret);
-        if (!decoded) {
-          errors.push({
-            name: "InvalidToken",
-            message: "Token not valid",
-          });
-          io.to(socket.id).emit("error", errors);
-          throw new Error("Token not valid");
-        }
 
         const user = await User.findOne({ email: decoded.email });
         if (!user) {
@@ -216,7 +219,6 @@ module.exports = (server) => {
 
     // Listener to end game
     socket.on("end-game", async (recv) => {
-      console.log("recv", recv);
       const { gameId, winner, method } = recv;
       console.log("WINNER", winner);
 
@@ -236,8 +238,8 @@ module.exports = (server) => {
       currentGame.playAgain();
       await currentGame.save();
 
-      io.to(gameId).emit("play-again",currentGame);
-    })
+      io.to(gameId).emit("play-again", currentGame);
+    });
 
     // Listener to regulary update game
     socket.on("fetch-game", async (recv) => {

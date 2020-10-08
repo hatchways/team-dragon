@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Button, Paper, Box, Typography } from "@material-ui/core";
+import { Paper, Box, Typography } from "@material-ui/core";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import { useHostId } from "../../contexts/DataContext";
 import { useUser } from "../../contexts/UserContext";
@@ -69,11 +69,8 @@ const GameOver = (props) => {
     gameOver,
     gameOverText,
     redScore,
-    blueScore,
-    newGameButton,
+    blueScore
   } = classes;
-
-  console.log("props.endGame.winner", props.endGame.winner);
 
   return (
     <>
