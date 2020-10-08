@@ -8,7 +8,6 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import useStyles from "./styles";
 import ProfileBar from "../ProfileBar";
-import PlayAgain from "../PlayAgain";
 
 const GameBar = (props) => {
   const classes = useStyles(props);

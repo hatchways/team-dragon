@@ -35,7 +35,7 @@ const GameSetup = (props) => {
       setGameStatus(currentGame.gameStatus);
       setNewGame(1);
     });
-  }, [setGameStatus]);
+  }, [setGameStatus, setNewGame]);
 
   // Fetches the game status to update the component according to the gameStatus
   useEffect(() => {
@@ -64,7 +64,6 @@ const GameSetup = (props) => {
       setMessages((prevMessages) => [...prevMessages, recv]);
     });
   }, []);
-
 
   //Send message event
   const sendMessage = (msg) => {

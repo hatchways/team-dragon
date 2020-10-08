@@ -47,7 +47,7 @@ const StepTwo = (props) => {
       setHostId(game.host._id);
       setHostName(game.host.name);
     });
-  }, [id, setHostId, setHostName, setPlayers]);
+  }, [id, setHostId, setHostName, setPlayers, setGameStatus]);
 
   const showPlayers = () => {
     return players.map((player, i) => {
