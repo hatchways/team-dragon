@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
-import Snackbar from "@material-ui/core/Snackbar";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
 import GameBar from "../../components/GameBar";
 import Messenger from "../../components/Messenger";
 import Board from "../../components/Board";
 import socket from "../../socket";
 import useStyles from "./styles";
 import { useGameStatus } from "../../contexts/GameContext";
+import {
+  useSnackbarOpen,
+  useSnackbarMessage,
+} from "../../contexts/SnackbarContext";
 
 const Game = (props) => {
   const classes = useStyles();
@@ -29,11 +30,11 @@ const Game = (props) => {
       guesser: [],
     },
   });
-  const [gameStatus, setGameStatus] = useGameStatus();
   const [endGame, setEndGame] = useState({ winner: "", gameOverTest: "" });
   const [timer, setTimer] = useState(60);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [gameStatus, setGameStatus] = useGameStatus();
+  const [, setSnackbarOpen] = useSnackbarOpen();
+  const [, setSnackbarMessage] = useSnackbarMessage();
 
   const gameId = props.match.params.id;
 
@@ -97,7 +98,7 @@ const Game = (props) => {
 
     socket.on("time-out", () => {
       setSnackbarMessage("Time out! Swapping turns...");
-      setOpenSnackbar(true);
+      setSnackbarOpen(true);
     });
 
     return () => {
@@ -107,7 +108,7 @@ const Game = (props) => {
       socket.off("time-out");
       socket.off("update-game");
     };
-  }, [gameId, setGameStatus]);
+  }, [gameId, setGameStatus, setSnackbarOpen, setSnackbarMessage]);
 
   const sendMessage = (msg) => {
     const msgData = {
@@ -181,22 +182,6 @@ const Game = (props) => {
           timer={timer}
         />
       </div>
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={6000}
-        onClose={() => setOpenSnackbar(false)}
-        message={snackbarMessage}
-        action={
-          <IconButton
-            size="small"
-            aria-label="close"
-            color="inherit"
-            onClick={() => setOpenSnackbar(false)}
-          >
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-      />
     </div>
   );
 };

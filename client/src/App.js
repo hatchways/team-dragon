@@ -4,6 +4,7 @@ import axios from "axios";
 import decode from "jwt-decode";
 import NavBar from "./components/NavBar";
 import PrivateRoute from "./components/PrivateRoute";
+import GlobalSnackbar from "./components/GlobalSnackbar";
 import Landing from "./pages/Landing";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
@@ -52,6 +53,7 @@ const App = () => {
           <PrivateRoute exact path="/:id" component={GameSetup} />
           <Route exact path="/" component={Landing} />
         </Switch>
+        <GlobalSnackbar />
       </BrowserRouter>
     )
   );

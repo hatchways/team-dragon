@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useGameStatus } from "../contexts/GameContext";
 import { useHostId, useNewGame } from "../contexts/DataContext";
 import { useUser } from "../contexts/UserContext";
+import {
+  useSnackbarOpen,
+  useSnackbarMessage,
+} from "../contexts/SnackbarContext";
 import NewGame from "../components/new game/NewGame";
 import WaitingRoom from "../components/new game/WaitingRoom";
 import Game from "./Game";
@@ -22,6 +26,8 @@ const useStyles = makeStyles(() => ({
 const GameSetup = (props) => {
   const classes = useStyles();
   const [gameStatus, setGameStatus] = useGameStatus();
+  const [, setSnackbarOpen] = useSnackbarOpen();
+  const [, setSnackbarMessage] = useSnackbarMessage();
   const [hostId] = useHostId();
   const [messages, setMessages] = useState([]);
   const [, setNewGame] = useNewGame();
@@ -47,9 +53,18 @@ const GameSetup = (props) => {
     });
 
     socket.on("error", () => {
+      setSnackbarMessage("Game does not exist!");
+      setSnackbarOpen(true);
+
       props.history.push("/");
     });
-  }, [gameId, gameStatus, setGameStatus, props.history]);
+  }, [
+    gameId,
+    setGameStatus,
+    props.history,
+    setSnackbarMessage,
+    setSnackbarOpen,
+  ]);
 
   useEffect(() => {
     //Shows players now assigned on teams and roles, ALSO - change gameStatus now === "running"
