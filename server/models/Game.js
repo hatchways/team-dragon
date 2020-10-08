@@ -20,7 +20,7 @@ const gameSchema = new Schema({
         type: String,
       },
       gameId: {
-        type: Number,
+        type: String,
       },
     },
   ],
