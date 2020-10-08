@@ -29,14 +29,6 @@ module.exports = {
         password: req.body.password,
       });
 
-      // // Creating user session
-      // if (req.session) {
-      //   req.session.isLoggedIn = true;
-      //   req.session.user = newUser;
-      //   await req.session.save();
-      //   console.log(req.session.user.name, " logged in");
-      // }
-
       const payload = {
         id: newUser.id,
         email: newUser.email,
@@ -80,14 +72,6 @@ module.exports = {
         };
         const token = jwt.sign(payload, config.secret);
 
-        // // Creating user session
-        // if (req.session) {
-        //   req.session.isLoggedIn = true;
-        //   req.session.user = user;
-        //   await req.session.save();
-        //   console.log(req.session.user.name, " logged in");
-        // }
-
         return res.status(200).json({
           token: token,
         });
@@ -101,19 +85,4 @@ module.exports = {
       return next(e);
     }
   },
-
-  // // Logout
-  // logout(req, res, next) {
-  //   // req.session.destroy((err) => {
-  //   //   if (err) {
-  //   //     console.log(err)
-  //   //     return res.status(400).json({
-  //   //       success: false,
-  //   //       errors: { message: "User session not found"},
-  //   //     });
-  //   //   }
-  //   //   res.clearCookie(config.sessionName);
-  //   //   res.status(200).json({ message: "Successfully logged Out!" });
-  //   // });
-  // },
 };

@@ -3,12 +3,6 @@ const router = express.Router();
 const profileController = require("../controllers/profile");
 const passport = require("passport");
 
-// const isAuth = require("../middleware/isAuth");
-
-// router.post("/edit-profile/:id",isAuth, profileController.postUpdateProfile);
-
-// router.get("/profile/:id",isAuth, profileController.getProfile);
-
 router.post(
   "/edit-profile/:id",
   passport.authenticate("jwt", { session: false }),
