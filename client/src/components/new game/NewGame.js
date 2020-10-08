@@ -132,6 +132,7 @@ const NewGame = (props) => {
   };
 
   return (
+   
     <Container maxWidth="md">
       <Card className={classes.card}>
         <Box minHeight={400}>
@@ -182,6 +183,7 @@ const NewGame = (props) => {
         </Box>
       </Card>
     </Container>
+   
   );
 };
 

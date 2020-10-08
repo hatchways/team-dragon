@@ -72,9 +72,11 @@ const Messenger = (props) => {
           alignItems="center"
         >
           <TextField
+            fullWidth
             variant="outlined"
             type="text"
             placeholder="Type here..."
+            InputProps={{className: classes.messageInputColor}}
             value={messageInput}
             onChange={(e) => setMessageInput(e.target.value)}
           />
@@ -83,6 +85,7 @@ const Messenger = (props) => {
             variant="contained"
             color="primary"
             size="large"
+            className={classes.SendButton}
           >
             Send
           </Button>
@@ -90,11 +93,13 @@ const Messenger = (props) => {
 
         {props.isSpyMaster && (
           <Button
+            fullWidth
             variant="contained"
             color="primary"
             size="large"
             onClick={props.changeTurn}
             disabled={!props.isTurn || props.timeOut}
+            className={classes.DoneButton}
           >
             Done
           </Button>

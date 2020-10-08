@@ -6,14 +6,17 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     background: theme.grey.superLight,
     overflow: "hidden",
-    display:"flex",
-    flexDirection:"column",
-    borderRight: `4px solid ${theme.palette.secondary.main}`,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    // borderRight: `4px solid ${theme.palette.secondary.main}`,
+    backgroundColor: "#537895",
+    backgroundImage: "linear-gradient(0deg, #01579b 0%,  #039be5 74%)",
   },
   MessageContainer: (props) => ({
     padding: "2rem",
-    minHeight: props.isTurn ? "calc(70% - 52px)" : "70%",
-    maxHeight: props.isTurn ? "calc(70% - 52px)" : "70%",
+    minHeight: props.isTurn ? "calc(65% - 52px)" : "65%",
+    maxHeight: props.isTurn ? "calc(65% - 52px)" : "65%",
     overflow: "auto",
   }),
   Message: {
@@ -46,8 +49,8 @@ const useStyles = makeStyles((theme) => ({
     display: "inline-block",
   },
   MessageInput: {
-    height: "20%",
-    padding: "2rem",
+    height: "25%",
+    padding: "1rem 1.5rem",
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
@@ -55,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   },
   Alert: {
     fontStyle: "italic",
-    color: theme.grey.dark,
+    color: theme.grey.light,
   },
   YourTurn: {
     height: "52px",
@@ -69,15 +72,25 @@ const useStyles = makeStyles((theme) => ({
   },
   ChatBar: {
     width: "100%",
-    height: "100%",
-    backgroundColor: theme.palette.secondary.main,
+    height: "3rem",
+    padding: ".5rem",
+    backgroundColor: theme.palette.primary.main,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     color: "white",
-    zIndex:"5",
-    boxShadow: "0 4px 10px 2px grey"
+    zIndex: "5",
+    boxShadow: "0 3px 10px 6px rgba(129,212,250,.6)"
   },
+  SendButton: {
+    marginLeft: "1rem",
+  },
+  DoneButton: {
+    marginTop: "1rem",
+  },
+  messageInputColor:{
+    color:theme.grey.light
+  }
 }));
 
 export default useStyles;
