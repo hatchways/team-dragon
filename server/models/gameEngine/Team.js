@@ -18,6 +18,13 @@ class Team {
   getName() {
     return this.name;
   }
+
+  resetPoints(){
+    this.points = 0;
+  }
+  resetPlayers(){
+    this.players = [];
+  }
 }
 
 module.exports = Team;

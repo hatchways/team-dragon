@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useGameStatus } from "../contexts/GameContext";
-import { useHostId } from "../contexts/DataContext";
+import { useHostId, useNewGame } from "../contexts/DataContext";
 import { useUser } from "../contexts/UserContext";
 import NewGame from "../components/new game/NewGame";
 import WaitingRoom from "../components/new game/WaitingRoom";
@@ -24,13 +24,24 @@ const GameSetup = (props) => {
   const [gameStatus, setGameStatus] = useGameStatus();
   const [hostId] = useHostId();
   const [messages, setMessages] = useState([]);
+  const [, setNewGame] = useNewGame();
   const [user] = useUser();
   const gameId = props.match.params.id;
 
+  // When host ends the game and clicks play again button, this socket fetches the reset version fo the same game with the same players
+  useEffect(() => {
+    socket.on("play-again", (currentGame) => {
+      console.log("Play-again:", currentGame.players);
+      setGameStatus(currentGame.gameStatus);
+      setNewGame(1);
+    });
+  }, [setGameStatus]);
+
+  // Fetches the game status to update the component according to the gameStatus
   useEffect(() => {
     socket.emit("fetch-game", { gameId });
 
-    socket.on("update-game", (currentGame) => {
+    socket.on("fetch-game", (currentGame) => {
       console.log("Updated game:", currentGame.gameStatus);
       setGameStatus(currentGame.gameStatus);
     });
@@ -85,9 +96,6 @@ const GameSetup = (props) => {
           messages={messages}
           sendMessage={sendMessage}
           name={user.name}
-          // isSpyMaster={isSpyMaster}
-          // isTurn={team === currentTurn}
-          // changeTurn={changeTurn}
         />
       );
     }

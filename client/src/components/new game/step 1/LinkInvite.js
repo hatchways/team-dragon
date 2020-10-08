@@ -24,10 +24,9 @@ const LinkInvite = (props) => {
     value: "",
     copied: false,
   });
-
   useEffect(() => {
     setCopy({
-      value: `http://localhost:3000/${id}`,
+      value: window.location.href,
       copied: false,
     });
   }, [id]);
@@ -41,7 +40,7 @@ const LinkInvite = (props) => {
             text={copy.value}
             onCopy={() =>
               setCopy({
-                value: `http://localhost:3000/${id}`,
+                value: window.location.href,
                 copied: true,
               })
             }

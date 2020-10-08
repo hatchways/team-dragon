@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import useStyles from "./styles";
 import ProfileBar from "../ProfileBar";
+import PlayAgain from "../PlayAgain";
 
 const GameBar = (props) => {
   const classes = useStyles(props);
@@ -65,14 +66,6 @@ const GameBar = (props) => {
               End Game
             </Button>
           )}
-          <Button
-            className={classes.NewGameButton}
-            variant="contained"
-            color="primary"
-            size="large"
-          >
-            New Game
-          </Button>
           <ProfileBar history={props.history} />
         </Box>
       </Box>
