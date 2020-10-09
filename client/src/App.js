@@ -14,7 +14,7 @@ import { useUser } from "./contexts/UserContext";
 import Cookies from "js-cookie";
 
 const App = () => {
-  const [,setUser] = useUser();
+  const [, setUser] = useUser();
   const [isLoading, setIsLoading] = useState(true);
 
   const getProfile = async (decoded) => {
