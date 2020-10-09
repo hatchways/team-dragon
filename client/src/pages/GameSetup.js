@@ -92,7 +92,7 @@ const GameSetup = (props) => {
   return (
     <div className={classes.WaitingRoom}>
       {gameStatus === "setup" ? (
-        <Messenger messages={messages} sendMessage={sendMessage} name={name} />
+        <Messenger messages={messages} sendMessage={sendMessage} name={user.name} />
       ) : null}
       <div>{gameStatus === "setup" ? gameJourney() : <Game {...props} />}</div>
     </div>
