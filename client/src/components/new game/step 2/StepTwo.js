@@ -37,7 +37,7 @@ const StepTwo = (props) => {
     // User joins the room
     console.log("joining game", id);
     socket.emit("join-game", {
-      gameId: id
+      gameId: id,
     });
 
     socket.on("update-players", (game) => {

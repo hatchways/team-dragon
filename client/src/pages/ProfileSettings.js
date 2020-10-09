@@ -55,16 +55,16 @@ const useStyles = makeStyles((theme) => ({
   userDetails: {
     paddingLeft: theme.spacing(2),
   },
-  imageDialog:{
+  imageDialog: {
     minWidth: "30vw",
-    display:"flex",
-    flexDirection:"column",
-    alignItems:"center",
-    justifyContent:"space-between"
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
-  updateUrlBtn:{
-    margin: "0 1rem"
-  }
+  updateUrlBtn: {
+    margin: "0 1rem",
+  },
 }));
 
 const ProfileSettings = () => {
@@ -72,7 +72,7 @@ const ProfileSettings = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [openEditNameDialog, setOpenEditNameDialog] = useState(false);
   const [profileImageFile, setProfileImageFile] = useState(null);
-  const [profileImageUrlInput, setProfileImageUrlInput] = useState("");
+  // const [profileImageUrlInput, setProfileImageUrlInput] = useState("");
   const [profileImageUrl, setProfileImageUrl] = useState("");
 
   const handleClose = async () => {
@@ -187,32 +187,32 @@ const ProfileSettings = () => {
           </Grid>
         </Box>
       </Card>
-        <Dialog open={openDialog} onClose={handleClose}>
-          <DialogTitle>Change Photo</DialogTitle>
-          <DialogContent  className={classes.imageDialog}>
-            <form>
-              <Input
-                type="file"
-                name="profileImage"
-                id="input-file"
-                onChange={handleFileInput}
-                className={classes.fileInput}
-              />
-              <Button htmlFor="input-file" component="label" color="secondary">
-                {profileImageFile ? profileImageFile.name : "Select File"}
-              </Button>
-              <Button
-                variant="contained"
-                component="button"
-                color="primary"
-                onClick={handleFileUpload}
-                className={classes.uploadImage}
-              >
-                Upload
-              </Button>
-            </form>
-            {/* <Typography>OR</Typography> */}
-            {/* <form>
+      <Dialog open={openDialog} onClose={handleClose}>
+        <DialogTitle>Change Photo</DialogTitle>
+        <DialogContent className={classes.imageDialog}>
+          <form>
+            <Input
+              type="file"
+              name="profileImage"
+              id="input-file"
+              onChange={handleFileInput}
+              className={classes.fileInput}
+            />
+            <Button htmlFor="input-file" component="label" color="secondary">
+              {profileImageFile ? profileImageFile.name : "Select File"}
+            </Button>
+            <Button
+              variant="contained"
+              component="button"
+              color="primary"
+              onClick={handleFileUpload}
+              className={classes.uploadImage}
+            >
+              Upload
+            </Button>
+          </form>
+          {/* <Typography>OR</Typography> */}
+          {/* <form>
               <Input
                 className={classes.urlInput}
                 type="text"
@@ -234,13 +234,13 @@ const ProfileSettings = () => {
                 </Button>
               
             </form> */}
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} color="primary" autoFocus>
-              Done
-            </Button>
-          </DialogActions>
-        </Dialog>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary" autoFocus>
+            Done
+          </Button>
+        </DialogActions>
+      </Dialog>
       <EditNameDialog
         open={openEditNameDialog}
         closeDialog={closeEditNameDialog}

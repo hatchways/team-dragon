@@ -31,10 +31,14 @@ const Login = (props) => {
     setLoading(true);
 
     try {
-      const { data } = await axios.post("/users/login", {
-        email,
-        password,
-      }, {withCredentials: true});
+      const { data } = await axios.post(
+        "/users/login",
+        {
+          email,
+          password,
+        },
+        { withCredentials: true },
+      );
 
       // save user data
       const decoded = decode(data.token);

@@ -12,7 +12,6 @@ import Game from "./Game";
 import socket from "../socket";
 import Messenger from "../components/Messenger";
 import { makeStyles } from "@material-ui/core/styles";
-import { AppBar, Box, Typography, Toolbar } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   WaitingRoom: {
@@ -92,7 +91,11 @@ const GameSetup = (props) => {
   return (
     <div className={classes.WaitingRoom}>
       {gameStatus === "setup" ? (
-        <Messenger messages={messages} sendMessage={sendMessage} name={user.name} />
+        <Messenger
+          messages={messages}
+          sendMessage={sendMessage}
+          name={user.name}
+        />
       ) : null}
       <div>{gameStatus === "setup" ? gameJourney() : <Game {...props} />}</div>
     </div>

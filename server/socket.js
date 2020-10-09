@@ -256,7 +256,7 @@ module.exports = (server) => {
       // lookup the disconnecting user and remove
       const user = clientDetails[socket.id];
       if (user !== undefined) {
-        user.rooms.forEach((room) => {
+        user.rooms.forEach(async (room) => {
           const alert = {
             sender: "alert",
             message: `${user.name} left the game`,
@@ -271,6 +271,7 @@ module.exports = (server) => {
           if (!roomDetails[room].clients.length) {
             roomDetails[room].timer.stop();
             delete roomDetails[room];
+            await GameEngine.deleteGame(room);
           }
 
           io.to(room).emit("new-message", alert);

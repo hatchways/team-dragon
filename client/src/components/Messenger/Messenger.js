@@ -76,7 +76,7 @@ const Messenger = (props) => {
             variant="outlined"
             type="text"
             placeholder="Type here..."
-            InputProps={{className: classes.messageInputColor}}
+            InputProps={{ className: classes.messageInputColor }}
             value={messageInput}
             onChange={(e) => setMessageInput(e.target.value)}
           />
