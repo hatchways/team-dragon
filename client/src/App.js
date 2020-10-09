@@ -14,22 +14,32 @@ import { useUser } from "./contexts/UserContext";
 import Cookies from "js-cookie";
 
 const App = () => {
-  const [, setUser] = useUser();
+  const [,setUser] = useUser();
   const [isLoading, setIsLoading] = useState(true);
+
+  const getProfile = async (decoded) => {
+    try {
+      const result = await axios.get(`/profile/${decoded.id}`);
+      const { id, email, name, profileImageLocation } = result.data;
+      setUser({
+        id,
+        email,
+        name,
+        profileImageLocation,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     // check if token already set, if so assign user data to context
     const token = Cookies.get("token");
 
     if (token !== undefined) {
-      const decoded = decode(token);
-      setUser({
-        id: decoded.id,
-        email: decoded.email,
-        name: decoded.name,
-        profileImageLocation: decoded.profileImageLocation,
-      });
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      const decoded = decode(token);
+      getProfile(decoded);
     } else {
       setUser(null);
       delete axios.defaults.headers.common["Authorization"];
