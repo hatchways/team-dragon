@@ -19,10 +19,10 @@ class Team {
     return this.name;
   }
 
-  resetPoints(){
+  resetPoints() {
     this.points = 0;
   }
-  resetPlayers(){
+  resetPlayers() {
     this.players = [];
   }
 }

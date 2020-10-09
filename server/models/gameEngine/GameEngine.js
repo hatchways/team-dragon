@@ -61,6 +61,15 @@ class GameEngine {
     }
   }
 
+  static async deleteGame(id) {
+    try {
+      await redis.del(id);
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
   async save() {
     try {
       await redis.set(this.id, JSON.stringify(this));

@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "0.9rem",
     marginBottom: "0.5rem",
     color: theme.grey.light,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   MessageMsg: {
     margin: 0,
@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     color: "white",
     zIndex: "5",
-    boxShadow: "0 3px 10px 6px rgba(129,212,250,.6)"
+    boxShadow: "0 3px 10px 6px rgba(129,212,250,.6)",
   },
   SendButton: {
     marginLeft: "1rem",
@@ -90,9 +90,9 @@ const useStyles = makeStyles((theme) => ({
   DoneButton: {
     marginTop: "1rem",
   },
-  messageInputColor:{
-    color:theme.grey.light
-  }
+  messageInputColor: {
+    color: theme.grey.light,
+  },
 }));
 
 export default useStyles;
