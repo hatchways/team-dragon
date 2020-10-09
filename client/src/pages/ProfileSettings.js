@@ -55,6 +55,17 @@ const useStyles = makeStyles((theme) => ({
   userDetails: {
     paddingLeft: theme.spacing(2),
   },
+  imageDialog:{
+    minWidth: "30vw",
+    minHeight:"30vh",
+    display:"flex",
+    flexDirection:"column",
+    alignItems:"center",
+    justifyContent:"space-between"
+  },
+  updateUrlBtn:{
+    margin: "0 1rem"
+  }
 }));
 
 const ProfileSettings = () => {
@@ -177,47 +188,60 @@ const ProfileSettings = () => {
           </Grid>
         </Box>
       </Card>
-      <Dialog open={openDialog} onClose={handleClose}>
-        <DialogTitle>Change Photo</DialogTitle>
-        <DialogContent>
-          <form>
-            <Input
-              type="file"
-              name="profileImage"
-              id="input-file"
-              onChange={handleFileInput}
-              className={classes.fileInput}
-            />
-            <Button htmlFor="input-file" component="label" color="secondary">
-              {profileImageFile ? profileImageFile.name : "Select File"}
+        <Dialog open={openDialog} onClose={handleClose}>
+          <DialogTitle>Change Photo</DialogTitle>
+          <DialogContent  className={classes.imageDialog}>
+            <form>
+              <Input
+                type="file"
+                name="profileImage"
+                id="input-file"
+                onChange={handleFileInput}
+                className={classes.fileInput}
+              />
+              <Button htmlFor="input-file" component="label" color="secondary">
+                {profileImageFile ? profileImageFile.name : "Select File"}
+              </Button>
+              <Button
+                variant="contained"
+                component="button"
+                color="primary"
+                onClick={handleFileUpload}
+                className={classes.uploadImage}
+              >
+                Upload
+              </Button>
+            </form>
+            <Typography>OR</Typography>
+            <form>
+              <Input
+                className={classes.urlInput}
+                type="text"
+                name="file"
+                id="image-url"
+                value={profileImageUrlInput}
+                placeholder="Enter url of image"
+                onChange={handleImageUrlInput}
+              />
+              
+                <Button
+                  type="submit"
+                  variant="contained"
+                  component="button"
+                  color="primary"
+                  className={classes.updateUrlBtn}
+                >
+                  Update URL
+                </Button>
+              
+            </form>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary" autoFocus>
+              Done
             </Button>
-            <Button
-              variant="contained"
-              component="button"
-              color="primary"
-              onClick={handleFileUpload}
-            >
-              Upload
-            </Button>
-          </form>
-          <Typography>OR</Typography>
-          <form>
-            <Input
-              type="text"
-              name="file"
-              id="image-url"
-              value={profileImageUrlInput}
-              placeholder="Enter url of image"
-              onChange={handleImageUrlInput}
-            />
-          </form>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary" autoFocus>
-            Done
-          </Button>
-        </DialogActions>
-      </Dialog>
+          </DialogActions>
+        </Dialog>
       <EditNameDialog
         open={openEditNameDialog}
         closeDialog={closeEditNameDialog}
