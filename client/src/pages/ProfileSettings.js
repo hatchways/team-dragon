@@ -57,7 +57,6 @@ const useStyles = makeStyles((theme) => ({
   },
   imageDialog:{
     minWidth: "30vw",
-    minHeight:"30vh",
     display:"flex",
     flexDirection:"column",
     alignItems:"center",
@@ -115,10 +114,10 @@ const ProfileSettings = () => {
     }
   };
 
-  // Input handler using image Url
-  const handleImageUrlInput = (e) => {
-    setProfileImageUrlInput(e.target.value);
-  };
+  // // Input handler using image Url
+  // const handleImageUrlInput = (e) => {
+  //   setProfileImageUrlInput(e.target.value);
+  // };
 
   // Sets the Image location for profile on the page
   useEffect(() => {
@@ -212,8 +211,8 @@ const ProfileSettings = () => {
                 Upload
               </Button>
             </form>
-            <Typography>OR</Typography>
-            <form>
+            {/* <Typography>OR</Typography> */}
+            {/* <form>
               <Input
                 className={classes.urlInput}
                 type="text"
@@ -234,7 +233,7 @@ const ProfileSettings = () => {
                   Update URL
                 </Button>
               
-            </form>
+            </form> */}
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose} color="primary" autoFocus>
