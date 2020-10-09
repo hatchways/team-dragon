@@ -33,19 +33,23 @@ const App = () => {
   };
 
   useEffect(() => {
-    // check if token already set, if so assign user data to context
-    const token = Cookies.get("token");
+    const onLoad = async () => {
+      // check if token already set, if so assign user data to context
+      const token = Cookies.get("token");
 
-    if (token !== undefined) {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      const decoded = decode(token);
-      getProfile(decoded);
-    } else {
-      setUser(null);
-      delete axios.defaults.headers.common["Authorization"];
+      if (token !== undefined) {
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        const decoded = decode(token);
+        await getProfile(decoded);
+      } else {
+        setUser(null);
+        delete axios.defaults.headers.common["Authorization"];
+      }
+
+      setIsLoading(false);
     }
 
-    setIsLoading(false);
+    onLoad();
   }, [setUser]);
 
   return (
