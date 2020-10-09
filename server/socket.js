@@ -35,7 +35,6 @@ module.exports = (server) => {
       const token = cookie.parse(socket.handshake.headers.cookie).token;
       const { gameId } = recv;
       const errors = [];
-
       try {
         const game = await Game.findOne({ gameId });
         if (!game) {
