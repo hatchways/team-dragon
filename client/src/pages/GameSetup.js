@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useGameStatus } from "../contexts/GameContext";
-import { useHostId } from "../contexts/DataContext";
+import { useHostId, useNewGame } from "../contexts/DataContext";
+import { useUser } from "../contexts/UserContext";
+import {
+  useSnackbarOpen,
+  useSnackbarMessage,
+} from "../contexts/SnackbarContext";
 import NewGame from "../components/new game/NewGame";
 import WaitingRoom from "../components/new game/WaitingRoom";
 import Game from "./Game";
@@ -22,19 +27,31 @@ const useStyles = makeStyles((theme) => ({
 const GameSetup = (props) => {
   const classes = useStyles();
   const [gameStatus, setGameStatus] = useGameStatus();
+  const [, setSnackbarOpen] = useSnackbarOpen();
+  const [, setSnackbarMessage] = useSnackbarMessage();
   const [hostId] = useHostId();
-  const name = localStorage.getItem("name");
   const [messages, setMessages] = useState([]);
+  const [, setNewGame] = useNewGame();
+  const [user] = useUser();
   const gameId = props.match.params.id;
 
+  // When host ends the game and clicks play again button, this socket fetches the reset version fo the same game with the same players
   useEffect(() => {
-    socket.emit("fetch-game", { gameId });
-
-    socket.on("update-game", (currentGame) => {
-      console.log("Updated game:", currentGame.gameStatus);
+    socket.on("play-again", (currentGame) => {
+      console.log("Play-again:", currentGame.players);
       setGameStatus(currentGame.gameStatus);
+      setNewGame(1);
     });
-  }, [gameId, setGameStatus]);
+  }, [setGameStatus, setNewGame]);
+
+  // Fetches the game status to update the component according to the gameStatus
+  useEffect(() => {
+    socket.on("error", () => {
+      setSnackbarMessage("Game does not exist!");
+      setSnackbarOpen(true);
+      props.history.push("/");
+    });
+  }, [props.history, setSnackbarMessage, setSnackbarOpen]);
 
   useEffect(() => {
     //Shows players now assigned on teams and roles, ALSO - change gameStatus now === "running"
@@ -53,7 +70,7 @@ const GameSetup = (props) => {
   //Send message event
   const sendMessage = (msg) => {
     const msgData = {
-      sender: name,
+      sender: user.name,
       message: msg,
     };
 
@@ -65,7 +82,7 @@ const GameSetup = (props) => {
   };
 
   const gameJourney = () => {
-    if (localStorage.getItem("id") === hostId) {
+    if (user.id === hostId) {
       return <NewGame value={props} />;
     } else {
       return <WaitingRoom value={props} />;

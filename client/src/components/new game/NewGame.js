@@ -54,6 +54,7 @@ const NewGame = (props) => {
   // Goes back to the step of the host when page refreshes
   useEffect(() => window.localStorage.setItem("newGame", newGame), [newGame]);
 
+
   const nextStep = async () => {
     try {
       if (newGame !== 1 || emails.length < 1) {

@@ -1,21 +1,27 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import qs from "query-string";
+import decode from "jwt-decode";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
+import { useUser } from "../../contexts/UserContext";
 import useStyles from "./styles";
 
 const Register = (props) => {
   const classes = useStyles();
 
+  const [, setUser] = useUser();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+
+  const toPath = qs.parse(props.location.search).redirect || "/";
 
   const validateForm = () => {
     return name.length > 0 && email.length > 0 && password.length > 0;
@@ -33,13 +39,14 @@ const Register = (props) => {
         password2: password,
       });
 
+      // save user data
+      const decoded = decode(data.token);
+      setUser({ id: decoded.id, email: decoded.email, name: decoded.name });
       axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
-      window.localStorage.setItem("id", data.user.id);
-      window.localStorage.setItem("email", data.user.email);
-      window.localStorage.setItem("name", data.user.name);
-      window.localStorage.setItem("token", data.token);
 
-      props.history.push("/");
+      // redirect back to either game or landing page
+      props.history.push(toPath);
+      props.history.go();
     } catch (err) {
       if (err.response) {
         const errObj = err.response.data;
@@ -122,7 +129,8 @@ const Register = (props) => {
           </Button>
 
           <Typography variant="body1">
-            Already have an account? <Link to="/login">Sign In</Link>
+            Already have an account?{" "}
+            <Link to={`/login?redirect=${toPath}`}>Sign In</Link>
           </Typography>
         </form>
       </Card>

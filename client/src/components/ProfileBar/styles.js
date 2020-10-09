@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
   UserName: {
     margin: "0 .5rem",
     fontFamily: font,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   Profile: {
     display: "flex",

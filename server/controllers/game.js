@@ -50,7 +50,6 @@ exports.postCreateGame = async (req, res, next) => {
         error: "Game not saved",
       });
     }
-
     res.status(202).send({
       game: gameEngine,
     });

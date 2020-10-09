@@ -4,6 +4,7 @@ import {
   useHostName,
   useHostId,
 } from "../../../contexts/DataContext";
+import { useGameStatus } from "../../../contexts/GameContext";
 import { useParams } from "react-router-dom";
 import {
   Box,
@@ -24,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const StepTwo = (props) => {
+  const [, setGameStatus] = useGameStatus();
   const [players, setPlayers] = usePlayers();
   const [, setHostName] = useHostName();
   const [, setHostId] = useHostId();
@@ -33,23 +35,19 @@ const StepTwo = (props) => {
 
   useEffect(() => {
     // User joins the room
-    const token = localStorage.getItem("token");
-
-    if (id !== "") {
-      console.log("joining game", id);
-      socket.emit("join-game", {
-        gameId: id,
-        token: token,
-      });
-    }
+    console.log("joining game", id);
+    socket.emit("join-game", {
+      gameId: id
+    });
 
     socket.on("update-players", (game) => {
       console.log("Updated players:", game.players);
+      setGameStatus(game.gameStatus);
       setPlayers(game.players);
       setHostId(game.host._id);
       setHostName(game.host.name);
     });
-  }, [id, setHostId, setHostName, setPlayers]);
+  }, [id, setHostId, setHostName, setPlayers, setGameStatus]);
 
   const showPlayers = () => {
     return players.map((player, i) => {

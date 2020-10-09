@@ -3,6 +3,7 @@ const Player = require("./Player");
 const Card = require("./Card");
 const getRandomNumber = require("./utils/randomNumber");
 const shuffle = require("./utils/shuffle");
+const getGameId = require("./utils/getGameId");
 const { words } = require("./utils/words");
 const Redis = require("ioredis");
 const config = require("../../config");
@@ -12,7 +13,7 @@ const redis = new Redis(config.redis);
 class GameEngine {
   constructor(data = null) {
     if (!data) {
-      this.id = getRandomNumber(1000);
+      this.id = getGameId();
       this.redTeam = new Team("red");
       this.blueTeam = new Team("blue");
       this.teamList = {};
@@ -42,13 +43,17 @@ class GameEngine {
       this.players = data.players;
       this.host = data.host;
       this.gameStatus = data.gameStatus;
-      this.endGame = {};
+      this.endGame = data.endGame;
     }
   }
 
   static async getGame(id) {
     try {
       const response = await redis.get(id);
+      if (!response) {
+        return null;
+      }
+
       return new this(JSON.parse(response));
     } catch (err) {
       console.error(err);
@@ -227,8 +232,8 @@ class GameEngine {
         this.changeTurn();
         break;
       case "red":
+        this.redTeam.addPoint();
         if (team === this.redTeam.name) {
-          this.redTeam.addPoint();
           console.log(`${team} gets 1 point`);
         } else {
           this.changeTurn();
@@ -236,8 +241,8 @@ class GameEngine {
         }
         break;
       case "blue":
+        this.blueTeam.addPoint();
         if (team === this.blueTeam.name) {
-          this.blueTeam.addPoint();
           console.log(`${team} gets 1 point`);
         } else {
           this.changeTurn();
@@ -316,6 +321,17 @@ class GameEngine {
     } else {
       console.log("Next Move Please!");
     }
+  }
+
+  playAgain() {
+    this.redTeam.resetPoints();
+    this.blueTeam.resetPoints();
+    this.redTeam.resetPlayers();
+    this.blueTeam.resetPlayers();
+    this.board = this.createBoard();
+    this.gameStatus = "setup";
+    this.startingTeam = getRandomNumber(2) === 0 ? "blue" : "red";
+    this.turn = this.startingTeam;
   }
 }
 

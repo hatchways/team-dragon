@@ -1,56 +1,50 @@
 import React, { useEffect, useState } from "react";
-import { Box, Avatar, Button } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
+import {
+  Box,
+  Avatar,
+  Button,
+  Snackbar,
+  IconButton,
+  Typography,
+} from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
 import { useUser } from "../../contexts/UserContext";
+import { useGameStatus } from "../../contexts/GameContext";
 import useStyles from "./styles";
 import axios from "axios";
-import { useGameStatus } from "../../contexts/GameContext";
 
 const ProfileBar = (props) => {
   const classes = useStyles();
 
   const [, setGameStatus] = useGameStatus();
   const [user, setUser] = useUser();
-
-  // Local State
   const [profileImageUrl, setProfileImageUrl] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
-  const userId = localStorage.getItem("id");
+  useEffect(() => {
+    if (user) {
+      setProfileImageUrl(user.profileImageLocation);
+    }
+  }, [user]);
 
   // Toggle Login and Logout
-  const handleAuthentication = () => {
-    if (userId) {
-      localStorage.clear();
+  const handleAuthentication = async () => {
+    if (user) {
       setUser(null);
       setGameStatus("setup");
+      const logout = await axios.post("/users/logout");
+      setSnackbarMessage(logout.data.message);
+      setOpenSnackbar(true);
       props.history.push("/");
     } else {
       props.history.push("/login");
     }
   };
 
-  const getProfile = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      const result = await axios.get(`/profile/${userId}`);
-      setUser(result.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   const handleAvatarClick = () => {
     props.history.push("/edit-profile");
   };
-
-  useEffect(() => {
-    if (user) {
-      setProfileImageUrl(user.profileImageLocation);
-    } else if (userId) {
-      getProfile();
-    }
-  }, [user, userId]);
 
   return (
     <Box className={classes.Profile}>
@@ -72,8 +66,24 @@ const ProfileBar = (props) => {
         className={classes.ProfileItem}
         onClick={handleAuthentication}
       >
-        <Typography>{userId ? "Logout" : "Login"}</Typography>
+        <Typography>{user ? "Logout" : "Login"}</Typography>
       </Button>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setOpenSnackbar(false)}
+        message={snackbarMessage}
+        action={
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={() => setOpenSnackbar(false)}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        }
+      />
     </Box>
   );
 };

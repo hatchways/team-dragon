@@ -29,23 +29,19 @@ module.exports = {
         password: req.body.password,
       });
 
-      // // Creating user session
-      // if (req.session) {
-      //   req.session.isLoggedIn = true;
-      //   req.session.user = newUser;
-      //   await req.session.save();
-      //   console.log(req.session.user.name, " logged in");
-      // }
-
       const payload = {
         id: newUser.id,
         email: newUser.email,
         name: newUser.name,
       };
       const token = jwt.sign(payload, config.secret);
+      const hour = 3600000;
+      res.cookie("token", token, {
+        expires: new Date(Date.now() + hour * 24),
+        httpOnly: true,
+      });
 
       return res.status(201).json({
-        user: payload,
         token: token,
       });
     } catch (e) {
@@ -81,16 +77,12 @@ module.exports = {
         };
         const token = jwt.sign(payload, config.secret);
 
-        // // Creating user session
-        // if (req.session) {
-        //   req.session.isLoggedIn = true;
-        //   req.session.user = user;
-        //   await req.session.save();
-        //   console.log(req.session.user.name, " logged in");
-        // }
+        const hour = 3600000;
+        res.cookie("token", token, {
+          expires: new Date(Date.now() + hour * 24),
+        });
 
         return res.status(200).json({
-          user: payload,
           token: token,
         });
       }
@@ -104,18 +96,9 @@ module.exports = {
     }
   },
 
-  // // Logout
-  // logout(req, res, next) {
-  //   // req.session.destroy((err) => {
-  //   //   if (err) {
-  //   //     console.log(err)
-  //   //     return res.status(400).json({
-  //   //       success: false,
-  //   //       errors: { message: "User session not found"},
-  //   //     });
-  //   //   }
-  //   //   res.clearCookie(config.sessionName);
-  //   //   res.status(200).json({ message: "Successfully logged Out!" });
-  //   // });
-  // },
+  // Logout
+  logout(req, res, next) {
+    res.clearCookie("token");
+    res.send({ message: "Logout successful" });
+  },
 };
